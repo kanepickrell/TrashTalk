@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-labelledby="t d">
+  <title id="t">The Eco-warrior — Dung Beetle</title>
+  <desc id="d">A dung beetle pushing a ball of collected litter with a claimed flag planted in the top.</desc>
+
+  <defs>
+    <clipPath id="war-badge">
+      <circle cx="100" cy="100" r="86"/>
+    </clipPath>
+  </defs>
+
+  <circle cx="100" cy="100" r="86" fill="#F4F7F5"/>
+
+  <g clip-path="url(#war-badge)">
+    <!-- Scatter: the ground still to be cleared. -->
+    <g fill="#E05A47" opacity="0.55">
+      <circle cx="44" cy="44" r="3"/>
+      <circle cx="158" cy="52" r="2.6"/>
+      <circle cx="166" cy="150" r="3"/>
+      <circle cx="36" cy="150" r="2.4"/>
+    </g>
+    <g fill="#2D6A4F" opacity="0.3">
+      <circle cx="62" cy="34" r="2.4"/>
+      <circle cx="138" cy="168" r="2.6"/>
+    </g>
+  </g>
+
+  <circle cx="100" cy="100" r="86" fill="none" stroke="#1B4332" stroke-width="8"/>
+
+  <!-- The flag, claimed ground, planted in the ball. -->
+  <g>
+    <path d="M150 92 L150 36" stroke="#1B4332" stroke-width="5" stroke-linecap="round"/>
+    <path d="M150 38 L188 46 L150 58 Z" fill="#E05A47" stroke="#1B4332" stroke-width="3.5" stroke-linejoin="round"/>
+    <path d="M166 43 l1.8 4.2 4.6 0.4 -3.5 3 1.1 4.5 -4 -2.4 -4 2.4 1.1 -4.5 -3.5 -3 4.6 -0.4z" fill="#FFFFFF"/>
+  </g>
+
+  <!-- The ball of collected litter. -->
+  <g>
+    <circle cx="78" cy="112" r="46" fill="#2D6A4F" stroke="#1B4332" stroke-width="4.5"/>
+    <!-- crushed cans -->
+    <g stroke="#1B4332" stroke-width="2.6" stroke-linejoin="round">
+      <rect x="46" y="104" width="20" height="11" rx="3" fill="#FFFFFF" transform="rotate(-18 56 109)"/>
+      <rect x="84" y="128" width="19" height="10" rx="3" fill="#FFFFFF" transform="rotate(14 93 133)"/>
+      <rect x="88" y="82" width="17" height="10" rx="3" fill="#F4F7F5" transform="rotate(-8 96 87)"/>
+    </g>
+    <!-- crumpled paper / wrapper -->
+    <path d="M56 78 l10 -6 9 7 -4 10 -11 1z" fill="#FFFFFF" stroke="#1B4332" stroke-width="2.6" stroke-linejoin="round"/>
+    <path d="M52 134 l9 -4 6 7 -6 7 -8 -3z" fill="#F4F7F5" stroke="#1B4332" stroke-width="2.6" stroke-linejoin="round"/>
+    <!-- texture pits -->
+    <g fill="#1B4332" opacity="0.25">
+      <circle cx="72" cy="104" r="5"/>
+      <circle cx="98" cy="108" r="3.4"/>
+      <circle cx="68" cy="140" r="3.8"/>
+      <circle cx="46" cy="124" r="3"/>
+    </g>
+  </g>
+
+  <!-- The beetle, braced and pushing. -->
+  <g>
+    <!-- back legs, driving -->
+    <g fill="none" stroke="#1B4332" stroke-width="5" stroke-linecap="round">
+      <path d="M150 132 C146 146 150 158 158 164"/>
+      <path d="M166 126 C172 140 180 146 186 146"/>
+      <path d="M134 134 C126 146 126 156 132 164"/>
+    </g>
+    <!-- front legs, on the ball -->
+    <g fill="none" stroke="#1B4332" stroke-width="5" stroke-linecap="round">
+      <path d="M128 110 C116 106 106 108 100 114"/>
+      <path d="M130 122 C118 124 110 130 106 138"/>
+    </g>
+    <!-- shell -->
+    <ellipse cx="152" cy="110" rx="33" ry="26" fill="#1B4332"/>
+    <path d="M152 84 L152 136" stroke="#2D6A4F" stroke-width="3" stroke-linecap="round" opacity="0.85"/>
+    <path d="M126 104 C140 96 164 96 178 104" fill="none" stroke="#2D6A4F" stroke-width="2.6" stroke-linecap="round" opacity="0.55"/>
+    <!-- constellation dots on the shell -->
+    <g fill="#F4F7F5">
+      <path d="M138 96 l1.7 3.8 4.1 0.3 -3.1 2.7 1 4 -3.7 -2.2 -3.6 2.2 1 -4 -3.2 -2.7 4.2 -0.3z"/>
+      <circle cx="164" cy="98" r="2.2"/>
+      <circle cx="170" cy="118" r="1.9"/>
+      <circle cx="142" cy="124" r="1.9"/>
+      <path d="M160 126 l1.3 2.9 3.1 0.2 -2.4 2 0.8 3 -2.8 -1.7 -2.7 1.7 0.7 -3 -2.3 -2 3.1 -0.2z"/>
+    </g>
+    <!-- head, horn and eye -->
+    <ellipse cx="178" cy="124" rx="13" ry="11" fill="#1B4332"/>
+    <path d="M185 115 C190 109 191 104 189 100" fill="none" stroke="#1B4332" stroke-width="4.6" stroke-linecap="round"/>
+    <circle cx="181" cy="122" r="2.8" fill="#F4F7F5"/>
+  </g>
+
+  <ellipse cx="110" cy="166" rx="56" ry="6" fill="#1B4332" opacity="0.14"/>
+</svg>

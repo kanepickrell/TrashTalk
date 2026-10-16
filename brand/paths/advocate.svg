@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-labelledby="t d">
+  <title id="t">The Advocate — Great-tailed Grackle</title>
+  <desc id="d">A grackle calling through a megaphone shaped like a trash can, surrounded by share and approval icons.</desc>
+
+  <defs>
+    <clipPath id="adv-badge">
+      <circle cx="100" cy="100" r="86"/>
+    </clipPath>
+  </defs>
+
+  <circle cx="100" cy="100" r="86" fill="#FFFFFF"/>
+
+  <g clip-path="url(#adv-badge)">
+    <!-- What the message turns into: replies, approval, reach. -->
+    <g>
+      <!-- speech bubble -->
+      <path d="M30 46 h34 a5 5 0 0 1 5 5 v18 a5 5 0 0 1 -5 5 h-20 l-9 8 v-8 h-5 a5 5 0 0 1 -5 -5 v-18 a5 5 0 0 1 5 -5z"
+            fill="#E05A47"/>
+      <g stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round">
+        <path d="M37 56 h20"/>
+        <path d="M37 64 h13"/>
+      </g>
+
+      <!-- thumbs up -->
+      <g transform="translate(26,108)">
+        <path d="M8 10 h5 l5 -9 a4 4 0 0 1 6 4 l-2 5 h8 a4 4 0 0 1 4 5 l-3 12 a5 5 0 0 1 -5 4 h-13 a5 5 0 0 1 -5 -5z"
+              fill="#E05A47"/>
+        <rect x="0" y="10" width="8" height="21" rx="2.5" fill="#2D6A4F"/>
+      </g>
+
+      <!-- share arrow -->
+      <g transform="translate(118,40)" fill="#2D6A4F">
+        <circle cx="4" cy="14" r="5.5"/>
+        <circle cx="24" cy="4" r="5.5"/>
+        <circle cx="24" cy="24" r="5.5"/>
+        <path d="M8 12 L20 6 M8 16 L20 22" stroke="#2D6A4F" stroke-width="3" stroke-linecap="round"/>
+      </g>
+
+      <!-- sparks -->
+      <g fill="#E05A47">
+        <path d="M152 148 l2.4 5.6 5.6 2.4 -5.6 2.4 -2.4 5.6 -2.4 -5.6 -5.6 -2.4 5.6 -2.4z"/>
+        <path d="M46 150 l1.8 4.2 4.2 1.8 -4.2 1.8 -1.8 4.2 -1.8 -4.2 -4.2 -1.8 4.2 -1.8z"/>
+      </g>
+      <g fill="#2D6A4F" opacity="0.5">
+        <circle cx="168" cy="92" r="3"/>
+        <circle cx="86" cy="34" r="2.6"/>
+      </g>
+    </g>
+  </g>
+
+  <circle cx="100" cy="100" r="86" fill="none" stroke="#1B4332" stroke-width="8"/>
+
+  <!-- The grackle: long tail, head thrown back, mid-squawk. -->
+  <g>
+    <!-- tail -->
+    <path d="M64 128 L18 170 L32 174 L28 182 L80 144 Z" fill="#1B4332" stroke="#1B4332" stroke-width="3" stroke-linejoin="round"/>
+    <!-- body -->
+    <path d="M118 112 C118 142 100 158 80 158 C62 158 56 142 60 126 C64 108 82 94 100 94 C112 94 118 100 118 112 Z"
+          fill="#1B4332"/>
+    <!-- wing -->
+    <path d="M96 112 C106 110 114 116 116 126 C108 136 94 136 86 128 Z" fill="#2D6A4F"/>
+    <!-- legs -->
+    <g stroke="#1B4332" stroke-width="4" stroke-linecap="round">
+      <path d="M88 156 L88 172"/>
+      <path d="M80 172 h16"/>
+      <path d="M102 154 L104 170"/>
+      <path d="M96 170 h16"/>
+    </g>
+    <!-- head -->
+    <circle cx="116" cy="92" r="17" fill="#1B4332"/>
+    <circle cx="122" cy="87" r="3.4" fill="#FFFFFF"/>
+    <circle cx="123" cy="87" r="1.6" fill="#1B4332"/>
+    <!-- open beak -->
+    <path d="M130 90 L148 86 L131 97 Z" fill="#2D6A4F" stroke="#1B4332" stroke-width="2.4" stroke-linejoin="round"/>
+  </g>
+
+  <!-- Megaphone built as a trash can: lid is the bell, body is the barrel. -->
+  <g transform="translate(-6,4)">
+    <!-- barrel -->
+    <path d="M150 78 h20 a4 4 0 0 1 4 4 v20 a4 4 0 0 1 -4 4 h-20 Z"
+          fill="#FFFFFF" stroke="#1B4332" stroke-width="4" stroke-linejoin="round"/>
+    <g stroke="#1B4332" stroke-width="2.4" stroke-linecap="round">
+      <path d="M156 84 v14"/>
+      <path d="M164 84 v14"/>
+    </g>
+    <!-- bell / open lid -->
+    <path d="M174 72 L192 62 L192 122 L174 112 Z"
+          fill="#F4F7F5" stroke="#1B4332" stroke-width="4" stroke-linejoin="round"/>
+    <!-- lid handle, doubling as the megaphone grip -->
+    <path d="M152 76 a8 8 0 0 1 16 0" fill="none" stroke="#1B4332" stroke-width="4" stroke-linecap="round"/>
+    <!-- sound -->
+    <g fill="none" stroke="#2D6A4F" stroke-width="3.4" stroke-linecap="round">
+      <path d="M190 82 a14 14 0 0 1 0 22"/>
+    </g>
+  </g>
+
+  <ellipse cx="86" cy="178" rx="40" ry="5" fill="#1B4332" opacity="0.14"/>
+</svg>

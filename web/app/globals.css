@@ -1,0 +1,772 @@
+/*
+ * TrashTalk marketing site.
+ *
+ * Same visual grammar as the Android app, for a reason: the hero is the real
+ * survey network rendered with the real palette, so the site is a window onto
+ * the product rather than an advert beside it. All colour values are the ones
+ * validated against the app's dark surfaces.
+ */
+
+:root {
+  --void: #07090c;
+  --surface: #121a23;
+  --surface-2: #1b2531;
+  --surface-3: #243040;
+  --hairline: #1e2a36;
+
+  --ink: #f2f6fa;
+  --ink-2: #a8b6c4;
+  --muted: #7d8e9e;
+
+  --teal: #27e0c8;
+  --teal-dim: #12806f;
+  --amber: #ffc14d;
+  --amber-deep: #e08a22;
+  --magenta: #ff4d8d;
+
+  --crew-1: #3987e5;
+  --crew-2: #d95926;
+  --crew-3: #199e70;
+  --crew-4: #c98500;
+
+  --good: #0ca30c;
+  --warning: #fab219;
+  --serious: #ec835a;
+
+  --max: 1180px;
+  --gutter: 24px;
+  --radius: 18px;
+
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--void);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.wrap {
+  width: 100%;
+  max-width: var(--max);
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+}
+
+/* ------------------------------------------------------------------ type */
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  letter-spacing: -0.025em;
+  line-height: 1.08;
+  font-weight: 700;
+}
+
+h1 {
+  font-size: clamp(2.6rem, 7vw, 4.8rem);
+}
+
+h2 {
+  font-size: clamp(1.9rem, 4vw, 2.9rem);
+}
+
+h3 {
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+}
+
+p {
+  margin: 0;
+}
+
+.eyebrow {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.lede {
+  font-size: clamp(1.05rem, 2vw, 1.3rem);
+  color: var(--ink-2);
+  max-width: 62ch;
+}
+
+.body {
+  color: var(--ink-2);
+  max-width: 68ch;
+}
+
+.small {
+  font-size: 0.86rem;
+  color: var(--muted);
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ------------------------------------------------------------------- nav */
+
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(14px);
+  background: color-mix(in srgb, var(--void) 82%, transparent);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  height: 64px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  font-size: 1.05rem;
+}
+
+.brand img {
+  width: 30px;
+  height: 30px;
+  display: block;
+}
+
+.nav-links {
+  display: flex;
+  gap: 22px;
+  margin-left: auto;
+  align-items: center;
+}
+
+.nav-links a {
+  color: var(--ink-2);
+  font-size: 0.93rem;
+  transition: color 0.15s ease;
+}
+
+.nav-links a:hover {
+  color: var(--ink);
+}
+
+/* ---------------------------------------------------------------- button */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 13px 22px;
+  border-radius: 13px;
+  font-weight: 600;
+  font-size: 0.97rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform 0.12s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn-primary {
+  background: var(--teal);
+  color: var(--void);
+}
+
+.btn-primary:hover {
+  background: #4df0db;
+}
+
+.btn-ghost {
+  border-color: color-mix(in srgb, var(--ink-2) 38%, transparent);
+  color: var(--ink);
+}
+
+.btn-ghost:hover {
+  border-color: var(--ink-2);
+  background: color-mix(in srgb, var(--ink) 6%, transparent);
+}
+
+.btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* ----------------------------------------------------------------- hero */
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding-block: clamp(56px, 9vw, 110px) 0;
+}
+
+.hero-copy {
+  position: relative;
+  z-index: 2;
+  max-width: 44rem;
+}
+
+.hero h1 {
+  margin-block: 18px 20px;
+}
+
+.hero h1 em {
+  font-style: normal;
+  color: var(--teal);
+}
+
+.hero-map {
+  position: relative;
+  margin-top: clamp(32px, 5vw, 56px);
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--hairline);
+  background: var(--void);
+}
+
+.hero-map img {
+  display: block;
+  width: 100%;
+  height: auto;
+  /* The network is wider than it is tall; cap it so the hero stays a hero
+     rather than becoming a full-page map. */
+  max-height: 540px;
+  object-fit: cover;
+  object-position: center 45%;
+}
+
+/* Fade the map into the page instead of ending it with a hard edge. */
+.hero-map::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--void) 55%, transparent) 0%,
+    transparent 22%,
+    transparent 72%,
+    color-mix(in srgb, var(--void) 88%, transparent) 100%
+  );
+}
+
+.map-caption {
+  position: absolute;
+  left: 18px;
+  bottom: 16px;
+  z-index: 3;
+  font-size: 0.82rem;
+  color: var(--muted);
+  max-width: 34ch;
+}
+
+/* ------------------------------------------------------------- stat band */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1px;
+  background: var(--hairline);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-top: 28px;
+}
+
+.stat {
+  background: var(--surface);
+  padding: 20px 18px;
+}
+
+.stat b {
+  display: block;
+  font-size: clamp(1.55rem, 3vw, 2.05rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.stat span {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+/* --------------------------------------------------------------- section */
+
+section {
+  padding-block: clamp(60px, 9vw, 104px);
+}
+
+.section-head {
+  max-width: 62ch;
+  margin-bottom: 38px;
+}
+
+.section-head h2 {
+  margin-block: 10px 16px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 22px;
+  align-items: center;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+
+.card h3 {
+  margin-bottom: 8px;
+}
+
+.card p {
+  color: var(--ink-2);
+  font-size: 0.97rem;
+}
+
+.step-n {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--teal) 16%, transparent);
+  color: var(--teal);
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-bottom: 14px;
+}
+
+/* ------------------------------------------------------------- territory */
+
+.territory-map {
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--hairline);
+  background: var(--void);
+}
+
+.territory-map img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.crew-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.crew {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 13px;
+  border-radius: 999px;
+  border: 1px solid var(--hairline);
+  background: var(--surface);
+  font-size: 0.88rem;
+  color: var(--ink-2);
+}
+
+.dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex: none;
+}
+
+/* Anchored sections must clear the sticky nav when jumped to. */
+section[id],
+article[id] {
+  scroll-margin-top: 84px;
+}
+
+/* ----------------------------------------------------------------- paths */
+
+.path-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.path-art {
+  width: 84px;
+  height: 84px;
+  flex: none;
+  display: block;
+}
+
+@media (max-width: 420px) {
+  .path-art {
+    width: 64px;
+    height: 64px;
+  }
+}
+
+/* Four paths want an even 2x2 rather than auto-fit's 3-plus-orphan. */
+.grid-paths {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 18px;
+}
+
+@media (min-width: 880px) {
+  .grid-paths {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.path-card {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  padding: 24px;
+  overflow: hidden;
+}
+
+.path-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: var(--accent, var(--teal));
+}
+
+.path-card .eyebrow {
+  color: var(--accent, var(--teal));
+}
+
+.path-card h3 {
+  margin-block: 8px 6px;
+}
+
+.badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.badge-pill {
+  font-size: 0.78rem;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--muted);
+}
+
+.mech {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 18px;
+  border-radius: 14px;
+  background: var(--surface-2);
+  border: 1px solid var(--hairline);
+}
+
+.mech-tag {
+  font-weight: 700;
+  color: var(--teal);
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+}
+
+/* ------------------------------------------------------------------ data */
+
+.bar {
+  height: 10px;
+  border-radius: 5px;
+  background: var(--surface-3);
+  overflow: hidden;
+}
+
+.bar > i {
+  display: block;
+  height: 100%;
+  border-radius: 5px;
+}
+
+.comp-row {
+  display: grid;
+  grid-template-columns: 1fr 72px;
+  gap: 14px;
+  align-items: center;
+  padding-block: 9px;
+}
+
+.comp-row + .comp-row {
+  border-top: 1px solid var(--hairline);
+}
+
+.dl {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 18px;
+  border: 1px solid var(--hairline);
+  border-radius: 14px;
+  background: var(--surface);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.dl:hover {
+  border-color: color-mix(in srgb, var(--teal) 45%, transparent);
+  background: var(--surface-2);
+}
+
+.dl-name {
+  font-weight: 600;
+}
+
+.dl-meta {
+  font-size: 0.83rem;
+  color: var(--muted);
+}
+
+.stack {
+  display: grid;
+  gap: 12px;
+}
+
+table.data {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+table.data th,
+table.data td {
+  text-align: left;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+table.data th {
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+table.data td:last-child,
+table.data th:last-child {
+  text-align: right;
+}
+
+.scroll-x {
+  overflow-x: auto;
+}
+
+/* ------------------------------------------------------------------- faq */
+
+details.faq {
+  border-bottom: 1px solid var(--hairline);
+  padding-block: 18px;
+}
+
+details.faq summary {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1.05rem;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+details.faq summary::-webkit-details-marker {
+  display: none;
+}
+
+details.faq summary::after {
+  content: "+";
+  color: var(--teal);
+  font-weight: 400;
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+details.faq[open] summary::after {
+  content: "\2212";
+}
+
+details.faq p {
+  margin-top: 12px;
+  color: var(--ink-2);
+  max-width: 70ch;
+}
+
+/* ------------------------------------------------------------------- cta */
+
+.cta {
+  border: 1px solid var(--hairline);
+  border-radius: 22px;
+  padding: clamp(32px, 6vw, 60px);
+  background:
+    radial-gradient(
+      120% 160% at 20% 0%,
+      color-mix(in srgb, var(--teal) 11%, transparent) 0%,
+      transparent 60%
+    ),
+    var(--surface);
+}
+
+/* ----------------------------------------------------- store buttons */
+
+/* Stacked label buttons in the style of an app-store badge. Rendered as
+   spans, not links, because the listings do not exist yet and a dead link
+   that looks live is worse than an honest status label. */
+.btn.store {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  padding: 10px 20px;
+  cursor: default;
+}
+
+.btn.store:hover {
+  transform: none;
+}
+
+.btn.store b {
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.btn.store small {
+  font-size: 0.72rem;
+  font-weight: 500;
+  opacity: 0.72;
+}
+
+/* ---------------------------------------------------------------- footer */
+
+footer {
+  border-top: 1px solid var(--hairline);
+  padding-block: 40px 56px;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.foot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 26px;
+}
+
+.foot-grid h4 {
+  margin: 0 0 10px;
+  font-size: 0.74rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  font-weight: 600;
+}
+
+.foot-grid a {
+  display: block;
+  padding-block: 4px;
+  transition: color 0.15s ease;
+}
+
+.foot-grid a:hover {
+  color: var(--ink);
+}
+
+.note {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid var(--hairline);
+  max-width: 75ch;
+}
+
+/* ------------------------------------------------------------ prose page */
+
+.prose {
+  max-width: 68ch;
+}
+
+.prose h2 {
+  margin-top: 52px;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+.prose h3 {
+  margin-top: 30px;
+  font-size: 1.1rem;
+}
+
+.prose p {
+  margin-top: 14px;
+  color: var(--ink-2);
+}
+
+.level-no {
+  color: var(--teal);
+  font-weight: 700;
+}
+
+.source {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+@media (max-width: 640px) {
+  .nav-links a:not(.btn) {
+    display: none;
+  }
+  .map-caption {
+    display: none;
+  }
+}

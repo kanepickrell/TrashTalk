@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-labelledby="t d">
+  <title id="t">The Scientist — Mycelium Mushroom</title>
+  <desc id="d">A mushroom mascot with a magnifying glass over a street grid marked with litter hot spots.</desc>
+
+  <defs>
+    <!-- Keeps the map artwork inside the badge; the mascot deliberately
+         overhangs the frame, so it is drawn outside this clip. -->
+    <clipPath id="sci-badge">
+      <circle cx="100" cy="100" r="86"/>
+    </clipPath>
+    <radialGradient id="sci-hot" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#E05A47" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#E05A47" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <circle cx="100" cy="100" r="86" fill="#F4F7F5"/>
+
+  <g clip-path="url(#sci-badge)">
+    <!-- The city grid the Scientist is reading. -->
+    <g fill="none" stroke="#2D6A4F" stroke-width="2.2" stroke-linecap="round" opacity="0.38">
+      <path d="M58 12 C62 60 60 120 64 190"/>
+      <path d="M96 10 C100 62 98 128 102 192"/>
+      <path d="M134 14 C136 64 132 126 128 188"/>
+      <path d="M168 20 C168 70 166 124 162 182"/>
+      <path d="M10 62 C62 58 132 60 192 56"/>
+      <path d="M8 104 C60 102 134 106 194 102"/>
+      <path d="M12 146 C64 144 130 148 190 144"/>
+    </g>
+    <g fill="none" stroke="#2D6A4F" stroke-width="1.6" stroke-linecap="round" opacity="0.22">
+      <path d="M58 62 L96 104"/>
+      <path d="M134 62 L168 104"/>
+      <path d="M96 104 L128 146"/>
+    </g>
+
+    <!-- Hot spots: confirmed concentrations, sitting on intersections. -->
+    <g>
+      <circle cx="134" cy="62" r="16" fill="url(#sci-hot)"/>
+      <circle cx="134" cy="62" r="5.5" fill="#E05A47"/>
+      <circle cx="168" cy="104" r="14" fill="url(#sci-hot)"/>
+      <circle cx="168" cy="104" r="4.5" fill="#E05A47"/>
+      <circle cx="128" cy="146" r="15" fill="url(#sci-hot)"/>
+      <circle cx="128" cy="146" r="5" fill="#E05A47"/>
+    </g>
+
+    <!-- Spark marks: the "I found something" flourish. -->
+    <g fill="#E05A47" opacity="0.85">
+      <path d="M156 46 l2.4 5.6 5.6 2.4 -5.6 2.4 -2.4 5.6 -2.4 -5.6 -5.6 -2.4 5.6 -2.4z"/>
+      <path d="M104 168 l1.8 4.2 4.2 1.8 -4.2 1.8 -1.8 4.2 -1.8 -4.2 -4.2 -1.8 4.2 -1.8z"/>
+    </g>
+  </g>
+
+  <!-- Badge frame, drawn over the map edge. -->
+  <circle cx="100" cy="100" r="86" fill="none" stroke="#1B4332" stroke-width="8"/>
+
+  <!-- The mascot, overhanging the frame at lower left. -->
+  <g>
+    <!-- stem -->
+    <path d="M58 112 h26 a6 6 0 0 1 6 6 v30 a12 12 0 0 1 -12 12 h-14 a12 12 0 0 1 -12 -12 v-30 a6 6 0 0 1 6 -6z"
+          fill="#FFFFFF" stroke="#1B4332" stroke-width="4" stroke-linejoin="round"/>
+    <!-- little arms -->
+    <path d="M52 128 C44 130 40 136 42 142" fill="none" stroke="#1B4332" stroke-width="4" stroke-linecap="round"/>
+    <path d="M92 126 C102 124 108 118 110 112" fill="none" stroke="#1B4332" stroke-width="4" stroke-linecap="round"/>
+    <!-- cap -->
+    <path d="M28 114 C28 78 44 58 71 58 C98 58 114 78 114 114 Z"
+          fill="#2D6A4F" stroke="#1B4332" stroke-width="4.5" stroke-linejoin="round"/>
+    <!-- field-hat band across the cap -->
+    <path d="M31 104 C52 96 90 96 111 104" fill="none" stroke="#1B4332" stroke-width="4" stroke-linecap="round" opacity="0.75"/>
+    <!-- cap speckles -->
+    <g fill="#F4F7F5" opacity="0.8">
+      <ellipse cx="56" cy="80" rx="5" ry="4"/>
+      <ellipse cx="84" cy="76" rx="4" ry="3.2"/>
+      <ellipse cx="70" cy="92" rx="3.4" ry="2.8"/>
+    </g>
+    <!-- face -->
+    <circle cx="64" cy="130" r="3.6" fill="#1B4332"/>
+    <circle cx="80" cy="130" r="3.6" fill="#1B4332"/>
+    <path d="M68 139 q4 4 8 0" fill="none" stroke="#1B4332" stroke-width="3" stroke-linecap="round"/>
+  </g>
+
+  <!-- Magnifying glass, drawn last so the lens sits in front of the cap. -->
+  <g>
+    <path d="M118 118 L104 134" stroke="#1B4332" stroke-width="8" stroke-linecap="round"/>
+    <circle cx="130" cy="104" r="21" fill="#FFFFFF" fill-opacity="0.9" stroke="#1B4332" stroke-width="6"/>
+    <path d="M121 96 a11 11 0 0 1 9 -5" fill="none" stroke="#2D6A4F" stroke-width="3.2" stroke-linecap="round" opacity="0.7"/>
+  </g>
+
+  <!-- Ground shadow. -->
+  <ellipse cx="72" cy="166" rx="26" ry="5" fill="#1B4332" opacity="0.14"/>
+</svg>

@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-labelledby="t d">
+  <title id="t">The Seeker — Forager Ant</title>
+  <desc id="d">A worker ant carrying a bottle cap overhead, following a glowing scent trail across the badge.</desc>
+
+  <defs>
+    <clipPath id="see-badge">
+      <circle cx="100" cy="100" r="86"/>
+    </clipPath>
+    <radialGradient id="see-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#F4F7F5" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#F4F7F5" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Dark ground: the Seeker works the hours and the streets nobody else does. -->
+  <circle cx="100" cy="100" r="86" fill="#1B4332"/>
+
+  <g clip-path="url(#see-badge)">
+    <!-- The scent trail, curving away behind the ant. -->
+    <path id="see-trail" d="M92 186 C150 170 118 136 134 108 C148 84 118 60 136 24"
+          fill="none" stroke="#F4F7F5" stroke-width="12" stroke-linecap="round" opacity="0.08"/>
+    <g>
+      <circle cx="96" cy="182" r="4.6" fill="#F4F7F5"/>
+      <circle cx="112" cy="174" r="4.2" fill="#F4F7F5" opacity="0.9"/>
+      <circle cx="126" cy="162" r="4" fill="#E05A47"/>
+      <circle cx="130" cy="146" r="4.2" fill="#F4F7F5" opacity="0.85"/>
+      <circle cx="128" cy="130" r="4" fill="#F4F7F5" opacity="0.8"/>
+      <circle cx="132" cy="114" r="4.2" fill="#E05A47"/>
+      <circle cx="140" cy="100" r="4" fill="#F4F7F5" opacity="0.8"/>
+      <circle cx="144" cy="84" r="4.2" fill="#F4F7F5" opacity="0.75"/>
+      <circle cx="138" cy="68" r="4" fill="#E05A47"/>
+      <circle cx="132" cy="52" r="4.2" fill="#F4F7F5" opacity="0.7"/>
+      <circle cx="134" cy="34" r="3.8" fill="#F4F7F5" opacity="0.6"/>
+    </g>
+    <!-- soft glow along the trail -->
+    <g opacity="0.7">
+      <circle cx="126" cy="162" r="13" fill="url(#see-glow)"/>
+      <circle cx="132" cy="114" r="13" fill="url(#see-glow)"/>
+      <circle cx="138" cy="68" r="13" fill="url(#see-glow)"/>
+    </g>
+
+    <!-- night sparkles -->
+    <g fill="#F4F7F5" opacity="0.55">
+      <circle cx="58" cy="40" r="2"/>
+      <circle cx="168" cy="132" r="1.8"/>
+      <circle cx="44" cy="120" r="1.6"/>
+    </g>
+    <g fill="#E05A47" opacity="0.8">
+      <path d="M62 148 l1.8 4.2 4.2 1.8 -4.2 1.8 -1.8 4.2 -1.8 -4.2 -4.2 -1.8 4.2 -1.8z"/>
+      <path d="M160 48 l1.6 3.6 3.6 1.6 -3.6 1.6 -1.6 3.6 -1.6 -3.6 -3.6 -1.6 3.6 -1.6z"/>
+    </g>
+  </g>
+
+  <circle cx="100" cy="100" r="86" fill="none" stroke="#1B4332" stroke-width="8"/>
+
+  <!-- The ant: one clear diagonal silhouette, light-outlined against the
+       dark ground, braced under its load. -->
+  <g>
+    <!-- six legs -->
+    <g fill="none" stroke="#F4F7F5" stroke-width="4" stroke-linecap="round" opacity="0.95">
+      <path d="M54 134 C42 140 36 152 38 164"/>
+      <path d="M60 140 C56 152 58 162 64 170"/>
+      <path d="M78 138 C78 152 84 162 92 166"/>
+      <path d="M86 132 C98 140 104 150 104 160"/>
+    </g>
+    <!-- gaster, thorax, head along a diagonal -->
+    <ellipse cx="50" cy="128" rx="20" ry="15.5" fill="#2D6A4F" stroke="#F4F7F5" stroke-width="3.4"
+             transform="rotate(-12 50 128)"/>
+    <ellipse cx="76" cy="120" rx="13" ry="11" fill="#2D6A4F" stroke="#F4F7F5" stroke-width="3.4"/>
+    <circle cx="96" cy="110" r="12.5" fill="#2D6A4F" stroke="#F4F7F5" stroke-width="3.4"/>
+    <circle cx="100" cy="106" r="2.9" fill="#F4F7F5"/>
+    <!-- antennae -->
+    <g fill="none" stroke="#F4F7F5" stroke-width="3.2" stroke-linecap="round">
+      <path d="M104 102 C112 96 116 90 114 84"/>
+      <path d="M98 98 C102 90 100 84 96 80"/>
+    </g>
+    <!-- arms raised to the cap -->
+    <g fill="none" stroke="#F4F7F5" stroke-width="5" stroke-linecap="round">
+      <path d="M80 110 C78 98 72 92 66 88"/>
+      <path d="M90 106 C94 96 94 90 92 86"/>
+    </g>
+  </g>
+
+  <!-- The bottle cap, resting on the raised arms. -->
+  <g>
+    <ellipse cx="78" cy="76" rx="29" ry="10" fill="#2D6A4F" stroke="#F4F7F5" stroke-width="3.4"/>
+    <path d="M49 76 v5 a29 10 0 0 0 58 0 v-5" fill="#2D6A4F" stroke="#F4F7F5"
+          stroke-width="3.4" stroke-linejoin="round"/>
+    <g stroke="#F4F7F5" stroke-width="2.2" stroke-linecap="round" opacity="0.85">
+      <path d="M55 80 v5"/><path d="M66 83 v5"/><path d="M78 84 v5"/>
+      <path d="M90 83 v5"/><path d="M101 80 v5"/>
+    </g>
+    <path d="M60 72 C68 68 88 68 96 72" fill="none" stroke="#F4F7F5" stroke-width="3"
+          stroke-linecap="round" opacity="0.9"/>
+  </g>
+
+  <ellipse cx="72" cy="170" rx="34" ry="5" fill="#000000" opacity="0.2"/>
+</svg>
