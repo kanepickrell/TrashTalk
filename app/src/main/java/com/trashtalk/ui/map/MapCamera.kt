@@ -1,6 +1,7 @@
 package com.trashtalk.ui.map
 
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableFloatStateOf
@@ -135,6 +136,50 @@ class MapCameraState(
         // Shift the content from the viewport centre to the visible band centre.
         val shift = (insetTopPx - insetBottomPx) / 2f
         if (shift != 0f) panBy(Offset(0f, shift))
+    }
+
+    /**
+     * Eases the camera to a target over [durationMs].
+     *
+     * Interpolation happens in Mercator world space rather than on raw
+     * latitude, so the motion is linear on screen; easing on lat/lng directly
+     * would visibly accelerate as it moved north. Zoom is interpolated
+     * logarithmically for the same reason -- zoom is already a log scale, so a
+     * linear walk through it looks even.
+     */
+    suspend fun flyTo(
+        target: LatLng,
+        targetZoom: Float? = null,
+        durationMs: Int = 550,
+    ) {
+        val fromX = Mercator.worldX(_lng)
+        val fromY = Mercator.worldY(_lat)
+        val toX = Mercator.worldX(target.lng)
+        val toY = Mercator.worldY(target.lat)
+        val fromZoom = _zoom
+        val toZoom = (targetZoom ?: _zoom).coerceIn(minZoom, maxZoom)
+
+        val startNanos = withFrameNanos { it }
+        while (true) {
+            val nowNanos = withFrameNanos { it }
+            val elapsed = (nowNanos - startNanos) / 1_000_000f
+            val raw = (elapsed / durationMs).coerceIn(0f, 1f)
+            // Ease in-out cubic: starts and lands gently, which reads as the
+            // map moving rather than cutting.
+            val t = if (raw < 0.5f) {
+                4f * raw * raw * raw
+            } else {
+                1f - (-2f * raw + 2f).let { it * it * it } / 2f
+            }
+            _zoom = (fromZoom + (toZoom - fromZoom) * t).coerceIn(minZoom, maxZoom)
+            setCenter(
+                LatLng(
+                    Mercator.lat(fromY + (toY - fromY) * t),
+                    Mercator.lng(fromX + (toX - fromX) * t),
+                ),
+            )
+            if (raw >= 1f) return
+        }
     }
 
     /** Ground resolution in metres per pixel, for the scale bar. */

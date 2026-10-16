@@ -56,6 +56,7 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import com.trashtalk.core.LatLng
+import com.trashtalk.core.rememberDeviceLocation
 import com.trashtalk.core.distanceToPolylineMeters
 import com.trashtalk.core.formatDistance
 import com.trashtalk.data.model.LitterType
@@ -114,7 +115,8 @@ fun CollectScreen(
     var elapsedMinutes by remember { mutableIntStateOf(0) }
     val timerRunning = timerStart > 0L
 
-    val location = rememberDeviceLocation()
+    val locationState = rememberDeviceLocation()
+    val location = locationState.fix?.location
 
     val cameraLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.TakePicture(),
@@ -575,78 +577,6 @@ private fun StepperButton(symbol: String, enabled: Boolean, onClick: () -> Unit)
             )
         }
     }
-}
-
-/**
- * Device location via the platform [LocationManager].
- *
- * Deliberately not Play Services' fused provider: this keeps the app free of a
- * Google Play dependency for its core field workflow, which matters for a build
- * that must run with no API keys configured and on devices without Play Services.
- * Accuracy from GPS plus network is more than enough to pick a street segment.
- */
-@Composable
-private fun rememberDeviceLocation(): LatLng? {
-    val context = LocalContext.current
-    var location by remember { mutableStateOf<LatLng?>(null) }
-    var hasPermission by remember {
-        mutableStateOf(
-            ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-            ) == PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(
-                    context,
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                ) == PackageManager.PERMISSION_GRANTED,
-        )
-    }
-
-    val permissionLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions(),
-    ) { granted ->
-        hasPermission = granted.values.any { it }
-    }
-
-    LaunchedEffect(Unit) {
-        if (!hasPermission) {
-            permissionLauncher.launch(
-                arrayOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION,
-                ),
-            )
-        }
-    }
-
-    DisposableEffect(hasPermission) {
-        if (!hasPermission) return@DisposableEffect onDispose { }
-        val manager = context.getSystemService(Context.LOCATION_SERVICE) as? LocationManager
-        if (manager == null) return@DisposableEffect onDispose { }
-
-        val listener = android.location.LocationListener { loc: Location ->
-            location = LatLng(loc.latitude, loc.longitude)
-        }
-
-        val providers = listOf(LocationManager.GPS_PROVIDER, LocationManager.NETWORK_PROVIDER)
-            .filter { runCatching { manager.isProviderEnabled(it) }.getOrDefault(false) }
-
-        // Seed from the last known fix so the screen is useful immediately.
-        providers.forEach { provider ->
-            runCatching { manager.getLastKnownLocation(provider) }.getOrNull()?.let {
-                if (location == null) location = LatLng(it.latitude, it.longitude)
-            }
-        }
-        providers.forEach { provider ->
-            runCatching {
-                manager.requestLocationUpdates(provider, 4_000L, 5f, listener)
-            }
-        }
-
-        onDispose { runCatching { manager.removeUpdates(listener) } }
-    }
-
-    return location
 }
 
 /** A content:// URI in the cache directory, shared with the camera app. */

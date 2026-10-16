@@ -112,12 +112,16 @@ fun SegmentMap(
     scrubDay: Int? = null,
     selectedSegmentId: String? = null,
     selectedBin: HexBins.Bin? = null,
+    /** The viewer's own position, drawn as a puck with its accuracy ring. */
+    userFix: com.trashtalk.core.DeviceFix? = null,
     showGenerators: Boolean = true,
     showFlags: Boolean = true,
     showCollections: Boolean = true,
     showBasemap: Boolean = true,
     reduceMotion: Boolean = false,
     onSurfaceBuilt: (HexBins.Surface) -> Unit = {},
+    /** Fired when the user drives the camera, so follow-me can release. */
+    onCameraMoved: () -> Unit = {},
     onSegmentTap: (Segment) -> Unit = {},
     onBinTap: (HexBins.Bin?) -> Unit = {},
     onLongPress: (LatLng, Segment?) -> Unit = { _, _ -> },
@@ -213,9 +217,13 @@ fun SegmentMap(
                             val zoom = event.calculateZoom()
                             val pan = event.calculatePan()
                             val centroid = event.calculateCentroid(useCurrent = true)
-                            if (zoom != 1f) camera.zoomBy(zoom, centroid, size.toSize())
+                            if (zoom != 1f) {
+                                camera.zoomBy(zoom, centroid, size.toSize())
+                                onCameraMoved()
+                            }
                             if (pan != Offset.Zero) {
                                 camera.panBy(pan)
+                                onCameraMoved()
                                 event.changes.forEach { it.consume() }
                             }
                         } while (event.changes.any { it.pressed })
@@ -238,7 +246,10 @@ fun SegmentMap(
                                 hitTest(camera, data.segments, offset, s),
                             )
                         },
-                        onDoubleTap = { offset -> camera.zoomBy(2f, offset, this.size.toSize()) },
+                        onDoubleTap = { offset ->
+                            camera.zoomBy(2f, offset, this.size.toSize())
+                            onCameraMoved()
+                        },
                     )
                 },
         ) {
@@ -373,6 +384,28 @@ fun SegmentMap(
 
                 for ((flag, at) in frame.flags) {
                     drawFlag(at, flag, pulse, reduceMotion)
+                }
+
+                // The viewer's own position. Drawn in the animated overlay so the
+                // accuracy ring can breathe, and last so nothing covers it: on a
+                // field map, "where am I" has to win every z-order argument.
+                userFix?.let { fix ->
+                    val at = camera.project(fix.location, size) - frame.slideFor(camera, size)
+                    val accuracyPx = (fix.accuracyMeters / camera.metersPerPixel()).toFloat()
+                    if (accuracyPx > 14f) {
+                        drawCircle(TT.Teal.copy(alpha = 0.10f), accuracyPx, at)
+                        drawCircle(
+                            color = TT.Teal.copy(alpha = 0.30f),
+                            radius = accuracyPx,
+                            center = at,
+                            style = Stroke(width = 1.5f),
+                        )
+                    }
+                    val stale = fix.isStale()
+                    val puck = if (stale) TT.InkMuted else TT.Teal
+                    drawCircle(puck.copy(alpha = 0.22f), 15f * pulse, at)
+                    drawCircle(Color.White, 8.5f, at)
+                    drawCircle(puck, 6f, at)
                 }
 
                 val selected = frame.segments.firstOrNull { it.segment.id == selectedSegmentId }

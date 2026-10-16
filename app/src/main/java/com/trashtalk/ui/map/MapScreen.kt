@@ -35,6 +35,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,6 +49,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.trashtalk.core.LatLng
+import com.trashtalk.core.rememberDeviceLocation
 import com.trashtalk.core.formatDistance
 import com.trashtalk.data.model.FlagKind
 import com.trashtalk.data.model.LitterType
@@ -67,6 +69,7 @@ import com.trashtalk.ui.components.TrashTalkButton
 import com.trashtalk.ui.components.TrashTalkOutlineButton
 import com.trashtalk.ui.theme.HazardBand
 import com.trashtalk.ui.theme.TT
+import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
 
@@ -115,8 +118,14 @@ fun MapScreen(
     }
 
     var flagTarget by remember { mutableStateOf<Pair<LatLng, Segment?>?>(null) }
-    var showLegend by remember { mutableStateOf(true) }
+    var showLegend by remember { mutableStateOf(false) }
     var surface by remember { mutableStateOf<HexBins.Surface?>(null) }
+    var showSearch by remember { mutableStateOf(false) }
+    // "Following" means the camera tracks the fix until the user pans away,
+    // which is the behaviour every maps app has trained people to expect.
+    var followMe by remember { mutableStateOf(false) }
+    val locationState = rememberDeviceLocation()
+    val scope = rememberCoroutineScope()
     var selectedBin by remember { mutableStateOf<HexBins.Bin?>(null) }
     var showBasemap by remember { mutableStateOf(true) }
 
@@ -137,6 +146,15 @@ fun MapScreen(
                 insetBottomPx = bottomChromePx,
             )
             framed = true
+        }
+    }
+
+    // Track the fix while following. Any manual pan or zoom drops follow mode,
+    // so the camera never fights the hand that is moving it.
+    LaunchedEffect(followMe, locationState.fix) {
+        val fix = locationState.fix
+        if (followMe && fix != null) {
+            camera.flyTo(fix.location, targetZoom = camera.zoom.coerceAtLeast(16.5f))
         }
     }
 
@@ -164,12 +182,14 @@ fun MapScreen(
             scrubDay = scrubDay,
             selectedSegmentId = selectedId,
             selectedBin = selectedBin,
+            userFix = locationState.fix,
             showGenerators = showGenerators,
             showFlags = showFlags,
             showCollections = showCollections,
             showBasemap = showBasemap,
             onSurfaceBuilt = { surface = it },
             onBinTap = { selectedBin = it },
+            onCameraMoved = { followMe = false },
             onSegmentTap = { vm.selectSegment(it.id) },
             onLongPress = { point, segment -> flagTarget = point to segment },
             modifier = Modifier.fillMaxSize(),
@@ -222,7 +242,63 @@ fun MapScreen(
                 label = { it.label },
                 onSelect = { vm.setLayer(it) },
             )
+
+            Spacer(Modifier.height(10.dp))
+
+            NearbyBar(
+                locationState = locationState,
+                segments = segments,
+                onSelectSegment = { vm.selectSegment(it.id) },
+                onLocate = { followMe = true },
+            )
         }
+
+        // Control stack, vertically centred on the right edge so it sits under
+        // the thumb rather than in the corner.
+        MapControlStack(
+            locationState = locationState,
+            followingMe = followMe,
+            onAction = { action ->
+                when (action) {
+                    MapAction.LOCATE -> {
+                        followMe = true
+                        locationState.fix?.let { fix ->
+                            scope.launch {
+                                camera.flyTo(
+                                    fix.location,
+                                    targetZoom = camera.zoom.coerceAtLeast(16.5f),
+                                )
+                            }
+                        }
+                    }
+
+                    MapAction.ZOOM_IN -> scope.launch {
+                        camera.flyTo(camera.center, camera.zoom + 1f, durationMs = 260)
+                    }
+
+                    MapAction.ZOOM_OUT -> scope.launch {
+                        camera.flyTo(camera.center, camera.zoom - 1f, durationMs = 260)
+                    }
+
+                    MapAction.FIT -> {
+                        followMe = false
+                        if (viewport.width > 0f) {
+                            camera.fitBounds(
+                                bounds = network.bounds,
+                                size = viewport,
+                                insetTopPx = topChromePx,
+                                insetBottomPx = bottomChromePx,
+                            )
+                        }
+                    }
+
+                    MapAction.SEARCH -> showSearch = true
+                }
+            },
+            modifier = Modifier
+                .align(Alignment.CenterEnd)
+                .padding(end = 14.dp),
+        )
 
         // --------------------------------------------------------- bottom chrome
         Column(
@@ -345,6 +421,20 @@ fun MapScreen(
                 },
             )
         }
+    }
+
+    if (showSearch) {
+        SegmentSearchSheet(
+            segments = segments,
+            fix = locationState.fix,
+            onDismiss = { showSearch = false },
+            onPick = { seg ->
+                showSearch = false
+                followMe = false
+                vm.selectSegment(seg.id)
+                scope.launch { camera.flyTo(seg.midpoint, targetZoom = 17f) }
+            },
+        )
     }
 
     // -------------------------------------------------------------- flag dialog
