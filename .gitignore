@@ -29,3 +29,6 @@ tools/bin/
 
 # osmnx HTTP response cache
 cache/
+
+# Macrobenchmark outputs
+benchmark/build/

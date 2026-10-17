@@ -8,7 +8,9 @@
     "start": "next start"
   },
   "dependencies": {
+    "maplibre-gl": "^5.24.0",
     "next": "15.5.28",
+    "pmtiles": "^4.5.0",
     "react": "19.1.1",
     "react-dom": "19.1.1"
   },

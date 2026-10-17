@@ -31,12 +31,6 @@
             </intent-filter>
         </activity>
 
-        <!-- Phase 2.0 spike target; removed once the renderer is ported. -->
-        <activity
-            android:name=".spike.MapLibreSpikeActivity"
-            android:exported="true"
-            android:theme="@style/Theme.TrashTalk" />
-
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.fileprovider"

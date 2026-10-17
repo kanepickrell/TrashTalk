@@ -18,8 +18,17 @@ maplibreCompose = "0.20.0"
 # to dlopen and the first frame throws UnsatisfiedLinkError. OpenGL rather than
 # Vulkan because GL ES is present on every device the app targets.
 maplibreNativeFfi = "0.202610.0"
+jankstats = "1.0.0-beta02"
+benchmark = "1.6.0-alpha01"
+uiautomator = "2.3.0"
+baselineprofile = "1.6.0-alpha01"
 
 [libraries]
+androidx-metrics-jankstats = { group = "androidx.metrics", name = "metrics-performance", version.ref = "jankstats" }
+androidx-benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "benchmark" }
+androidx-test-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomator" }
+androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version = "1.2.1" }
+androidx-test-runner = { group = "androidx.test", name = "runner", version = "1.6.2" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
 androidx-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycle" }
@@ -43,6 +52,7 @@ maplibre-compose = { group = "org.maplibre.compose", name = "maplibre-compose", 
 maplibre-renderer-opengl = { group = "org.maplibre.nativeffi", name = "maplibre-native-ffi-runtime-opengl", version.ref = "maplibreNativeFfi" }
 
 [plugins]
+baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

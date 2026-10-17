@@ -54,7 +54,8 @@ labels and the sprites that draw shields are built by:
 pwsh tools/build_basemap.ps1
 ```
 
-which writes into `app/src/main/assets/map/`:
+which writes into `app/src/main/assets/map/` and stages copies into
+`web/public/map/`:
 
 | | |
 |---|---|
@@ -83,5 +84,11 @@ Two things the style depends on that are easy to break:
 - The app marks `pmtiles` as `noCompress`. `Basemap.kt` relies on that to size
   the asset without reading it, and will throw if it is ever dropped.
 
-Nothing in the package references the network; the style is asserted free of
-`http(s)` URLs at generation time.
+Nothing in the app's package references the network; its style is asserted free
+of `http(s)` URLs at generation time.
+
+The generator emits the style twice -- once for the app (`asset://` glyphs and
+sprites, `{archive}` substituted at runtime) and once for the site (everything
+served from `/map`). One flavour, one layer list, two sets of URLs: if the
+public map painted a block a different colour from the one in a volunteer's
+hand, the data would stop being one dataset and start being two claims.

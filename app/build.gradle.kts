@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.baselineprofile)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
 }
@@ -76,6 +77,19 @@ android {
     androidResources {
         noCompress += "pmtiles"
     }
+    bundle {
+        // The renderer core is 9-14 MB per ABI and the basemap package is
+        // another 1.8 MB. Splitting means a phone downloads one ABI's worth
+        // rather than all three, which is the difference between a ~37 MB and
+        // a ~62 MB install.
+        abi { enableSplit = true }
+        density { enableSplit = true }
+        language {
+            // maplibre-compose ships UI strings in 130-odd locales. Leaving
+            // these unsplit would hand every device all of them.
+            enableSplit = true
+        }
+    }
 }
 
 dependencies {
@@ -102,6 +116,8 @@ dependencies {
     // (MapLibre Android SDK in an AndroidView).
     implementation(libs.maplibre.compose)
     implementation(libs.maplibre.renderer.opengl)
+    implementation(libs.androidx.metrics.jankstats)
+    baselineProfile(project(":benchmark"))
 
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.coil.compose)

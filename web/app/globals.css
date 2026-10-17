@@ -770,3 +770,31 @@ footer {
     display: none;
   }
 }
+
+/* ---------------------------------------------------------------- the map */
+/* Sized by aspect rather than a fixed height, so it stays a map and not a
+   letterbox on a phone. */
+.map-figure {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--hairline, rgba(255, 255, 255, 0.1));
+}
+
+@media (max-width: 640px) {
+  .map-figure {
+    aspect-ratio: 4 / 5;
+  }
+}
+
+.caption {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--ink-muted, #7d8e9e);
+}
+
+/* MapLibre's own chrome, toned to the site rather than its stock blue. */
+.maplibregl-ctrl-attrib {
+  font-size: 11px;
+}

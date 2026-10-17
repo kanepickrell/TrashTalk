@@ -14,7 +14,8 @@ import { fileURLToPath } from "node:url";
 import { layers, namedFlavor } from "@protomaps/basemaps";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
-const OUT = resolve(HERE, "../app/src/main/assets/map/style.json");
+const APP_OUT = resolve(HERE, "../app/src/main/assets/map/style.json");
+const WEB_OUT = resolve(HERE, "../web/public/map/style.json");
 
 // The style names the archive with a token rather than a URL. The archive is
 // range-read, so it cannot be served from `asset://` -- the app copies it out
@@ -153,25 +154,53 @@ if (missing.length || unknown.length) {
   process.exit(1);
 }
 
-const style = {
-  version: 8,
-  name: "TrashTalk basemap",
+/**
+ * The same style, addressed two ways.
+ *
+ * The app and the site must not drift: if the public map paints a block a
+ * different colour from the one in the volunteer's hand, the data stops being
+ * one dataset and starts being two claims. So there is one flavour, one layer
+ * list, and only the URLs differ -- the app reads fonts and sprites straight
+ * out of the APK and has its archive path substituted at runtime, while the
+ * site serves all three over HTTP from /map.
+ */
+function buildStyle({ glyphs, sprite, archive }) {
+  return {
+    version: 8,
+    name: "TrashTalk basemap",
+    glyphs,
+    sprite,
+    sources: {
+      [SOURCE]: {
+        type: "vector",
+        url: `pmtiles://${archive}`,
+        attribution: "© Protomaps © OpenStreetMap",
+      },
+    },
+    layers: layers(SOURCE, FLAVOR, { lang: "en" }),
+  };
+}
+
+const app = buildStyle({
   // Fonts and sprites are whole-file reads, so unlike the archive they load
   // straight from the APK.
   glyphs: "asset://map/fonts/{fontstack}/{range}.pbf",
   sprite: "asset://map/sprites/basemap",
-  sources: {
-    [SOURCE]: {
-      type: "vector",
-      url: `pmtiles://${ARCHIVE_TOKEN}`,
-      attribution: "© Protomaps © OpenStreetMap",
-    },
-  },
-  layers: layers(SOURCE, FLAVOR, { lang: "en" }),
-};
+  archive: ARCHIVE_TOKEN,
+});
 
-mkdirSync(dirname(OUT), { recursive: true });
-writeFileSync(OUT, JSON.stringify(style, null, 1));
+const web = buildStyle({
+  glyphs: "/map/fonts/{fontstack}/{range}.pbf",
+  sprite: "/map/sprites/basemap",
+  archive: "/map/terrell_heights.pmtiles",
+});
 
-const symbolLayers = style.layers.filter((l) => l.type === "symbol").length;
-console.log(`style.json: ${style.layers.length} layers (${symbolLayers} symbol), -> ${OUT}`);
+for (const [out, style] of [[APP_OUT, app], [WEB_OUT, web]]) {
+  mkdirSync(dirname(out), { recursive: true });
+  writeFileSync(out, JSON.stringify(style, null, 1));
+}
+
+const symbolLayers = app.layers.filter((l) => l.type === "symbol").length;
+console.log(`style.json: ${app.layers.length} layers (${symbolLayers} symbol)`);
+console.log(`  app -> ${APP_OUT}`);
+console.log(`  web -> ${WEB_OUT}`);

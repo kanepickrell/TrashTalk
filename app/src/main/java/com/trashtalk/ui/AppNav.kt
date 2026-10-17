@@ -82,6 +82,7 @@ import com.trashtalk.ui.share.ShareCard
 import com.trashtalk.ui.share.ShareCardData
 import com.trashtalk.ui.share.shareCardIntent
 import com.trashtalk.ui.share.writeShareCard
+import com.trashtalk.core.TrackJank
 import com.trashtalk.ui.theme.TT
 import kotlin.math.roundToInt
 import kotlinx.coroutines.delay
@@ -159,6 +160,7 @@ fun TrashTalkRoot(vm: MainViewModel) {
                 modifier = Modifier.fillMaxSize(),
             ) {
                 composable(Tab.MAP.route) {
+                    TrackJank("map")
                     // The map is full-bleed: it draws behind the bar on purpose, so
                     // only the bottom inset is applied.
                     MapScreen(
@@ -172,6 +174,7 @@ fun TrashTalkRoot(vm: MainViewModel) {
                 }
 
                 composable(Tab.LEVELS.route) {
+                    TrackJank("levels")
                     LevelsScreen(
                         vm = vm,
                         onOpenLevel = { index -> nav.navigate("${Routes.LEVEL_DETAIL}/$index") },
@@ -184,6 +187,7 @@ fun TrashTalkRoot(vm: MainViewModel) {
                 }
 
                 composable(Tab.PATHS.route) {
+                    TrackJank("paths")
                     PathsScreen(
                         vm = vm,
                         modifier = Modifier.padding(
@@ -194,6 +198,7 @@ fun TrashTalkRoot(vm: MainViewModel) {
                 }
 
                 composable(Tab.RANKS.route) {
+                    TrackJank("ranks")
                     RanksScreen(
                         vm = vm,
                         modifier = Modifier.padding(
@@ -204,6 +209,7 @@ fun TrashTalkRoot(vm: MainViewModel) {
                 }
 
                 composable(Tab.ME.route) {
+                    TrackJank("me")
                     MeScreen(
                         vm = vm,
                         onOpenReport = { nav.navigate(Routes.REPORT) },
@@ -215,6 +221,7 @@ fun TrashTalkRoot(vm: MainViewModel) {
                 }
 
                 composable("${Routes.COLLECT}?segmentId={segmentId}") { entry ->
+                    TrackJank("collect")
                     CollectScreen(
                         vm = vm,
                         initialSegmentId = entry.arguments

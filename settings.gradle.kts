@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "TrashTalk"
 include(":app")
+include(":benchmark")

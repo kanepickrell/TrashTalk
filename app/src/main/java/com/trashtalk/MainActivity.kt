@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.trashtalk.ui.MainViewModel
 import com.trashtalk.ui.TrashTalkRoot
+import com.trashtalk.core.JankMonitor
 import com.trashtalk.ui.theme.TrashTalkTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,6 +19,9 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             TrashTalkTheme {
+                // One per window: the frame stream is the window's, and screens
+                // distinguish themselves with TrackJank.
+                JankMonitor()
                 val vm: MainViewModel = viewModel(
                     factory = MainViewModel.Factory(container.repository),
                 )

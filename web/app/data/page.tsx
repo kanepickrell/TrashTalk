@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import stats from "@/public/stats.json";
+import BasemapMap from "@/components/BasemapMap";
 
 export const metadata: Metadata = {
   title: "Open data",
@@ -77,6 +78,30 @@ export default function Data() {
               <span>mean pieces per 100 m</span>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* --------------------------------------------------------- the map */}
+      <section style={{ paddingTop: 0 }} id="map">
+        <div className="wrap">
+          <div className="section-head">
+            <p className="eyebrow">The pilot area</p>
+            <h2>The same map the volunteers use</h2>
+            <p className="body">
+              Street geometry, basemap and styling are the files that ship
+              inside the app, served here from this site rather than from a
+              tile vendor. No API key, no quota, and nobody watching who reads
+              it.
+            </p>
+          </div>
+          <BasemapMap
+            className="map-figure"
+            label="Street map of the Terrell Heights pilot area, San Antonio"
+          />
+          <p className="caption">
+            Basemap &copy; Protomaps &copy; OpenStreetMap. Pilot area:{" "}
+            {stats.neighborhood}.
+          </p>
         </div>
       </section>
 

@@ -18,6 +18,10 @@ $ProgressPreference = "SilentlyContinue"  # Write-Progress costs more than the d
 
 $tools = $PSScriptRoot
 $assets = Join-Path $tools "../app/src/main/assets/map" | Resolve-Path
+# The public site renders the same basemap with MapLibre GL JS, from the same
+# generated style. One flavour, two targets -- see build_basemap_style.mjs.
+$web = Join-Path $tools "../web/public/map"
+New-Item -ItemType Directory -Force -Path $web | Out-Null
 
 # protomaps/basemaps-assets is versioned by git ref, not by release. Pin the
 # commit so a font file cannot change underneath a build that is otherwise
@@ -92,6 +96,19 @@ $unfetched = @($named | Where-Object { $stacks -notcontains $_ })
 if ($unfetched.Count -gt 0) {
     throw "style.json names font stacks that were not fetched: $($unfetched -join ', ')"
 }
+
+# ------------------------------------------------------- the web copies
+# Same bytes, served over HTTP instead of read out of the APK. Copied rather
+# than symlinked so a Vercel build needs nothing but the repository.
+Write-Host "staging web copies..." -ForegroundColor Cyan
+foreach ($item in @("fonts", "sprites")) {
+    $dest = Join-Path $web $item
+    if (Test-Path $dest) { Remove-Item $dest -Recurse -Force }
+    Copy-Item (Join-Path $assets $item) $dest -Recurse
+}
+Copy-Item (Join-Path $assets "terrell_heights.pmtiles") (Join-Path $web "terrell_heights.pmtiles") -Force
+Write-Host ("  {0:N1} MB staged to web/public/map" -f (
+    (Get-ChildItem $web -Recurse -File | Measure-Object -Property Length -Sum).Sum / 1MB))
 
 $total = (Get-ChildItem $assets -Recurse -File | Measure-Object -Property Length -Sum).Sum
 Write-Host ""
