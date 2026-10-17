@@ -55,7 +55,7 @@ fun WalkScreen(
     repository: WalkRepository,
     quickTypes: List<LitterType>,
     onLogPiece: (LitterType) -> Unit,
-    onFinish: () -> Unit,
+    onFinish: (walkId: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val live by repository.live.collectAsStateWithLifecycle(initialValue = null)
@@ -146,8 +146,12 @@ fun WalkScreen(
             text = "Finish walk",
             onClick = {
                 motion.heavyBurst()
+                // Capture the id before stopping: the flow drops to null the
+                // moment the service marks the walk finished, and the summary
+                // screen needs to know which walk to summarise.
+                val finished = state.walk.id
                 repository.finish()
-                onFinish()
+                onFinish(finished)
             },
             modifier = Modifier.fillMaxWidth(),
         )

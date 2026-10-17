@@ -16,6 +16,8 @@ import com.trashtalk.data.model.Segment
 import com.trashtalk.data.model.Team
 import com.trashtalk.data.model.TrashPath
 import com.trashtalk.data.model.UserProfile
+import com.trashtalk.data.walk.WalkSubmitter
+import com.trashtalk.data.walk.WalkSummary
 import com.trashtalk.domain.CollectionDraft
 import com.trashtalk.domain.LiaEngine
 import com.trashtalk.domain.ProgressDelta
@@ -29,7 +31,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeout
 
 /**
  * One view model for the whole app.
@@ -40,6 +44,8 @@ import kotlinx.coroutines.launch
  * meaningful. Per-screen view models would start paying for themselves at the
  * point this file needs more than one person editing it.
  */
+private const val SUBMIT_TIMEOUT_MS = 20_000L
+
 class MainViewModel(private val repo: TrashTalkRepository) : ViewModel() {
 
     val network: NeighborhoodNetwork get() = repo.network
@@ -172,6 +178,56 @@ class MainViewModel(private val repo: TrashTalkRepository) : ViewModel() {
                     onDone(it)
                 }
                 .onFailure { _toasts.tryEmit("Could not save: ${it.message}") }
+        }
+    }
+
+    /**
+     * Submits a whole walk: one observation per street, one celebration.
+     *
+     * Routed through here rather than straight from the screen so the combined
+     * award reaches the same event channel every other award uses -- otherwise
+     * a walk would score silently while a single pickup gets a celebration.
+     *
+     * The submitter is handed in rather than built here: this view model is
+     * deliberately free of a Context, and the walk database needs one.
+     *
+     * Bounded by a timeout, because the write underneath goes through a
+     * Firestore transaction and a Firestore transaction needs the network:
+     * with no signal it does not fail, it waits. A walk recorded in the field
+     * -- which is where walks happen -- would otherwise leave the user staring
+     * at "Submitting..." with no way forward.
+     *
+     * A timeout is not data loss. The walk stays PENDING in Room, which is
+     * exactly the state the sync queue drains, so the honest thing to tell the
+     * user is that it will go when there is signal.
+     */
+    fun submitWalk(
+        submitter: WalkSubmitter,
+        summary: WalkSummary,
+        haulPhotoUri: String?,
+        onDone: (ProgressDelta?) -> Unit = {},
+    ) {
+        viewModelScope.launch {
+            runCatching {
+                withTimeout(SUBMIT_TIMEOUT_MS) {
+                    submitter.submit(summary, repo, haulPhotoUri)
+                }
+            }
+                .onSuccess {
+                    _events.tryEmit(it)
+                    onDone(it)
+                }
+                .onFailure { cause ->
+                    _toasts.tryEmit(
+                        if (cause is TimeoutCancellationException) {
+                            "Saved. This walk will be submitted when you have signal."
+                        } else {
+                            "Could not submit the walk: ${cause.message}"
+                        },
+                    )
+                    // Still PENDING, still in the database, nothing lost.
+                    onDone(null)
+                }
         }
     }
 

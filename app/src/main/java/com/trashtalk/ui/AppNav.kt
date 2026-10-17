@@ -85,6 +85,10 @@ import com.trashtalk.ui.share.shareCardIntent
 import com.trashtalk.ui.share.writeShareCard
 import com.trashtalk.core.TrackJank
 import com.trashtalk.data.walk.WalkRepository
+import com.trashtalk.data.walk.WalkStore
+import com.trashtalk.data.walk.WalkSubmitter
+import com.trashtalk.data.walk.WalkSummary
+import com.trashtalk.ui.walk.FinishWalkScreen
 import com.trashtalk.ui.walk.WalkScreen
 import com.trashtalk.data.model.LitterType
 import com.trashtalk.core.rememberDeviceLocation
@@ -107,6 +111,7 @@ private object Routes {
     const val REPORT = "report"
     const val LEVEL_DETAIL = "level"
     const val WALK = "walk"
+    const val WALK_FINISH = "walk/finish"
 }
 
 @Composable
@@ -210,12 +215,70 @@ fun TrashTalkRoot(vm: MainViewModel) {
                                 )
                             }
                         },
-                        onFinish = { nav.popBackStack() },
+                        onFinish = { walkId ->
+                            nav.navigate("${Routes.WALK_FINISH}/$walkId") {
+                                // The walk is over; going back to the live
+                                // screen from the summary would show a
+                                // recording that is not running.
+                                popUpTo(Routes.WALK) { inclusive = true }
+                            }
+                        },
                         modifier = Modifier.padding(
                             top = padding.calculateTopPadding(),
                             bottom = padding.calculateBottomPadding(),
                         ),
                     )
+                }
+
+                composable("${Routes.WALK_FINISH}/{walkId}") { entry ->
+                    TrackJank("walk-finish")
+                    val context = LocalContext.current
+                    val walkId = entry.arguments?.getString("walkId").orEmpty()
+                    val submitter = remember(context) {
+                        WalkSubmitter(
+                            walks = WalkRepository(context),
+                            dao = WalkStore.database(context).walks(),
+                        )
+                    }
+                    var summary by remember(walkId) { mutableStateOf<WalkSummary?>(null) }
+                    var submitting by remember(walkId) { mutableStateOf(false) }
+                    val scope = rememberCoroutineScope()
+
+                    LaunchedEffect(walkId) {
+                        summary = submitter.summarise(walkId, vm.network.segments)
+                    }
+
+                    summary?.let { ready ->
+                        FinishWalkScreen(
+                            summary = ready,
+                            submitting = submitting,
+                            onSubmit = { photo ->
+                                submitting = true
+                                vm.submitWalk(submitter, ready, photo) { delta ->
+                                    // Reset first: a failed submit that leaves
+                                    // the button reading "Submitting..." for
+                                    // ever is worse than the failure.
+                                    submitting = false
+                                    // On success the celebration is already on
+                                    // its way through the event channel; on
+                                    // failure the toast has said what happened
+                                    // and the walk is still saved. Either way
+                                    // the summary is done with.
+                                    nav.popBackStack()
+                                }
+                            },
+                            onDiscard = {
+                                scope.launch {
+                                    submitter.discard(walkId)
+                                    nav.popBackStack()
+                                }
+                            },
+                            modifier = Modifier.padding(
+                                top = padding.calculateTopPadding(),
+                                bottom = padding.calculateBottomPadding(),
+                            ),
+                        )
+                    }
                 }
 
                 composable(Tab.LEVELS.route) {
