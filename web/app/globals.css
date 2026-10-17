@@ -798,3 +798,31 @@ footer {
 .maplibregl-ctrl-attrib {
   font-size: 11px;
 }
+
+/* MapLibre popups sit on their own white surface, but inherit the page's
+   light-on-dark text colour, which made them near-invisible. They get their
+   own ink rather than the site's. */
+.maplibregl-popup-content {
+  background: #f3f2ee;
+  color: #2e3440;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 13px;
+  line-height: 1.45;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.28);
+}
+
+.maplibregl-popup-content strong {
+  color: #14304f;
+}
+
+.maplibregl-popup-tip {
+  border-top-color: #f3f2ee;
+  border-bottom-color: #f3f2ee;
+}
+
+.maplibregl-popup-close-button {
+  color: #5a6372;
+  font-size: 18px;
+  padding: 2px 7px;
+}

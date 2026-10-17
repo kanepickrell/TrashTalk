@@ -42,6 +42,22 @@ WIDTH, HEIGHT = 1600, 1000
 PAD = 0.04
 
 
+# Every row's evidence level.
+#
+# The column exists now so the schema does not change under researchers later,
+# and every row says "unverified" because that is true: photo evidence and
+# peer review are not built yet, so nothing here has been checked by anybody.
+# Publishing the column full of a value we had not earned would be worse than
+# not publishing it.
+TRUST_LEVEL = "unverified"
+
+TRUST_NOTE = (
+    "trust_level is 'unverified' for every row in this release. Evidence "
+    "capture and peer review are not implemented yet, so no observation has "
+    "been corroborated. Filter on this column once 'partial' and 'verified' "
+    "appear."
+)
+
 def lerp_hex(a, b, t):
     ar, ag, ab = int(a[1:3], 16), int(a[3:5], 16), int(a[5:7], 16)
     br, bg, bb = int(b[1:3], 16), int(b[3:5], 16), int(b[5:7], 16)
@@ -201,7 +217,8 @@ def write_downloads(meta, segments, pois):
         w.writerow([
             "segment_id", "street_name", "street_class", "length_m",
             "litter_index", "pieces_estimated", "pieces_per_100m",
-            "accumulation_rate", "surveys", "cleanups", "mid_lat", "mid_lng",
+            "accumulation_rate", "surveys", "cleanups", "trust_level",
+            "mid_lat", "mid_lng",
         ])
         for s in segments:
             mid = s["coords"][len(s["coords"]) // 2]
@@ -209,7 +226,7 @@ def write_downloads(meta, segments, pois):
             w.writerow([
                 s["id"], s["name"], s["cls"], round(s["lengthM"], 1),
                 s["litterIndex"], s["estimatedPieces"], round(per100, 2),
-                s["propensity"], s["surveyCount"], s["cleanups"],
+                s["propensity"], s["surveyCount"], s["cleanups"], TRUST_LEVEL,
                 mid[0], mid[1],
             ])
 
@@ -220,6 +237,7 @@ def write_downloads(meta, segments, pois):
             "city": meta["city"],
             "license": "CC BY 4.0",
             "note": meta["note"],
+            "trust_levels": TRUST_NOTE,
         },
         "features": [
             {
@@ -238,6 +256,7 @@ def write_downloads(meta, segments, pois):
                     "accumulation_rate": s["propensity"],
                     "surveys": s["surveyCount"],
                     "cleanups": s["cleanups"],
+                    "trust_level": TRUST_LEVEL,
                     "composition": s["composition"],
                     "history_daily_index": s["history"],
                 },

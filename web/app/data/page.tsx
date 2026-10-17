@@ -21,6 +21,7 @@ const FIELDS = [
   ["accumulation_rate", "0–1", "How fast the segment refills once cleared"],
   ["surveys", "integer", "Times the segment has been walked and logged"],
   ["cleanups", "integer", "Recorded collection events on the segment"],
+  ["trust_level", "enum", "unverified · partial · verified — evidence behind the row"],
   ["composition", "object", "Share of pieces by material (GeoJSON only)"],
   ["history_daily_index", "array", `Daily litter index, ${stats.historyDays} days (GeoJSON only)`],
 ];
@@ -96,11 +97,13 @@ export default function Data() {
           </div>
           <BasemapMap
             className="map-figure"
-            label="Street map of the Terrell Heights pilot area, San Antonio"
+            segmentsUrl="/data/terrell-heights-segments.geojson"
+            label="Street map of the Terrell Heights pilot area, coloured by litter density"
           />
           <p className="caption">
-            Basemap &copy; Protomaps &copy; OpenStreetMap. Pilot area:{" "}
-            {stats.neighborhood}.
+            Every segment in the download, drawn from that same file — click one
+            for its figures. Lighter is cleaner. Basemap &copy; Protomaps &copy;
+            OpenStreetMap. Pilot area: {stats.neighborhood}.
           </p>
         </div>
       </section>

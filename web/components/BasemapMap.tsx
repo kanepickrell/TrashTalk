@@ -33,10 +33,32 @@ export type BasemapMapProps = {
   zoom?: number;
   /** Extra GeoJSON drawn over the basemap, keyed by source id. */
   overlays?: Record<string, GeoJSON.FeatureCollection>;
+  /**
+   * URL of a segment FeatureCollection to draw, coloured by litter index.
+   *
+   * Loaded by the browser rather than bundled: it is the same published file
+   * researchers download, so the map and the dataset cannot disagree.
+   */
+  segmentsUrl?: string;
   className?: string;
   /** Marked up for screen readers; a map alone tells them nothing. */
   label?: string;
 };
+
+/**
+ * The density ramp, matching TT.HexRamp in the app.
+ *
+ * Multi-hue but ordered by lightness, which is what carries the sequence; the
+ * hue only makes adjacent classes easier to tell apart. Kept in step with the
+ * app's copy so a block is the same colour in both places.
+ */
+const DENSITY_RAMP: [number, string][] = [
+  [0.0, "#EABB3C"],
+  [0.25, "#F0954F"],
+  [0.5, "#E55E80"],
+  [0.75, "#B4529F"],
+  [1.0, "#6B4C9A"],
+];
 
 const TERRELL_HEIGHTS: [number, number] = [-98.456, 29.5025];
 
@@ -44,12 +66,15 @@ export default function BasemapMap({
   center = TERRELL_HEIGHTS,
   zoom = 14.2,
   overlays,
+  segmentsUrl,
   className,
   label = "Map of the Terrell Heights pilot area",
 }: BasemapMapProps) {
   const host = useRef<HTMLDivElement | null>(null);
   const map = useRef<maplibregl.Map | null>(null);
   const [failed, setFailed] = useState(false);
+  const segmentsRef = useRef(segmentsUrl);
+  segmentsRef.current = segmentsUrl;
 
   useEffect(() => {
     if (!host.current || map.current) return;
@@ -97,6 +122,78 @@ export default function BasemapMap({
       m.on("error", (e) => {
         console.error("[basemap]", e.error?.message ?? e);
         setFailed(true);
+      });
+
+      // The published segments, drawn under the basemap's own labels so street
+      // names stay readable over the data -- the same ordering the app uses.
+      m.once("load", () => {
+        const url = segmentsRef.current;
+        if (!url) return;
+        m.addSource("tt-segments", { type: "geojson", data: url });
+
+        const firstLabel = m
+          .getStyle()
+          .layers?.find((l) => l.type === "symbol")?.id;
+
+        m.addLayer(
+          {
+            id: "tt-segments-line",
+            type: "line",
+            source: "tt-segments",
+            paint: {
+              "line-color": [
+                "interpolate",
+                ["linear"],
+                ["get", "litter_index"],
+                ...DENSITY_RAMP.flat(),
+              ],
+              "line-width": [
+                "interpolate",
+                ["exponential", 1.6],
+                ["zoom"],
+                13, 1.2,
+                18, 7,
+              ],
+              "line-opacity": 0.85,
+            },
+          },
+          firstLabel,
+        );
+
+        // An invisible, much wider copy of the same line, purely to be
+        // clicked. The visible line is about a pixel across at neighbourhood
+        // zoom, which is a target nobody can hit with a mouse and nobody at
+        // all with a thumb. The Android renderer has hitPadding for this;
+        // MapLibre GL JS does not, so the padding has to be a real layer.
+        m.addLayer(
+          {
+            id: "tt-segments-hit",
+            type: "line",
+            source: "tt-segments",
+            paint: { "line-color": "#000000", "line-opacity": 0, "line-width": 14 },
+          },
+          firstLabel,
+        );
+
+        m.on("click", "tt-segments-hit", (e) => {
+          const f = e.features?.[0];
+          if (!f) return;
+          const p = f.properties as Record<string, unknown>;
+          new maplibregl.Popup({ closeButton: true })
+            .setLngLat(e.lngLat)
+            .setHTML(
+              `<strong>${p.name ?? "Unnamed"}</strong><br/>` +
+                `${p.pieces_estimated ?? 0} pieces estimated<br/>` +
+                `${p.surveys ?? 0} surveys, ${p.cleanups ?? 0} cleanups`,
+            )
+            .addTo(m);
+        });
+        m.on("mouseenter", "tt-segments-hit", () => {
+          m.getCanvas().style.cursor = "pointer";
+        });
+        m.on("mouseleave", "tt-segments-hit", () => {
+          m.getCanvas().style.cursor = "";
+        });
       });
 
       map.current = m;
