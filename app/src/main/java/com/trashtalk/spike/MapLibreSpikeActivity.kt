@@ -1,6 +1,5 @@
 package com.trashtalk.spike
 
-import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,25 +12,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.trashtalk.ui.map.Basemap
+import com.trashtalk.ui.map.BasemapStyle
+import com.trashtalk.ui.map.rememberBasemapStyle
 import com.trashtalk.ui.theme.TT
 import com.trashtalk.ui.theme.TrashTalkTheme
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import org.maplibre.compose.camera.CameraPosition
 import org.maplibre.compose.map.MaplibreMap
 import org.maplibre.compose.map.rememberMapState
 import org.maplibre.compose.style.BaseStyle
 import org.maplibre.spatialk.geojson.Position
-import java.io.File
 
 /**
  * Phase 2.0 spike -- RESOLVED. Verdict: Path A.
@@ -72,60 +67,34 @@ class MapLibreSpikeActivity : ComponentActivity() {
     }
 }
 
-private const val ASSET = "map/terrell_heights.pmtiles"
+@Composable
+private fun SpikeScreen() {
+    val basemap by rememberBasemapStyle()
 
-/**
- * Lifts the archive out of the APK into a real file.
- *
- * The renderer range-reads the archive, and an asset is a (possibly compressed)
- * entry inside the APK zip rather than a file with an offset, so there is
- * nothing for it to seek in. maplibre-compose ships `copyPackagedFile` for
- * exactly this reason; this is the same move, done explicitly so the spike can
- * report the copy separately from the render.
- */
-private suspend fun stageArchive(context: Context): File = withContext(Dispatchers.IO) {
-    val out = File(context.filesDir, "terrell_heights.pmtiles")
-    if (!out.exists() || out.length() == 0L) {
-        // Straight stream copy. Sizing the asset up front via openFd is not an
-        // option: an asset stored DEFLATE-compressed has no file descriptor,
-        // which is the same reason the renderer cannot seek into it.
-        context.assets.open(ASSET).use { input ->
-            out.outputStream().use { input.copyTo(it) }
+    when (val state = basemap) {
+        is BasemapStyle.Staging -> {
+            Box(Modifier.fillMaxSize().background(TT.Void), contentAlignment = Alignment.Center) {
+                Text("Staging basemap...", color = TT.InkSecondary)
+            }
+            return
         }
+        is BasemapStyle.Failed -> {
+            Box(Modifier.fillMaxSize().background(TT.Void), contentAlignment = Alignment.Center) {
+                Text(state.cause.toString(), color = TT.InkSecondary, modifier = Modifier.padding(24.dp))
+            }
+            return
+        }
+        is BasemapStyle.Ready -> Unit
     }
-    out
+    val style = (basemap as BasemapStyle.Ready).style
+
+    SpikeMap(style)
 }
 
 @Composable
-private fun SpikeScreen() {
-    val context = LocalContext.current
-    var archive by remember { mutableStateOf<File?>(null) }
-    var stageError by remember { mutableStateOf<String?>(null) }
-
-    LaunchedEffect(Unit) {
-        runCatching { stageArchive(context) }
-            .onSuccess { archive = it }
-            .onFailure { stageError = it.toString() }
-    }
-
-    val file = archive
-    if (file == null) {
-        Box(Modifier.fillMaxSize().background(TT.Void), contentAlignment = Alignment.Center) {
-            Text(stageError ?: "Staging archive...", color = TT.InkSecondary)
-        }
-        return
-    }
-
-    // Same style as the asset version, with the source URL rewritten to the
-    // staged file. Read from assets rather than duplicated here so the style
-    // under test stays the one checked into the repo.
-    val styleJson = remember(file) {
-        context.assets.open("map/spike_style.json").bufferedReader().use { it.readText() }
-            .replace("asset://$ASSET", "file://${file.absolutePath}")
-    }
-
+private fun SpikeMap(style: BaseStyle) {
     val state = rememberMapState(
-        baseStyle = BaseStyle.Json(styleJson),
+        baseStyle = style,
         initialCameraPosition = CameraPosition(
             center = Position(latitude = 29.5025, longitude = -98.4560),
             zoom = 15.0,
@@ -159,7 +128,7 @@ private fun SpikeScreen() {
                     .padding(12.dp),
             ) {
                 Text("MapLibre spike", color = TT.Teal)
-                Text("archive ${file.length() / 1024} kB staged", color = TT.InkSecondary)
+                Text(Basemap.ATTRIBUTION, color = TT.InkSecondary)
                 val cam = state.cameraPosition
                 Text(
                     "%.4f, %.4f  z%.2f  b%.0f  p%.0f".format(

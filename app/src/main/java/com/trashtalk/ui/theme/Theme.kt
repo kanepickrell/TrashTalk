@@ -106,9 +106,10 @@ object TT {
     val DivergingMid = Color(0xFF39404A)
 
     // ---- Light basemap ------------------------------------------------
-    // The survey map sits on a pale raster basemap (CARTO Positron), so the
-    // density layer is classified light-to-dark against a light ground rather
-    // than glowing against a dark one.
+    // The survey map sits on a pale vector basemap -- Protomaps tiles bundled
+    // in the APK, styled from these two tokens (see tools/build_basemap_style.mjs).
+    // The density layer is therefore classified light-to-dark against a light
+    // ground rather than glowing against a dark one.
     val MapGround = Color(0xFFF3F2EE)
     val MapInk = Color(0xFF2E3440)
 

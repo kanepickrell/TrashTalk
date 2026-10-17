@@ -1,0 +1,9 @@
+{
+  "name": "trashtalk-tools",
+  "private": true,
+  "type": "module",
+  "description": "Build-time only. Generates the offline basemap style; ships nothing to the app.",
+  "dependencies": {
+    "@protomaps/basemaps": "5.7.2"
+  }
+}
