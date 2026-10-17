@@ -91,6 +91,22 @@ test('a walk too short to be a walk is rejected', () => {
   assert.equal(validateTrace(walk(10, 5)).rejection?.code, 'TOO_SHORT');
 });
 
+test('a walk that stood still is judged on the clock, not the track', () => {
+  // The recorder stops laying track once you stop moving, so a real walk
+  // ending at a standstill spans far less in fixes than it did in time.
+  const standingStill = walk(10, 5);
+  assert.equal(validateTrace(standingStill).rejection?.code, 'TOO_SHORT');
+  assert.equal(validateTrace(standingStill, 300).ok, true);
+
+  // Speed is still judged on the track: claiming a long walk must not excuse
+  // covering ground impossibly fast within it.
+  const driving = walk(5_000, 120);
+  assert.equal(validateTrace(driving, 3_600).rejection?.code, 'TOO_FAST');
+
+  // And a claim shorter than the track never shortens the walk.
+  assert.equal(validateTrace(walk(100, 600), 1).ok, true);
+});
+
 test('no track and a short track are told apart', () => {
   // They used to share one message, which sent somebody whose location was
   // never reaching the app off to walk further.

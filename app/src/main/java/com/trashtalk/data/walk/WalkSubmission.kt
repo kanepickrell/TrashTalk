@@ -154,6 +154,8 @@ class WalkSubmitter(
             },
             track = fixes,
             evidencePath = evidencePath,
+            walkStartedAt = summary.walk.startedAt,
+            walkEndedAt = summary.walk.endedAt,
         )
 
 

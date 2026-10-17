@@ -68,7 +68,25 @@ export function haversineMetres(a: Fix, b: Fix): number {
  * standing still near a building. What cannot be explained by noise is
  * covering a kilometre in two minutes, and that only shows up in the total.
  */
-export function validateTrace(fixes: Fix[]): TraceVerdict {
+/**
+ * @param elapsedSeconds How long the recorder says the walk ran, when the
+ *   client reports it. Used only to decide whether the walk was long enough
+ *   to be a walk, never for the speed or coverage checks below.
+ *
+ *   The two numbers differ because the recorder stores a point only after
+ *   five metres of movement, so a walk that ends standing still stops laying
+ *   down track long before it stops. Thirteen seconds of walking came back as
+ *   two, and the floor rejected it.
+ *
+ *   Everything that could be gamed keeps using the track. This is
+ *   client-asserted and a longer claim only lets a walk past the floor; speed
+ *   and coverage still divide by the track's own span, which is the shorter
+ *   and therefore stricter figure.
+ */
+export function validateTrace(
+  fixes: Fix[],
+  elapsedSeconds?: number,
+): TraceVerdict {
   const empty = { distanceMetres: 0, durationSeconds: 0 };
 
   // Distinct from TOO_SHORT on purpose. "No fixes" and "walked for ten
@@ -93,14 +111,18 @@ export function validateTrace(fixes: Fix[]): TraceVerdict {
   }
 
   const durationSeconds = (fixes[fixes.length - 1]!.at - fixes[0]!.at) / 1000;
-  if (durationSeconds < TUNING.trace.minDurationSeconds) {
+
+  // The floor asks "was this long enough to be a walk", so it takes the
+  // longer of what the track spans and what the recorder clocked.
+  const walkSeconds = Math.max(durationSeconds, elapsedSeconds ?? 0);
+  if (walkSeconds < TUNING.trace.minDurationSeconds) {
     return {
       ok: false,
       ...empty,
       rejection: {
         code: 'TOO_SHORT',
         reason:
-          `This walk lasted ${Math.round(durationSeconds)} seconds. ` +
+          `This walk lasted ${Math.round(walkSeconds)} seconds. ` +
           `A walk needs at least ${TUNING.trace.minDurationSeconds} to be scored.`,
       },
     };

@@ -59,6 +59,13 @@ interface Submission {
   segments: SubmittedSegment[];
   /** The recorded track, when there was one. A quick log has none. */
   track?: Fix[];
+  /**
+   * The recorder's own clock for the walk. Only ever lengthens how long the
+   * walk is judged to have taken, and only for the minimum-duration floor --
+   * see validateTrace.
+   */
+  walkStartedAt?: number;
+  walkEndedAt?: number;
   evidencePath?: string | null;
   createdAt?: number;
 }
@@ -162,7 +169,11 @@ async function processSubmission(
   // at all has always taken this path.
   const track = submission.track ?? [];
   if (track.length > 1) {
-    const verdict = validateTrace(track);
+    const elapsedSeconds =
+      submission.walkStartedAt && submission.walkEndedAt
+        ? (submission.walkEndedAt - submission.walkStartedAt) / 1000
+        : undefined;
+    const verdict = validateTrace(track, elapsedSeconds);
     if (!verdict.ok) {
       return reject(tx, resultRef, submissionId, verdict.rejection!.reason);
     }

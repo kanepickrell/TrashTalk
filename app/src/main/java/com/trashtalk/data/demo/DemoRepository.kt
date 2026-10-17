@@ -141,6 +141,8 @@ class DemoRepository(
         segments: List<SubmittedSegment>,
         track: List<TrackFix>,
         evidencePath: String?,
+        walkStartedAt: Long?,
+        walkEndedAt: Long?,
     ): ProgressDelta {
         var total = 0
         var firstSurvey = false

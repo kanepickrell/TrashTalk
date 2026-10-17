@@ -67,6 +67,13 @@ interface TrashTalkRepository {
         segments: List<SubmittedSegment>,
         track: List<TrackFix>,
         evidencePath: String?,
+        /**
+         * The recorder's own clock. The track stops growing once somebody
+         * stops moving, so it under-reports a walk that ended standing
+         * still; the server uses this only to lengthen that judgement.
+         */
+        walkStartedAt: Long? = null,
+        walkEndedAt: Long? = null,
     ): ProgressDelta
 
     suspend fun plantFlag(
