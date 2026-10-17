@@ -1,0 +1,65 @@
+rules_version = '2';
+
+// Evidence photos.
+//
+// These are the most sensitive thing the project holds. A litter photo is a
+// picture of somebody's street, taken at a known time by a known account, and
+// often with a person's home in the frame. The dataset's whole argument is
+// that volunteers can be trusted with it, so the rules have to earn that.
+//
+// Four properties, in order of how badly each would be missed:
+//
+//  1. Nobody browses. There is no listing anywhere, so an evidence path has to
+//     be known to be read -- you cannot walk the bucket discovering who has
+//     been where.
+//  2. Nothing is ever overwritten. A photo that can be replaced after review
+//     is not evidence of anything.
+//  3. Only the owner and reviewers read. "Public open data" is the segment
+//     counts, never the photographs behind them.
+//  4. Writes are bounded and must be images, so the bucket cannot be used as
+//     free storage for something else entirely.
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    // A reviewer is marked on their own user document. Checked against
+    // Firestore rather than a custom claim so that granting review rights does
+    // not require re-minting somebody's token.
+    function isReviewer() {
+      return signedIn()
+             && firestore.exists(/databases/(default)/documents/users/$(request.auth.uid))
+             && firestore.get(/databases/(default)/documents/users/$(request.auth.uid))
+                  .data.get('isReviewer', false) == true;
+    }
+
+    match /evidence/{uid}/{submissionId}/{file} {
+
+      // The owner, so they can see what they submitted, and reviewers, who
+      // have to look at it to do the job. Nobody else, ever.
+      allow get: if signedIn() && (request.auth.uid == uid || isReviewer());
+
+      // No listing. Not for the owner either: an index of someone's evidence
+      // is a map of their movements, and nothing in the app needs one.
+      allow list: if false;
+
+      allow create: if signedIn()
+                    && request.auth.uid == uid
+                    && request.resource.size < 5 * 1024 * 1024
+                    && request.resource.contentType.matches('image/.*');
+
+      // Write-once. Update would let a submission's evidence be swapped after
+      // it was reviewed; delete would let it be destroyed after it was
+      // questioned. Retention is the server's job, under 4E.6, not the
+      // client's.
+      allow update, delete: if false;
+    }
+
+    // Everything else in the bucket is closed.
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

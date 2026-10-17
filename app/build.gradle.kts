@@ -123,6 +123,7 @@ dependencies {
 
     implementation(libs.maplibre.compose)
     implementation(libs.maplibre.renderer.opengl)
+    implementation(libs.androidx.exifinterface)
     implementation(libs.androidx.work.runtime)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)

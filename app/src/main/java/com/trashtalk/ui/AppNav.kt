@@ -237,6 +237,7 @@ fun TrashTalkRoot(vm: MainViewModel) {
                     val walkId = entry.arguments?.getString("walkId").orEmpty()
                     val submitter = remember(context) {
                         WalkSubmitter(
+                            context = context,
                             walks = WalkRepository(context),
                             dao = WalkStore.database(context).walks(),
                         )

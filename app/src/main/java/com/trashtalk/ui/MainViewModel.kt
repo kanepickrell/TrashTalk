@@ -232,8 +232,18 @@ class MainViewModel(private val repo: TrashTalkRepository) : ViewModel() {
     ) {
         viewModelScope.launch {
             runCatching {
+                // Persist the photo against the walk before anything else, so
+                // a submit that fails here still hands the queue something to
+                // upload later. It used to live only in the finish screen's
+                // state and vanish on the first retry.
+                submitter.attachHaulPhoto(summary.walk.id, haulPhotoUri)
                 withTimeout(SUBMIT_TIMEOUT_MS) {
-                    submitter.submit(summary, repo, haulPhotoUri)
+                    submitter.submit(
+                        summary.copy(
+                            walk = summary.walk.copy(haulPhotoUri = haulPhotoUri),
+                        ),
+                        repo,
+                    )
                 }
             }
                 .onSuccess {

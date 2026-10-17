@@ -124,7 +124,7 @@ class WalkSyncWorker(
     override suspend fun doWork(): Result {
         val app = applicationContext as? TrashTalkApp ?: return Result.failure()
         val dao = WalkStore.database(applicationContext).walks()
-        val submitter = WalkSubmitter(WalkRepository(applicationContext), dao)
+        val submitter = WalkSubmitter(applicationContext, WalkRepository(applicationContext), dao)
         val network = WalkStore.segments(applicationContext)
 
         val pending = dao.pendingWalks()
@@ -153,7 +153,10 @@ class WalkSyncWorker(
 
             dao.setStatus(walk.id, WalkStatus.SYNCING)
             val result = runCatching {
-                submitter.submit(summary, app.container.repository, haulPhotoUri = null)
+                // The haul photo comes off the walk row, not from a caller:
+                // the finish screen is long gone by the time a retry happens,
+                // and it used to be dropped silently on every queued retry.
+                submitter.submit(summary, app.container.repository)
             }
 
             result

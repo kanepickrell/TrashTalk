@@ -63,7 +63,11 @@ data class WalkSummary(
     val hasAnything: Boolean get() = pieces > 0
 }
 
-class WalkSubmitter(private val walks: WalkRepository, private val dao: WalkDao) {
+class WalkSubmitter(
+    private val context: android.content.Context,
+    private val walks: WalkRepository,
+    private val dao: WalkDao,
+) {
 
     /** Groups a finished walk's pickups by the segment they were stamped to. */
     suspend fun summarise(walkId: String, network: List<Segment>): WalkSummary? =
@@ -109,9 +113,14 @@ class WalkSubmitter(private val walks: WalkRepository, private val dao: WalkDao)
     suspend fun submit(
         summary: WalkSummary,
         repository: TrashTalkRepository,
-        haulPhotoUri: String?,
         notes: String = "",
     ): ProgressDelta {
+        // Evidence goes first. A submission that references a photo which has
+        // not landed yet points at nothing, and the queue may well be retried
+        // before it does. Already uploaded on an earlier attempt? Reuse it --
+        // the path is on the walk.
+        val evidencePath = summary.walk.evidencePath ?: uploadEvidence(summary)
+
         val deltas = summary.tallies.map { tally ->
             tally to repository.submitCollection(
                 CollectionDraft(
@@ -129,7 +138,7 @@ class WalkSubmitter(private val walks: WalkRepository, private val dao: WalkDao)
                     // The haul photo covers the whole walk, so it is attached
                     // to the biggest segment rather than copied onto each --
                     // duplicating it would read as four photos of four streets.
-                    photoUri = haulPhotoUri.takeIf { tally == summary.tallies.firstOrNull() },
+                    photoUri = evidencePath.takeIf { tally == summary.tallies.firstOrNull() },
                 ),
             )
         }
@@ -148,6 +157,36 @@ class WalkSubmitter(private val walks: WalkRepository, private val dao: WalkDao)
             points = combined.pointsAwarded.takeUnless { alreadyLanded },
         )
         return combined
+    }
+
+    /** Records the haul photo against the walk so a retry can still find it. */
+    suspend fun attachHaulPhoto(walkId: String, localUri: String?) {
+        if (localUri != null) dao.setHaulPhoto(walkId, localUri)
+    }
+
+    /**
+     * Uploads the haul photo, returning its Storage path.
+     *
+     * A failure here is a failure of the whole submission rather than
+     * something to swallow: silently dropping the evidence would hand the user
+     * a cleanup recorded as unverified without telling them why, and the queue
+     * can retry an upload perfectly well.
+     */
+    private suspend fun uploadEvidence(summary: WalkSummary): String? {
+        val local = summary.walk.haulPhotoUri ?: return null
+        val anchor = summary.tallies.firstOrNull()?.at
+        val path = EvidenceStore.upload(
+            context = context,
+            localUri = local,
+            submissionId = summary.walk.id,
+            // The walk's own end time and the position of its pickups, not the
+            // file's EXIF, which was stripped on the way out.
+            capturedAt = summary.walk.endedAt ?: System.currentTimeMillis(),
+            lat = anchor?.lat,
+            lng = anchor?.lng,
+        )
+        dao.setEvidencePath(summary.walk.id, path)
+        return path
     }
 
     /** Throws the walk away without submitting it. */

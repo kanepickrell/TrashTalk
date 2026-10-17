@@ -65,6 +65,23 @@ data class WalkRow(
     val rejectionReason: String? = null,
     /** Set when the server returns, so the client can stop guessing. */
     val awardedPoints: Int? = null,
+    /**
+     * The haul photo, while it is still only on this phone.
+     *
+     * Stored on the walk rather than held in the finish screen's state,
+     * because the screen is gone by the time the queue retries. It used to
+     * live only in composition, so a submit that failed offline and was
+     * retried by the worker silently dropped the photo the user had just
+     * taken.
+     */
+    val haulPhotoUri: String? = null,
+    /**
+     * Where the photo ended up in Storage, once uploaded.
+     *
+     * A path, not a download URL: URLs carry tokens that expire and leak, and
+     * the server resolves the path against rules when a reviewer asks for it.
+     */
+    val evidencePath: String? = null,
 )
 
 @Entity(
@@ -153,6 +170,12 @@ interface WalkDao {
 
     @Query("UPDATE walks SET status = :status WHERE id = :walkId")
     suspend fun setStatus(walkId: String, status: WalkStatus)
+
+    @Query("UPDATE walks SET haulPhotoUri = :uri WHERE id = :walkId")
+    suspend fun setHaulPhoto(walkId: String, uri: String?)
+
+    @Query("UPDATE walks SET evidencePath = :path WHERE id = :walkId")
+    suspend fun setEvidencePath(walkId: String, path: String?)
 
     /**
      * Records what the server said.
@@ -260,8 +283,9 @@ interface WalkDao {
 
 @Database(
     entities = [WalkRow::class, TrackPointRow::class, PickupRow::class],
-    version = 1,
+    version = 2,
     exportSchema = true,
+    autoMigrations = [androidx.room.AutoMigration(from = 1, to = 2)],
 )
 abstract class WalkDatabase : RoomDatabase() {
     abstract fun walks(): WalkDao
