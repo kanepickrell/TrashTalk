@@ -1,5 +1,12 @@
 package com.trashtalk.ui.walk
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -60,16 +67,37 @@ fun WalkScreen(
 ) {
     val live by repository.live.collectAsStateWithLifecycle(initialValue = null)
     val motion = rememberMotion()
+    val context = LocalContext.current
+
+    // Android 13 denies notifications until they are asked for, and the walk
+    // notification is not decoration: it is how somebody sees the recording is
+    // running and how they log a piece without unlocking the phone. Starting a
+    // walk without it would be a recording the user cannot see or reach.
+    val notifications = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission(),
+    ) { _ ->
+        // Granted or not, the walk starts: the recording is the point and the
+        // notification is how it is surfaced, not a precondition for it.
+        repository.start()
+    }
+
+    fun beginWalk() {
+        motion.mediumTick()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.POST_NOTIFICATIONS,
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            notifications.launch(Manifest.permission.POST_NOTIFICATIONS)
+        } else {
+            repository.start()
+        }
+    }
 
     val state = live
     if (state == null) {
-        StartPrompt(
-            onStart = {
-                motion.mediumTick()
-                repository.start()
-            },
-            modifier = modifier,
-        )
+        StartPrompt(onStart = ::beginWalk, modifier = modifier)
         return
     }
 
