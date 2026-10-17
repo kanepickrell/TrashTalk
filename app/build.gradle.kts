@@ -1,3 +1,5 @@
+import java.util.zip.ZipFile
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.baselineprofile)
@@ -119,8 +121,6 @@ dependencies {
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.storage)
 
-    // Phase 2 spike: evaluating Path A (maplibre-compose) against Path B
-    // (MapLibre Android SDK in an AndroidView).
     implementation(libs.maplibre.compose)
     implementation(libs.maplibre.renderer.opengl)
     implementation(libs.androidx.work.runtime)
@@ -134,4 +134,66 @@ dependencies {
     implementation(libs.coil.compose)
 
     testImplementation(libs.junit)
+}
+
+// ---------------------------------------------------------------- size gate
+//
+// The renderer and the bundled basemap put real weight in the download, and
+// weight is the kind of thing that creeps a megabyte at a time until somebody
+// on a cheap phone and a metered connection gives up installing. This fails
+// the build rather than letting that happen quietly.
+//
+// The limit is on what a device actually downloads -- the base module plus one
+// ABI's native libraries -- not on the universal artifact, which no user ever
+// receives.
+val maxDownloadMegabytes = 22.0
+
+tasks.register("checkDownloadSize") {
+    group = "verification"
+    description = "Fails if any single-ABI download exceeds the size budget."
+
+    val bundle = layout.buildDirectory.file("outputs/bundle/release/app-release.aab")
+    inputs.file(bundle)
+
+    // Captured into locals so the action closes over plain values rather than
+    // over the build script, which the configuration cache cannot serialise.
+    val limitMb = maxDownloadMegabytes
+
+    doLast {
+        val aab = bundle.get().asFile
+        if (!aab.exists()) {
+            throw GradleException("No bundle at $aab - run :app:bundleRelease first")
+        }
+
+        var shared = 0L
+        val perAbi = mutableMapOf<String, Long>()
+        ZipFile(aab).use { zip ->
+            zip.entries().asSequence().forEach { entry ->
+                val name = entry.name
+                if (name.contains("/lib/")) {
+                    val abi = name.substringAfter("/lib/").substringBefore('/')
+                    perAbi[abi] = (perAbi[abi] ?: 0L) + entry.compressedSize
+                } else {
+                    shared += entry.compressedSize
+                }
+            }
+        }
+
+        val offenders = mutableListOf<String>()
+        perAbi.toSortedMap().forEach { (abi, nativeBytes) ->
+            val megabytes = (shared + nativeBytes) / 1_000_000.0
+            val verdict = if (megabytes > limitMb) "OVER" else "ok"
+            logger.lifecycle("  %-12s %5.1f MB  %s".format(abi, megabytes, verdict))
+            if (megabytes > limitMb) {
+                offenders += "%s at %.1f MB".format(abi, megabytes)
+            }
+        }
+
+        if (offenders.isNotEmpty()) {
+            throw GradleException(
+                "Download size budget is $limitMb MB; over on: " +
+                    offenders.joinToString(", "),
+            )
+        }
+    }
 }

@@ -1,0 +1,99 @@
+# Build, check and size-gate the app.
+#
+# The benchmarks are deliberately NOT here. Macrobenchmark numbers from a CI
+# emulator are noise -- the library itself refuses to report them without an
+# explicit suppression, and a performance gate that measures nothing is worse
+# than no gate, because it looks like one. Those run on a real device; see
+# benchmark/StartupBenchmark.kt for the figures and the budgets.
+name: android
+
+on:
+  push:
+    branches: [master, "phase*"]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: android-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Unit tests
+        run: ./gradlew :app:testDebugUnitTest --stacktrace
+
+      - name: Assemble
+        run: ./gradlew :app:assembleDebug --stacktrace
+
+      # The gate is on what a device downloads -- the base module plus one
+      # ABI's native libraries -- not on the universal artifact, which nobody
+      # receives.
+      - name: Download size budget
+        run: ./gradlew :app:bundleRelease :app:checkDownloadSize --stacktrace
+
+      - name: Upload bundle
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-bundle
+          path: app/build/outputs/bundle/release/*.aab
+          if-no-files-found: warn
+
+  web:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - run: npm ci
+      - run: npm run build
+
+  basemap:
+    # The generated style is committed, so a drift between the generator and
+    # what is checked in would otherwise go unnoticed until the map looked
+    # wrong on somebody's phone.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: tools/package-lock.json
+
+      - name: Regenerate the basemap style
+        run: |
+          cd tools
+          npm ci
+          node build_basemap_style.mjs
+
+      - name: Fail if the committed style is stale
+        run: |
+          if ! git diff --quiet -- app/src/main/assets/map/style.json web/public/map/style.json; then
+            echo "style.json differs from what the generator produces."
+            echo "Run tools/build_basemap.ps1 and commit the result."
+            git --no-pager diff --stat -- app/src/main/assets/map/style.json web/public/map/style.json
+            exit 1
+          fi
