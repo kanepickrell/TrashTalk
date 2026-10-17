@@ -57,6 +57,8 @@ object EvidenceStore {
         capturedAt: Long,
         lat: Double?,
         lng: Double?,
+        /** Distinguishes the haul shot from the per-tag spot checks. */
+        name: String = "haul.jpg",
     ): String? = withContext(Dispatchers.IO) {
         val uid = FirebaseAuth.getInstance().currentUser?.uid
             ?: error("not signed in")
@@ -66,7 +68,7 @@ object EvidenceStore {
             return@withContext null
         }
 
-        val path = "evidence/$uid/$submissionId/haul.jpg"
+        val path = "evidence/$uid/$submissionId/$name"
 
         // The app's own capture time and fix, not the file's EXIF -- which is
         // exactly what we stripped, and which a determined user could have
@@ -100,27 +102,57 @@ object EvidenceStore {
      * is no attribute list to miss, because the output is built from pixels.
      */
     private fun compress(context: Context, uri: Uri): ByteArray? {
-        val rotation = context.contentResolver.openInputStream(uri)?.use { input ->
-            runCatching { ExifInterface(input).rotationDegrees }.getOrDefault(0)
-        } ?: return null
+        // Each failure says which step gave up. This returned a bare null for
+        // every cause, so a photo that existed on disk, was a valid JPEG and
+        // still did not upload left nothing behind to tell you why.
+        val rotation = try {
+            context.contentResolver.openInputStream(uri)?.use { input ->
+                runCatching { ExifInterface(input).rotationDegrees }.getOrDefault(0)
+            } ?: run {
+                Log.w(TAG, "compress: openInputStream returned null for exif pass")
+                return null
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "compress: opening $uri for exif threw", e)
+            return null
+        }
 
         // Two passes: measure, then decode subsampled. Decoding a 12 MP image
         // at full size only to shrink it is how a cheap phone runs out of heap.
         val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
-        context.contentResolver.openInputStream(uri)?.use {
-            BitmapFactory.decodeStream(it, null, bounds)
-        } ?: return null
+        try {
+            context.contentResolver.openInputStream(uri)?.use {
+                BitmapFactory.decodeStream(it, null, bounds)
+            } ?: run {
+                Log.w(TAG, "compress: openInputStream returned null for bounds pass")
+                return null
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "compress: measuring $uri threw", e)
+            return null
+        }
 
         val longEdge = maxOf(bounds.outWidth, bounds.outHeight)
-        if (longEdge <= 0) return null
+        if (longEdge <= 0) {
+            Log.w(TAG, "compress: bounds gave ${bounds.outWidth}x${bounds.outHeight}")
+            return null
+        }
 
         val options = BitmapFactory.Options().apply {
             inSampleSize = generateSequence(1) { it * 2 }
                 .first { longEdge / it <= MAX_EDGE * 2 }
         }
-        val decoded = context.contentResolver.openInputStream(uri)?.use {
-            BitmapFactory.decodeStream(it, null, options)
-        } ?: return null
+        val decoded = try {
+            context.contentResolver.openInputStream(uri)?.use {
+                BitmapFactory.decodeStream(it, null, options)
+            } ?: run {
+                Log.w(TAG, "compress: decode pass produced no bitmap (sample ${options.inSampleSize})")
+                return null
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "compress: decoding $uri threw", e)
+            return null
+        }
 
         val scaled = scaleToLongEdge(decoded, MAX_EDGE)
         val upright = if (rotation == 0) scaled else rotate(scaled, rotation)

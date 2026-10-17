@@ -37,8 +37,30 @@ class WalkRepository(private val context: Context) {
         val pieces: Int,
         val byType: Map<LitterType, Int>,
         val coveredSegmentIds: Set<String>,
+        /** Tags logged, as opposed to pieces: five cans in one tap is one. */
+        val tagCount: Int = 0,
+        /** How many of those carry a spot-check photo. */
+        val spotCheckCount: Int = 0,
+        /** The most recent tag, which is what a prompt would ask about. */
+        val lastTagLabel: String? = null,
+        val lastTagHasPhoto: Boolean = false,
     ) {
         val elapsedMillis: Long get() = System.currentTimeMillis() - walk.startedAt
+
+        /**
+         * Whether to ask for a photo of what was just tagged.
+         *
+         * Every fourth tag, and only while that tag is still the last thing
+         * logged -- the prompt has to be about something the walker can still
+         * see. Dismissing it or tagging again moves on; nothing is blocked
+         * either way, because refusing to photograph a crisp packet should
+         * not cost somebody the work of picking it up.
+         */
+        fun wantsSpotCheck(dismissedAfterTag: Int): Boolean =
+            tagCount > 0 &&
+                tagCount % SPOT_CHECK_EVERY == 0 &&
+                !lastTagHasPhoto &&
+                dismissedAfterTag != tagCount
     }
 
     @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
@@ -59,14 +81,36 @@ class WalkRepository(private val context: Context) {
                     .groupBy({ it.first }, { it.second })
                     .mapValues { (_, counts) -> counts.sum() }
 
+                val last = pickups.maxByOrNull { it.at }
                 LiveWalk(
                     walk = walk,
                     pieces = pickups.sumOf { it.count },
                     byType = byType,
                     coveredSegmentIds = covered.toSet(),
+                    tagCount = pickups.size,
+                    spotCheckCount = pickups.count { it.photoUri != null },
+                    lastTagLabel = last?.let { row ->
+                        runCatching { LitterType.valueOf(row.litterType).label }
+                            .getOrDefault(row.litterType.lowercase().replace('_', ' '))
+                    },
+                    lastTagHasPhoto = last?.photoUri != null,
                 )
             }
         }
+    }
+
+    /**
+     * Attaches a spot-check photo to the tag it was taken for.
+     *
+     * The pickup is found by recency rather than passed in, because the
+     * prompt is always about the last thing tagged and the camera round trip
+     * can outlive the composable that launched it.
+     */
+    suspend fun attachSpotCheck(uri: String): Boolean = withContext(Dispatchers.IO) {
+        val walk = dao.activeWalk() ?: return@withContext false
+        val pickup = dao.lastPickup(walk.id) ?: return@withContext false
+        dao.setPickupPhoto(pickup.id, uri)
+        true
     }
 
     fun start() = CleanupRecordingService.start(context)
@@ -117,5 +161,18 @@ class WalkRepository(private val context: Context) {
     /** The track so far, for drawing the walked line on the map. */
     suspend fun track(walkId: String): List<LatLng> = withContext(Dispatchers.IO) {
         dao.points(walkId).map { LatLng(it.lat, it.lng) }
+    }
+
+    companion object {
+        /**
+         * Ask for a photo of every fourth thing tagged.
+         *
+         * Spot checks exist so a walk's tally can be believed without
+         * photographing all of it, which nobody would do. Four is often
+         * enough that a fabricated walk would have to fabricate pictures
+         * too, and rare enough that a forty-piece walk asks ten times rather
+         * than forty -- the point is a sample, not a inventory.
+         */
+        const val SPOT_CHECK_EVERY = 4
     }
 }

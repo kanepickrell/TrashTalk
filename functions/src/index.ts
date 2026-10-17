@@ -67,6 +67,8 @@ interface Submission {
   walkStartedAt?: number;
   walkEndedAt?: number;
   evidencePath?: string | null;
+  /** Storage paths of per-tag spot checks taken during the walk. */
+  spotChecks?: string[];
   createdAt?: number;
 }
 
@@ -188,7 +190,17 @@ async function processSubmission(
   // for territory and one without does not. That is the honest version of
   // the rule: unverified work scores points and cleans the street, but does
   // not take ground.
-  const hasEvidence = Boolean(submission.evidencePath);
+  //
+  // A spot check counts the same as the haul shot, and for a better reason:
+  // the haul photo shows a full bag, which says the work happened somewhere,
+  // while a spot check shows one piece in place at a recorded position and
+  // time. Either is enough to take ground; neither is required to score.
+  //
+  // Refusing a prompt therefore costs territory, never points. Somebody who
+  // picks up forty pieces and photographs none of them has still cleaned the
+  // street and is still credited for it -- they just cannot claim it.
+  const spotChecks = submission.spotChecks ?? [];
+  const hasEvidence = Boolean(submission.evidencePath) || spotChecks.length > 0;
   const trustLevel = hasEvidence ? 'partial' : 'unverified';
 
   // --- read every segment's current state before writing anything --------

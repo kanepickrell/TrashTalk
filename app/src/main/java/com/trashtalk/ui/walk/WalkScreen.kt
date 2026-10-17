@@ -2,11 +2,10 @@ package com.trashtalk.ui.walk
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.ui.platform.LocalContext
-import androidx.core.content.ContextCompat
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -30,15 +29,20 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.trashtalk.data.model.LitterType
 import com.trashtalk.data.walk.WalkRepository
@@ -48,6 +52,7 @@ import com.trashtalk.ui.theme.TT
 import com.trashtalk.ui.theme.rememberMotion
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 
 /**
  * Walk mode.
@@ -79,6 +84,46 @@ fun WalkScreen(
         // Granted or not, the walk starts: the recording is the point and the
         // notification is how it is surfaced, not a precondition for it.
         repository.start()
+    }
+
+    // Spot-check capture. Same permission gate as everywhere else that opens
+    // the camera, because a revoked CAMERA permission throws rather than
+    // failing soft once the manifest declares it.
+    val scope = rememberCoroutineScope()
+    var pendingSpotCheck by remember { mutableStateOf<Uri?>(null) }
+    var dismissedAfterTag by remember { mutableIntStateOf(-1) }
+
+    val spotCheckCamera = rememberLauncherForActivityResult(
+        ActivityResultContracts.TakePicture(),
+    ) { ok ->
+        val uri = pendingSpotCheck
+        pendingSpotCheck = null
+        if (ok && uri != null) {
+            scope.launch { repository.attachSpotCheck(uri.toString()) }
+        }
+    }
+    val spotCheckPermission = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission(),
+    ) { granted ->
+        if (granted) {
+            val uri = newSpotCheckUri(context)
+            pendingSpotCheck = uri
+            spotCheckCamera.launch(uri)
+        }
+    }
+
+    fun captureSpotCheck() {
+        val granted = ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.CAMERA,
+        ) == PackageManager.PERMISSION_GRANTED
+        if (granted) {
+            val uri = newSpotCheckUri(context)
+            pendingSpotCheck = uri
+            spotCheckCamera.launch(uri)
+        } else {
+            spotCheckPermission.launch(Manifest.permission.CAMERA)
+        }
     }
 
     fun beginWalk() {
@@ -143,6 +188,21 @@ fun WalkScreen(
             color = TT.InkSecondary,
         )
 
+        if (state.wantsSpotCheck(dismissedAfterTag)) {
+            Spacer(Modifier.height(20.dp))
+            SpotCheckPrompt(
+                what = state.lastTagLabel,
+                onTake = {
+                    motion.mediumTick()
+                    captureSpotCheck()
+                },
+                onSkip = {
+                    motion.lightTick()
+                    dismissedAfterTag = state.tagCount
+                },
+            )
+        }
+
         Spacer(Modifier.height(26.dp))
         Text(
             text = "Log what you pick up",
@@ -184,6 +244,70 @@ fun WalkScreen(
             modifier = Modifier.fillMaxWidth(),
         )
     }
+}
+
+/**
+ * Asks for a picture of the thing just tagged.
+ *
+ * Phrased around what is still on the ground, because a photo of litter in
+ * place says where it was and that it was there; a photo of a full bag says
+ * neither. The skip is a real skip -- the tally still counts and the walk
+ * still scores. What spot checks buy is trust, and the walk earns territory
+ * with them rather than being punished without them.
+ */
+@Composable
+private fun SpotCheckPrompt(
+    what: String?,
+    onTake: () -> Unit,
+    onSkip: () -> Unit,
+) {
+    Surface(
+        color = TT.Surface1,
+        shape = RoundedCornerShape(14.dp),
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Column(Modifier.padding(16.dp)) {
+            Text(
+                text = "SPOT CHECK",
+                style = MaterialTheme.typography.labelSmall,
+                color = TT.Teal,
+                fontWeight = FontWeight.Bold,
+            )
+            Spacer(Modifier.height(6.dp))
+            Text(
+                text = if (what == null) {
+                    "Photograph the piece before you lift it."
+                } else {
+                    "Photograph that $what before you lift it."
+                },
+                style = MaterialTheme.typography.bodyMedium,
+                color = TT.Ink,
+            )
+            Spacer(Modifier.height(4.dp))
+            Text(
+                text = "A few pictures per walk is what lets the rest of the " +
+                    "tally be taken on trust, and what wins the block.",
+                style = MaterialTheme.typography.bodySmall,
+                color = TT.InkSecondary,
+            )
+            Spacer(Modifier.height(12.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(9.dp)) {
+                TrashTalkButton(text = "Take photo", onClick = onTake)
+                TrashTalkOutlineButton(text = "Not this one", onClick = onSkip)
+            }
+        }
+    }
+}
+
+/** A cache file the camera can write a spot check into. */
+private fun newSpotCheckUri(context: android.content.Context): Uri {
+    val dir = java.io.File(context.cacheDir, "litter_photos").apply { mkdirs() }
+    val file = java.io.File(dir, "spot_${System.currentTimeMillis()}.jpg")
+    return androidx.core.content.FileProvider.getUriForFile(
+        context,
+        "${context.packageName}.fileprovider",
+        file,
+    )
 }
 
 @Composable

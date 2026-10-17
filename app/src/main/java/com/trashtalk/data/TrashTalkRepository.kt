@@ -74,6 +74,8 @@ interface TrashTalkRepository {
          */
         walkStartedAt: Long? = null,
         walkEndedAt: Long? = null,
+        /** Storage paths of the per-tag spot checks that uploaded. */
+        spotCheckPaths: List<String> = emptyList(),
     ): ProgressDelta
 
     suspend fun plantFlag(

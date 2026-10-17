@@ -143,6 +143,7 @@ class DemoRepository(
         evidencePath: String?,
         walkStartedAt: Long?,
         walkEndedAt: Long?,
+        spotCheckPaths: List<String>,
     ): ProgressDelta {
         var total = 0
         var firstSurvey = false

@@ -140,6 +140,24 @@ class WalkSubmitter(
             )
         }
 
+        // Spot checks: a photo per tag, uploaded under its own name so one
+        // failure does not take the others with it. A walk is still submitted
+        // when some or all of them fail -- the tally is the record, and the
+        // photos are what let it be believed.
+        val spotCheckPaths = dao.spotChecks(summary.walk.id).mapNotNull { pickup ->
+            runCatching {
+                EvidenceStore.upload(
+                    context = context,
+                    localUri = pickup.photoUri ?: return@runCatching null,
+                    submissionId = summary.walk.id,
+                    capturedAt = pickup.at,
+                    lat = pickup.lat,
+                    lng = pickup.lng,
+                    name = "spot_${pickup.id}.jpg",
+                )
+            }.getOrNull()
+        }
+
         val combined = repository.submitToServer(
             submissionId = summary.walk.id,
             segments = summary.tallies.map { tally ->
@@ -156,6 +174,7 @@ class WalkSubmitter(
             evidencePath = evidencePath,
             walkStartedAt = summary.walk.startedAt,
             walkEndedAt = summary.walk.endedAt,
+            spotCheckPaths = spotCheckPaths,
         )
 
 

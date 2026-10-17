@@ -234,6 +234,16 @@ interface WalkDao {
     @Query("SELECT * FROM pickups WHERE walkId = :walkId ORDER BY at ASC")
     suspend fun pickups(walkId: String): List<PickupRow>
 
+    @Query("SELECT * FROM pickups WHERE walkId = :walkId ORDER BY at DESC LIMIT 1")
+    suspend fun lastPickup(walkId: String): PickupRow?
+
+    /** Attaches a spot-check photo to one pickup. */
+    @Query("UPDATE pickups SET photoUri = :uri WHERE id = :pickupId")
+    suspend fun setPickupPhoto(pickupId: Long, uri: String?)
+
+    @Query("SELECT * FROM pickups WHERE walkId = :walkId AND photoUri IS NOT NULL ORDER BY at ASC")
+    suspend fun spotChecks(walkId: String): List<PickupRow>
+
     @Query("SELECT * FROM pickups WHERE walkId = :walkId ORDER BY at ASC")
     fun observePickups(walkId: String): Flow<List<PickupRow>>
 

@@ -404,6 +404,7 @@ class FirestoreRepository(
         evidencePath: String?,
         walkStartedAt: Long?,
         walkEndedAt: Long?,
+        spotCheckPaths: List<String>,
     ): ProgressDelta {
         val uid = requireUid()
         val now = System.currentTimeMillis()
@@ -426,6 +427,7 @@ class FirestoreRepository(
                 "evidencePath" to evidencePath,
                 "walkStartedAt" to walkStartedAt,
                 "walkEndedAt" to walkEndedAt,
+                "spotChecks" to spotCheckPaths,
                 "segments" to segments.map { seg ->
                     mapOf(
                         "segmentId" to seg.segmentId,
