@@ -170,14 +170,37 @@ class MainViewModel(private val repo: TrashTalkRepository) : ViewModel() {
 
     // --------------------------------------------------------------- actions
 
-    fun submitCollection(draft: CollectionDraft, onDone: (ProgressDelta) -> Unit = {}) {
+    /**
+     * A one-off pickup, outside a recorded walk.
+     *
+     * Bounded by the same timeout as a walk, and for the same reason: the write
+     * goes through a Firestore transaction, and a transaction with no network
+     * does not fail, it waits. Before this, logging a pickup in a dead spot --
+     * which is most of the places worth logging one -- hung the form silently
+     * and did not recover when signal returned.
+     *
+     * Unlike a walk there is nothing durable behind a quick log yet, so this
+     * says plainly that it did not save rather than promising it will.
+     */
+    fun submitCollection(draft: CollectionDraft, onDone: (ProgressDelta?) -> Unit = {}) {
         viewModelScope.launch {
-            runCatching { repo.submitCollection(draft) }
+            runCatching {
+                withTimeout(SUBMIT_TIMEOUT_MS) { repo.submitCollection(draft) }
+            }
                 .onSuccess {
                     _events.tryEmit(it)
                     onDone(it)
                 }
-                .onFailure { _toasts.tryEmit("Could not save: ${it.message}") }
+                .onFailure { cause ->
+                    _toasts.tryEmit(
+                        if (cause is TimeoutCancellationException) {
+                            "No signal - this pickup was not saved. Try again in range."
+                        } else {
+                            "Could not save: ${cause.message}"
+                        },
+                    )
+                    onDone(null)
+                }
         }
     }
 

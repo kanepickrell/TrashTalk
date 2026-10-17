@@ -115,6 +115,10 @@ class WalkSubmitter(private val walks: WalkRepository, private val dao: WalkDao)
         val deltas = summary.tallies.map { tally ->
             tally to repository.submitCollection(
                 CollectionDraft(
+                    // Derived, not random: the same walk retried produces the
+                    // same ids, which is what lets the server recognise a
+                    // repeat instead of counting it twice.
+                    submissionId = "${summary.walk.id}_${tally.segmentId}",
                     segmentId = tally.segmentId,
                     segmentName = tally.name,
                     lat = tally.at.lat,
@@ -131,11 +135,17 @@ class WalkSubmitter(private val walks: WalkRepository, private val dao: WalkDao)
         }
 
         val combined = deltas.combine()
+
+        // A walk that had already landed comes back worth nothing, because the
+        // server recognised the repeat. That is the right answer to "what did
+        // this submission earn" and the wrong one to store against the walk, so
+        // it is passed as null and the existing award is kept.
+        val alreadyLanded = combined.pointsAwarded == 0 && summary.tallies.isNotEmpty()
         dao.applyServerResult(
             walkId = summary.walk.id,
             status = WalkStatus.SCORED,
             reason = null,
-            points = combined.pointsAwarded,
+            points = combined.pointsAwarded.takeUnless { alreadyLanded },
         )
         return combined
     }

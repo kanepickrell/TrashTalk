@@ -123,6 +123,7 @@ dependencies {
     // (MapLibre Android SDK in an AndroidView).
     implementation(libs.maplibre.compose)
     implementation(libs.maplibre.renderer.opengl)
+    implementation(libs.androidx.work.runtime)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)

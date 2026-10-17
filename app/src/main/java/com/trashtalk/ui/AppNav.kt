@@ -86,6 +86,7 @@ import com.trashtalk.ui.share.writeShareCard
 import com.trashtalk.core.TrackJank
 import com.trashtalk.data.walk.WalkRepository
 import com.trashtalk.data.walk.WalkStore
+import com.trashtalk.data.walk.WalkSync
 import com.trashtalk.data.walk.WalkSubmitter
 import com.trashtalk.data.walk.WalkSummary
 import com.trashtalk.ui.walk.FinishWalkScreen
@@ -259,6 +260,9 @@ fun TrashTalkRoot(vm: MainViewModel) {
                                     // the button reading "Submitting..." for
                                     // ever is worse than the failure.
                                     submitting = false
+                                    // Did not land: hand it to the queue, which
+                                    // will drain it when there is a network.
+                                    if (delta == null) WalkSync.enqueue(context)
                                     // On success the celebration is already on
                                     // its way through the event channel; on
                                     // failure the toast has said what happened

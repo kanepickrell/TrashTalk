@@ -154,10 +154,20 @@ interface WalkDao {
     @Query("UPDATE walks SET status = :status WHERE id = :walkId")
     suspend fun setStatus(walkId: String, status: WalkStatus)
 
+    /**
+     * Records what the server said.
+     *
+     * Points are coalesced rather than assigned: a re-submission of a walk that
+     * already landed is correctly a no-op worth zero, and writing that zero
+     * over the real award would show the user a walk that earned nothing. The
+     * first award is the true one.
+     */
     @Query(
         """
         UPDATE walks
-           SET status = :status, rejectionReason = :reason, awardedPoints = :points
+           SET status = :status,
+               rejectionReason = :reason,
+               awardedPoints = COALESCE(:points, awardedPoints)
          WHERE id = :walkId
         """,
     )

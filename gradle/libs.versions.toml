@@ -20,6 +20,7 @@ maplibreCompose = "0.20.0"
 maplibreNativeFfi = "0.202610.0"
 jankstats = "1.0.0-beta02"
 room = "2.8.5"
+work = "2.10.5"
 ksp = "2.3.12"
 benchmark = "1.6.0-alpha01"
 uiautomator = "2.3.0"
@@ -27,6 +28,7 @@ baselineprofile = "1.6.0-alpha01"
 
 [libraries]
 androidx-metrics-jankstats = { group = "androidx.metrics", name = "metrics-performance", version.ref = "jankstats" }
+androidx-work-runtime = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "work" }
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }

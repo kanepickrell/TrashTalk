@@ -68,6 +68,7 @@ import com.trashtalk.ui.share.ShareCardData
 import com.trashtalk.ui.share.shareCardIntent
 import com.trashtalk.ui.share.writeShareCard
 import com.trashtalk.ui.theme.HazardBand
+import com.trashtalk.ui.walk.WalkHistory
 import com.trashtalk.ui.theme.TT
 import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
@@ -382,6 +383,17 @@ fun MeScreen(
                             )
                         }
                     }
+                }
+            }
+        }
+
+        // ------------------------------------------------------- recorded walks
+        item {
+            Panel {
+                Column {
+                    Eyebrow("Your recorded walks")
+                    Spacer(Modifier.height(10.dp))
+                    WalkHistory()
                 }
             }
         }

@@ -12,6 +12,15 @@ import kotlin.math.roundToInt
 
 /** A pickup as the user entered it, before scoring. */
 data class CollectionDraft(
+    /**
+     * Identifies this submission, generated on the client before it is sent.
+     *
+     * The id is what makes a retry safe. Without it the observation is written
+     * with a server-generated key, so a queue doing its job -- retrying after a
+     * timeout it could not distinguish from a failure -- writes the pickup
+     * twice, drops the segment's density twice and awards the points twice.
+     */
+    val submissionId: String = java.util.UUID.randomUUID().toString(),
     val segmentId: String,
     val segmentName: String,
     val lat: Double,

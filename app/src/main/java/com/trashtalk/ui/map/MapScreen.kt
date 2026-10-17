@@ -70,6 +70,7 @@ import com.trashtalk.ui.components.TrashTalkOutlineButton
 import com.trashtalk.ui.theme.HazardBand
 import com.trashtalk.ui.theme.LocalReduceMotion
 import com.trashtalk.ui.theme.rememberMotion
+import com.trashtalk.ui.walk.SyncChip
 import com.trashtalk.ui.theme.TT
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
@@ -212,6 +213,15 @@ fun MapScreen(
             holder = map,
             onCameraMoved = { followMe = false },
             modifier = Modifier.fillMaxSize(),
+        )
+
+        // The queue, when it has anything to report. Anchored under the
+        // header rather than over the map controls, so it never covers a
+        // target the user is reaching for.
+        SyncChip(
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(top = topChromePx.let { (it / 2.6f).dp } + 8.dp),
         )
 
         // ------------------------------------------------------------ top chrome

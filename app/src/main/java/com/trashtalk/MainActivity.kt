@@ -8,6 +8,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.trashtalk.ui.MainViewModel
 import com.trashtalk.ui.TrashTalkRoot
 import com.trashtalk.core.JankMonitor
+import com.trashtalk.data.walk.WalkSync
 import com.trashtalk.ui.theme.TrashTalkTheme
 
 class MainActivity : ComponentActivity() {
@@ -16,6 +17,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         val container = (application as TrashTalkApp).container
+
+        // Anything left pending from a previous run -- a crash, a force-stop,
+        // a submit that timed out in a dead spot -- gets another chance now.
+        WalkSync.enqueue(this)
 
         setContent {
             TrashTalkTheme {

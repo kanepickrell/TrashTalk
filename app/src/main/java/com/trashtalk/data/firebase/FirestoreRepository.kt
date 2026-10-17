@@ -372,33 +372,50 @@ class FirestoreRepository(
         val breakdown = ScoreEngine.score(draft, segment, profile)
         val wasFirstSurvey = segment != null && !segment.hasBeenSurveyed
 
-        db.collection(COLLECTIONS).add(
-            mapOf(
-                "userId" to id,
-                "userName" to profile.displayName,
-                "teamId" to profile.teamId,
-                "segmentId" to draft.segmentId,
-                "segmentName" to draft.segmentName,
-                "lat" to draft.lat,
-                "lng" to draft.lng,
-                "counts" to draft.counts.mapKeys { it.key.name },
-                "photoUri" to draft.photoUri,
-                "notes" to draft.notes,
-                "createdAt" to now,
-                "points" to breakdown.total,
-                "wasFirstSurvey" to wasFirstSurvey,
-                "minutes" to draft.minutes,
-            ),
-        ).await()
-
-        // The segment's standing density falls in proportion to the share of its
-        // estimated load that was actually removed. A transaction keeps two
-        // volunteers working the same block from clobbering each other.
+        // The observation and the segment's new density go in together, keyed on
+        // the client's submission id.
+        //
+        // One transaction rather than three writes, because the three were not
+        // separable in practice: a retry after a half-finished submit used to
+        // write the observation again, drop the density again and award the
+        // points again. The observation document is now its own idempotency
+        // marker -- if it is already there, this submission has landed and the
+        // whole thing is a no-op.
+        //
+        // It is also still the thing that keeps two volunteers working the same
+        // block from clobbering each other's density update.
+        val observation = db.collection(COLLECTIONS).document(draft.submissionId)
         val stateDoc = db.collection(SEGMENT_STATE).document(draft.segmentId)
         val baseIndex = segment?.litterIndex ?: 0f
         val load = (segment?.estimatedPieces ?: 1).coerceAtLeast(1)
-        db.runTransaction { tx ->
+
+        val applied = db.runTransaction { tx ->
+            // Every read before any write: Firestore requires it.
+            if (tx.get(observation).exists()) return@runTransaction false
             val snap = tx.get(stateDoc)
+
+            tx.set(
+                observation,
+                mapOf(
+                    "userId" to id,
+                    "userName" to profile.displayName,
+                    "teamId" to profile.teamId,
+                    "segmentId" to draft.segmentId,
+                    "segmentName" to draft.segmentName,
+                    "lat" to draft.lat,
+                    "lng" to draft.lng,
+                    "counts" to draft.counts.mapKeys { it.key.name },
+                    "photoUri" to draft.photoUri,
+                    "notes" to draft.notes,
+                    "createdAt" to now,
+                    "points" to breakdown.total,
+                    "wasFirstSurvey" to wasFirstSurvey,
+                    "minutes" to draft.minutes,
+                ),
+            )
+
+            // Density falls in proportion to the share of the segment's
+            // estimated load that was actually removed.
             val current = (snap.getDouble("litterIndex") ?: baseIndex.toDouble()).toFloat()
             val cleared = (draft.pieces.toFloat() / load).coerceIn(0f, 1f)
             val next = (current * (1f - 0.75f * cleared)).coerceIn(0f, 1f)
@@ -413,8 +430,11 @@ class FirestoreRepository(
                 ),
                 SetOptions.merge(),
             )
-            null
+            true
         }.await()
+
+        // Already counted on an earlier attempt: award nothing a second time.
+        if (!applied) return ProgressDelta()
 
         val streak = ScoreEngine.nextStreak(profile, now)
         val stats = recomputeStats(profile.stats, id, now, draft, wasFirstSurvey)
