@@ -1,48 +1,77 @@
 #!/usr/bin/env python3
-"""Generate the bundled survey network for TrashTalk.
+"""Build the TrashTalk survey network from OpenStreetMap.
 
-TrashTalk treats a neighbourhood the way Citi Bike treats its dock graph: the
-unit of data is not a point but a *segment* of street between two
+TrashTalk treats a neighbourhood the way a bike-share system treats its dock
+graph: the unit of data is not a point but a *segment* of street between two
 intersections. A segment can be surveyed, adopted, cleaned and scored, which
 makes the map a field of edges rather than a scatter of pins.
 
-This script synthesises a plausible network for Terrell Heights, San Antonio TX
-(the first TrashTalk target neighbourhood) together with 14 days of observation
-history so the map time scrubber has something to animate. It is
-deterministic: same seed, same network, so the demo backend and the committed
-asset never disagree.
+Phase 0 replaced the synthesised grid with real geometry. Edges come from OSM
+via osmnx, simplified so each runs intersection to intersection, and every
+segment carries its OSM way ids and both end nodes. That last part is the point
+of the exercise: map matching returns way ids, so this is the join between a
+recorded walk and the segment it belongs to.
 
-To move to real geometry, replace the grid construction with an Overpass
-export of highway=residential/tertiary/secondary ways clipped to the
-neighbourhood boundary and keep the rest of the pipeline intact.
+The litter model is still synthetic. Accumulation rate, history and composition
+are fitted to the real segments but remain a model, not an observation, until
+survey data replaces them. Anything published from this has to say so.
+
+Usage:
+    python tools/generate_street_network.py
 """
 
+import hashlib
 import json
 import math
 import random
 from pathlib import Path
 
-SEED = 20250214
-random.seed(SEED)
+import osmnx as ox
 
+SEED = 20250214
 DAYS = 14
 
-# Neighbourhood envelope.
-LAT0, LAT_STEP, N_ROWS = 29.4950, 0.00180, 9
-LNG0, LNG_STEP, N_COLS = -98.46600, 0.00205, 11
+# --------------------------------------------------------------- study area
+#
+# "Terrell Heights" has no boundary relation in OSM -- Nominatim returns no
+# result for it, and "Terrell Hills" is a different, incorporated city to the
+# south-east. So the pilot area is pinned to an explicit bounding box, which
+# also keeps every run byte-identical rather than drifting with OSM's
+# administrative edits.
+NEIGHBORHOOD = "Terrell Heights"
+CITY, STATE, CITY_ID = "San Antonio", "TX", "san-antonio-tx"
 
-EW_NAMES = [
-    "Burr Rd", "Terrell Rd", "Castano Ave", "Abiso Ave", "Northridge Dr",
-    "Greenridge Dr", "Eventide Dr", "Sunset Rd", "Loma Vista Dr",
-]
-NS_NAMES = [
-    "Albany St", "Patterson Ave", "Larchmont Dr", "Vanderbilt St",
-    "Chevy Chase Dr", "Rexford Dr", "Ridgehaven Pl", "Walsh Rd",
-    "Glen Arbor St", "Rosedale Ct", "Harrigan Way",
-]
+# (west, south, east, north)
+BBOX = (-98.4660, 29.4950, -98.4460, 29.5100)
+
+# Exactly the classes a volunteer can walk and survey. Anchored with ^...$
+# because osmnx passes this to Overpass as a regex -- an unanchored
+# "secondary" also matches "secondary_link", pulling in ramps.
+HIGHWAY_CLASSES = (
+    "residential",
+    "tertiary",
+    "secondary",
+    "primary",
+    "unclassified",
+    "living_street",
+)
+CUSTOM_FILTER = '["highway"~"^({})$"]'.format("|".join(HIGHWAY_CLASSES))
+
+# OSM highway tag -> the app's StreetClass. Drives render weight and the
+# baseline litter load an arterial carries over a cul-de-sac.
+STREET_CLASS = {
+    "primary": "arterial",
+    "secondary": "arterial",
+    "tertiary": "collector",
+    "unclassified": "collector",
+    "residential": "residential",
+    "living_street": "residential",
+}
 
 # Trip generators. Litter does not fall uniformly; it concentrates where people
-# transfer between modes and where packaged food is sold.
+# transfer between modes and where packaged food is sold. Still hand-placed:
+# pulling these from OSM is a worthwhile follow-up, but it would change the
+# litter model's inputs, which is a separate change from changing its geometry.
 POIS = [
     ("poi_bus_1",  "Austin Hwy @ Larchmont (bus stop)", "transit",    29.49640, -98.46180),
     ("poi_bus_2",  "Austin Hwy @ Rexford (bus stop)",   "transit",    29.49700, -98.45420),
@@ -54,15 +83,6 @@ POIS = [
     ("poi_park",   "Terrell Heights Park",              "park",       29.50760, -98.45640),
     ("poi_laundry", "Coin laundry",                     "commercial", 29.50180, -98.46450),
     ("poi_church", "Neighborhood church lot",           "civic",      29.50530, -98.45120),
-]
-
-# Two arterials slice the grid. Arterials carry the most traffic and, with it,
-# the most roadside litter.
-ARTERIALS = [
-    ("art_austin", "Austin Hwy", [(29.49420, -98.46680), (29.49560, -98.46040),
-                                  (29.49760, -98.45400), (29.49980, -98.44820)]),
-    ("art_nacog",  "Nacogdoches Rd", [(29.50980, -98.46620), (29.50700, -98.46000),
-                                      (29.50400, -98.45420), (29.50080, -98.44860)]),
 ]
 
 M_PER_DEG_LAT = 110574.0
@@ -84,7 +104,6 @@ def point_to_polyline_m(pt, poly):
     for i in range(len(poly) - 1):
         ax, ay = poly[i]
         bx, by = poly[i + 1]
-        # Work in metres so the projection is not skewed by latitude.
         scale = m_per_deg_lng(ax)
         axm, aym = ax * M_PER_DEG_LAT, ay * scale
         bxm, bym = bx * M_PER_DEG_LAT, by * scale
@@ -103,63 +122,112 @@ def decay(dist_m, scale_m):
     return math.exp(-(dist_m / scale_m) ** 2)
 
 
-def jitter(v, amt):
-    return v + random.uniform(-amt, amt)
+# ------------------------------------------------------------------- fetch
+
+def segment_id(u, v, key):
+    """A stable id from the undirected edge identity.
+
+    Sorting the node pair makes it direction-independent, and the key
+    distinguishes parallel edges between the same two intersections (divided
+    roads, service loops). Hashing keeps it short and opaque, so nothing
+    downstream is tempted to parse meaning out of it.
+    """
+    raw = "{}-{}-{}".format(min(u, v), max(u, v), key)
+    return "s_" + hashlib.sha1(raw.encode()).hexdigest()[:12]
 
 
-def row_lat(i):
-    return LAT0 + i * LAT_STEP + (0.00012 * math.sin(i * 1.7))
+def as_list(value):
+    """OSM tags are a single value or a list of values after simplification."""
+    if value is None:
+        return []
+    return list(value) if isinstance(value, list) else [value]
 
 
-def col_lng(j):
-    return LNG0 + j * LNG_STEP + (0.00013 * math.cos(j * 2.1))
+def first_tag(value, default=None):
+    items = as_list(value)
+    return items[0] if items else default
 
 
-def curve(a, b, bend):
-    """Insert a midpoint so segments read as streets rather than rulers."""
-    mid_lat = (a[0] + b[0]) / 2 + bend * (b[1] - a[1]) * 0.08
-    mid_lng = (a[1] + b[1]) / 2 + bend * (b[0] - a[0]) * 0.08
-    return [a, (round(mid_lat, 6), round(mid_lng, 6)), b]
+def fetch_segments():
+    """Pull the walkable street network and flatten it to segments."""
+    ox.settings.requests_timeout = 180
+    ox.settings.use_cache = True
+
+    graph = ox.graph_from_bbox(
+        bbox=BBOX,
+        custom_filter=CUSTOM_FILTER,
+        simplify=True,          # edges run intersection to intersection
+        retain_all=False,       # drop disconnected fragments
+        truncate_by_edge=True,  # keep edges that cross the bbox edge
+    )
+    # A street is the same street in both directions: surveying the north side
+    # is surveying the block, and keeping both directions would score every
+    # one-way pair twice.
+    graph = ox.convert.to_undirected(graph)
+
+    nodes = graph.nodes
+    segments = []
+    for u, v, key, data in graph.edges(keys=True, data=True):
+        geom = data.get("geometry")
+        if geom is not None:
+            coords = [(lat, lng) for lng, lat in geom.coords]
+        else:
+            coords = [
+                (nodes[u]["y"], nodes[u]["x"]),
+                (nodes[v]["y"], nodes[v]["x"]),
+            ]
+        if len(coords) < 2:
+            continue
+
+        highway = first_tag(data.get("highway"), "residential")
+        name = first_tag(data.get("name"))
+
+        segments.append({
+            "id": segment_id(u, v, key),
+            "name": name,  # disambiguated once every segment is known
+            "cls": STREET_CLASS.get(highway, "residential"),
+            "highway": highway,
+            "coords": [[round(lat, 6), round(lng, 6)] for lat, lng in coords],
+            # Every OSM way this edge was built from. Simplification merges
+            # consecutive ways, so this is a list, and map matching needs all
+            # of them to resolve a match back to one segment.
+            "osmWayIds": [int(w) for w in as_list(data.get("osmid"))],
+            "osmU": int(u),
+            "osmV": int(v),
+            "osmKey": int(key),
+            # osmnx measures length along the real geometry, in metres.
+            "lengthM": round(float(data.get("length", 0.0)), 1),
+        })
+
+    return name_segments(segments)
 
 
-def build_segments():
-    segs = []
+def name_segments(segments):
+    """Give every segment a human label, unique enough to pick from a list."""
+    def base_label(seg):
+        return seg["name"] or "Unnamed {}".format(seg["highway"].replace("_", " "))
 
-    def add(sid, name, cls, coords):
-        segs.append({"id": sid, "name": name, "cls": cls,
-                     "coords": [[round(c[0], 6), round(c[1], 6)] for c in coords]})
+    counts = {}
+    for seg in segments:
+        label = base_label(seg)
+        counts[label] = counts.get(label, 0) + 1
 
-    # East-west streets, split at every intersection.
-    for i in range(N_ROWS):
-        lat = row_lat(i)
-        name = EW_NAMES[i]
-        cls = "collector" if i in (1, 6) else "residential"
-        for j in range(N_COLS - 1):
-            a = (jitter(lat, 0.00006), col_lng(j))
-            b = (jitter(lat, 0.00006), col_lng(j + 1))
-            add("s_ew_%d_%d" % (i, j), "%s %d block" % (name, 100 + j * 100), cls,
-                curve(a, b, random.uniform(-1, 1)))
-
-    # North-south streets.
-    for j in range(N_COLS):
-        lng = col_lng(j)
-        name = NS_NAMES[j]
-        cls = "collector" if j in (2, 7) else "residential"
-        for i in range(N_ROWS - 1):
-            a = (row_lat(i), jitter(lng, 0.00006))
-            b = (row_lat(i + 1), jitter(lng, 0.00006))
-            add("s_ns_%d_%d" % (j, i), "%s %d block" % (name, 100 + i * 100), cls,
-                curve(a, b, random.uniform(-1, 1)))
-
-    # Arterials, split into runs between their shape points.
-    for aid, name, pts in ARTERIALS:
-        for k in range(len(pts) - 1):
-            add("%s_%d" % (aid, k), "%s segment %d" % (name, k + 1), "arterial",
-                curve(pts[k], pts[k + 1], random.uniform(-0.4, 0.4)))
-    return segs
+    # Number the segments of a multi-segment street from one end, so the
+    # ordinals read in geographic order rather than hash order.
+    seen = {}
+    for seg in sorted(segments, key=lambda s: (base_label(s), s["coords"][0])):
+        label = base_label(seg)
+        if counts[label] > 1:
+            seen[label] = seen.get(label, 0) + 1
+            seg["name"] = "{} ({})".format(label, seen[label])
+        else:
+            seg["name"] = label
+    return segments
 
 
-def propensity(seg):
+# --------------------------------------------------------- the litter model
+
+def propensity(seg, arterial_polys):
     """How fast this segment accumulates litter, in [0,1].
 
     Drivers, in rough order of real-world effect size: arterial traffic,
@@ -169,9 +237,9 @@ def propensity(seg):
     mid = seg["coords"][len(seg["coords"]) // 2]
     score = 0.08
 
-    art = min(point_to_polyline_m(mid, [tuple(p) for p in pts])
-              for _, _, pts in ARTERIALS)
-    score += 0.42 * decay(art, 260.0)
+    if arterial_polys:
+        art = min(point_to_polyline_m(mid, poly) for poly in arterial_polys)
+        score += 0.42 * decay(art, 260.0)
 
     if seg["cls"] == "arterial":
         score += 0.22
@@ -193,13 +261,12 @@ def propensity(seg):
     return max(0.0, min(1.0, score))
 
 
-# Composition shifts with context: cigarette butts cluster at transit stops,
-# food packaging near retail, paper and yard debris inside subdivisions.
 CATEGORIES = ["PLASTIC_BOTTLE", "PLASTIC_BAG", "FILM_WRAPPER", "CIGARETTE",
               "ALUMINUM_CAN", "GLASS", "PAPER", "FOAM", "FOOD_PACKAGING", "OTHER"]
 
 
 def composition(seg, prop):
+    """Composition shifts with context: butts at transit, film near retail."""
     mid = seg["coords"][len(seg["coords"]) // 2]
     commercial = max(decay(meters(mid, (p[3], p[4])), 200.0)
                      for p in POIS if p[2] in ("commercial", "transit"))
@@ -221,10 +288,12 @@ def composition(seg, prop):
 
 def simulate(segs):
     """Run DAYS of accumulation and cleanup to produce a history series."""
+    arterial_polys = [
+        [tuple(c) for c in s["coords"]] for s in segs if s["cls"] == "arterial"
+    ]
     for s in segs:
-        s["propensity"] = round(propensity(s), 4)
+        s["propensity"] = round(propensity(s, arterial_polys), 4)
 
-    # Start each segment part-way up its equilibrium so day 0 is not empty.
     state = {s["id"]: s["propensity"] * random.uniform(0.35, 0.95) for s in segs}
     series = {s["id"]: [] for s in segs}
     cleanups = {s["id"]: 0 for s in segs}
@@ -250,59 +319,75 @@ def simulate(segs):
 
     for s in segs:
         sid = s["id"]
-        length = sum(meters(s["coords"][i], s["coords"][i + 1])
-                     for i in range(len(s["coords"]) - 1))
         idx = series[sid][-1]
-        s["lengthM"] = round(length, 1)
         s["litterIndex"] = idx
         s["history"] = series[sid]
         s["cleanups"] = cleanups[sid]
-        # Observed pieces scale with both density and how much street there is.
-        s["estimatedPieces"] = int(round(idx * length * 0.11))
+        s["estimatedPieces"] = int(round(idx * s["lengthM"] * 0.11))
         s["composition"] = composition(s, s["propensity"])
-        # Segments nobody has walked are the Scientist path raw material.
-        # Most of a neighbourhood has never been walked by anybody. That gap
-        # is the Scientist path's whole reason to exist, so the seed data
-        # should show it rather than pretend to full coverage.
+        # Most of a neighbourhood has never been walked by anybody. That gap is
+        # the Scientist path's whole reason to exist, so the seed data should
+        # show it rather than pretend to full coverage.
         s["surveyCount"] = cleanups[sid] + (1 if random.random() < 0.18 else 0)
     return segs
 
 
 def main():
-    segs = simulate(build_segments())
+    random.seed(SEED)
+
+    print("fetching OSM network for {} ...".format(NEIGHBORHOOD))
+    segs = fetch_segments()
+    print("  {} segments from OSM".format(len(segs)))
+
+    segs = simulate(segs)
+
+    lats = [c[0] for s in segs for c in s["coords"]]
+    lngs = [c[1] for s in segs for c in s["coords"]]
+
     out = {
         "meta": {
-            "neighborhood": "Terrell Heights",
-            "city": "San Antonio",
-            "state": "TX",
-            "cityId": "san-antonio-tx",
+            "neighborhood": NEIGHBORHOOD,
+            "city": CITY,
+            "state": STATE,
+            "cityId": CITY_ID,
             "seed": SEED,
             "historyDays": DAYS,
             "segmentCount": len(segs),
+            "source": "OpenStreetMap via osmnx {}".format(ox.__version__),
+            "osmFilter": CUSTOM_FILTER,
+            "bbox": {"west": BBOX[0], "south": BBOX[1], "east": BBOX[2], "north": BBOX[3]},
             "bounds": {
-                "minLat": min(c[0] for s in segs for c in s["coords"]),
-                "maxLat": max(c[0] for s in segs for c in s["coords"]),
-                "minLng": min(c[1] for s in segs for c in s["coords"]),
-                "maxLng": max(c[1] for s in segs for c in s["coords"]),
+                "minLat": min(lats), "maxLat": max(lats),
+                "minLng": min(lngs), "maxLng": max(lngs),
             },
-            "note": "Synthetic survey network generated by tools/generate_street_network.py. "
-                    "Geometry is representative, not surveyed; replace with an Overpass "
-                    "export before publishing real Litter Impact Assessments.",
+            "note": "Street geometry is real, from OpenStreetMap (ODbL). The litter "
+                    "index, history and composition are a synthetic model fitted to "
+                    "that geometry, not survey observations -- do not publish them "
+                    "as measurements.",
         },
         "pois": [{"id": p[0], "name": p[1], "kind": p[2], "lat": p[3], "lng": p[4]}
                  for p in POIS],
         "segments": segs,
     }
+
     dest = Path(__file__).resolve().parent.parent / "app/src/main/assets/terrell_heights.json"
     dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_text(json.dumps(out, separators=(",", ":")), encoding="utf-8")
 
     idxs = sorted(s["litterIndex"] for s in segs)
-    print("wrote %s (%.1f KiB)" % (dest, dest.stat().st_size / 1024))
-    print("segments=%d pieces=%d" % (len(segs), sum(s["estimatedPieces"] for s in segs)))
-    print("litterIndex min=%.3f median=%.3f max=%.3f" % (idxs[0], idxs[len(idxs) // 2], idxs[-1]))
-    for s in sorted(segs, key=lambda s: -s["litterIndex"])[:5]:
-        print("  hotspot %-34s idx=%.3f pieces=%d" % (s["name"], s["litterIndex"], s["estimatedPieces"]))
+    classes = {}
+    for s in segs:
+        classes[s["cls"]] = classes.get(s["cls"], 0) + 1
+    multi = sum(1 for s in segs if len(s["osmWayIds"]) > 1)
+
+    print("wrote {} ({:.1f} KiB)".format(dest, dest.stat().st_size / 1024))
+    print("  classes        : {}".format(classes))
+    print("  network length : {:.2f} km".format(sum(s["lengthM"] for s in segs) / 1000))
+    print("  multi-way edges: {}".format(multi))
+    print("  litterIndex    : min {:.3f} median {:.3f} max {:.3f}".format(
+        idxs[0], idxs[len(idxs) // 2], idxs[-1]))
+    print("  unsurveyed     : {} of {}".format(
+        sum(1 for s in segs if s["surveyCount"] == 0), len(segs)))
 
 
 if __name__ == "__main__":

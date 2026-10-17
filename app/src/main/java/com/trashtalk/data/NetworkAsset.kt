@@ -17,6 +17,8 @@ data class NeighborhoodNetwork(
     val historyDays: Int,
     val bounds: LatLngBounds,
     val note: String,
+    /** Provenance of the geometry, surfaced in the assessment's method notes. */
+    val source: String = "",
     val segments: List<Segment>,
     val pois: List<Poi>,
 ) {
@@ -67,6 +69,12 @@ object NetworkAssetLoader {
                 }
             }
 
+            val waysJson = s.optJSONArray("osmWayIds")
+            val osmWayIds = ArrayList<Long>(waysJson?.length() ?: 0)
+            if (waysJson != null) {
+                for (j in 0 until waysJson.length()) osmWayIds += waysJson.getLong(j)
+            }
+
             val compJson = s.optJSONObject("composition")
             val composition = mutableMapOf<String, Float>()
             compJson?.keys()?.forEach { key ->
@@ -78,6 +86,9 @@ object NetworkAssetLoader {
                 name = s.getString("name"),
                 streetClass = StreetClass.from(s.optString("cls")),
                 path = path,
+                osmWayIds = osmWayIds,
+                osmStartNode = s.optLong("osmU"),
+                osmEndNode = s.optLong("osmV"),
                 litterIndex = s.getDouble("litterIndex").toFloat(),
                 propensity = s.optDouble("propensity", 0.0).toFloat(),
                 lengthMeters = s.optDouble("lengthM", 0.0),
@@ -116,6 +127,7 @@ object NetworkAssetLoader {
                 maxLng = b.getDouble("maxLng"),
             ),
             note = meta.optString("note", ""),
+            source = meta.optString("source", ""),
             segments = segments,
             pois = pois,
         )

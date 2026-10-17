@@ -67,6 +67,15 @@ data class Segment(
     val name: String = "",
     val streetClass: StreetClass = StreetClass.RESIDENTIAL,
     val path: List<LatLng> = emptyList(),
+    /**
+     * The OSM ways this segment was built from. Simplification merges
+     * consecutive ways, so this is a list -- and map matching returns way ids,
+     * which makes this the join between a recorded walk and a segment.
+     */
+    val osmWayIds: List<Long> = emptyList(),
+    /** The segment's two end intersections, as OSM node ids. */
+    val osmStartNode: Long = 0L,
+    val osmEndNode: Long = 0L,
     /** Current litter density in 0..1. */
     val litterIndex: Float = 0f,
     /** How fast this segment re-accumulates once cleaned, in 0..1. */
