@@ -36,6 +36,9 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -59,6 +62,7 @@ import kotlin.math.roundToInt
  * Firestore's persistent cache is enabled, so a volunteer who walks out of
  * coverage keeps reading and writing; the SDK reconciles when signal returns.
  */
+@OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
 class FirestoreRepository(
     override val network: NeighborhoodNetwork,
     private val auth: FirebaseAuth,
@@ -77,13 +81,29 @@ class FirestoreRepository(
         }.onFailure { Log.w(TAG, "could not enable the offline cache", it) }
     }
 
+    /**
+     * The signed-in uid as a flow, so reads can wait for identity.
+     *
+     * Firestore listeners attached before anonymous sign-in completes are
+     * rejected with PERMISSION_DENIED, and a rejected listener is *dead* -- the
+     * SDK does not retry it when auth later arrives. Gating every read on this
+     * flow is what stops a cold start from permanently showing empty screens.
+     */
+    private fun authUid(): Flow<String?> = callbackFlow {
+        val listener = FirebaseAuth.AuthStateListener { trySend(it.currentUser?.uid) }
+        auth.addAuthStateListener(listener)
+        awaitClose { auth.removeAuthStateListener(listener) }
+    }.distinctUntilChanged()
+
     // ---------------------------------------------------------------- reads
 
     /**
      * Segment state merged onto bundled geometry. Emits the bundled network first
      * so the map has something to draw before the first snapshot lands.
      */
-    override fun observeSegments(): Flow<List<Segment>> = callbackFlow {
+    override fun observeSegments(): Flow<List<Segment>> = authUid().flatMapLatest { uid ->
+        if (uid == null) return@flatMapLatest flowOf(network.segments)
+        callbackFlow {
         trySend(network.segments)
         val reg = db.collection(SEGMENT_STATE).addSnapshotListener { snap, err ->
             if (err != null) {
@@ -109,6 +129,7 @@ class FirestoreRepository(
             )
         }
         awaitClose { reg.remove() }
+        }
     }
 
     override fun observeProfile(): Flow<UserProfile> = callbackFlow {
@@ -136,7 +157,10 @@ class FirestoreRepository(
         }
     }
 
-    override fun observeCollections(limit: Int): Flow<List<CollectionEvent>> = callbackFlow {
+    override fun observeCollections(limit: Int): Flow<List<CollectionEvent>> =
+        authUid().flatMapLatest { uid ->
+        if (uid == null) return@flatMapLatest flowOf(emptyList())
+        callbackFlow {
         val reg = db.collection(COLLECTIONS)
             .orderBy("createdAt", Query.Direction.DESCENDING)
             .limit(limit.toLong())
@@ -148,9 +172,12 @@ class FirestoreRepository(
                 trySend(snap?.documents?.map { decodeCollection(it.id, it.data.orEmpty()) }.orEmpty())
             }
         awaitClose { reg.remove() }
+        }
     }
 
-    override fun observeTeams(): Flow<List<Team>> = callbackFlow {
+    override fun observeTeams(): Flow<List<Team>> = authUid().flatMapLatest { uid ->
+        if (uid == null) return@flatMapLatest flowOf(emptyList())
+        callbackFlow {
         val reg = db.collection(TEAMS).addSnapshotListener { snap, err ->
             if (err != null) {
                 Log.w(TAG, "teams listener failed", err)
@@ -172,9 +199,12 @@ class FirestoreRepository(
             )
         }
         awaitClose { reg.remove() }
+        }
     }
 
-    override fun observeFlags(): Flow<List<MapFlag>> = callbackFlow {
+    override fun observeFlags(): Flow<List<MapFlag>> = authUid().flatMapLatest { uid ->
+        if (uid == null) return@flatMapLatest flowOf(emptyList())
+        callbackFlow {
         val reg = db.collection(FLAGS)
             .orderBy("createdAt", Query.Direction.DESCENDING)
             .limit(400)
@@ -205,6 +235,7 @@ class FirestoreRepository(
                 )
             }
         awaitClose { reg.remove() }
+        }
     }
 
     /**
@@ -216,7 +247,9 @@ class FirestoreRepository(
      */
     override fun observeLeaderboard(scope: LeaderboardScope): Flow<List<LeaderboardEntry>> {
         val field = if (scope == LeaderboardScope.ALL_TIME) "totalPoints" else "weeklyPoints"
-        return callbackFlow {
+        return authUid().flatMapLatest { uid ->
+            if (uid == null) return@flatMapLatest flowOf(emptyList<Pair<String, Map<String, Any?>>>())
+            callbackFlow {
             val reg = db.collection(USERS)
                 .orderBy(field, Query.Direction.DESCENDING)
                 .limit(100)
@@ -228,6 +261,7 @@ class FirestoreRepository(
                     trySend(snap?.documents.orEmpty().map { d -> d.id to d.data.orEmpty() })
                 }
             awaitClose { reg.remove() }
+            }
         }.combine(observeProfile()) { rows, me ->
             rows
                 .filter { (_, data) ->
