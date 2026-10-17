@@ -12,6 +12,9 @@ import com.google.firebase.firestore.persistentCacheSettings
 import com.trashtalk.core.LatLng
 import com.trashtalk.data.AdvocacyAction
 import com.trashtalk.data.NeighborhoodNetwork
+import com.trashtalk.data.SubmittedSegment
+import com.trashtalk.data.TrackFix
+import com.trashtalk.data.SubmissionRejected
 import com.trashtalk.data.TrashTalkRepository
 import com.trashtalk.data.content.LevelContent
 import com.trashtalk.data.model.BackendMode
@@ -351,12 +354,9 @@ class FirestoreRepository(
                 "displayName" to "Collector",
                 "cityId" to network.cityId,
                 "createdAt" to System.currentTimeMillis(),
-                "totalPoints" to 0,
-                "weeklyPoints" to 0,
                 "narrativeLevel" to 0,
                 "completedLevels" to emptyList<Int>(),
                 "badgeTiers" to emptyMap<String, Int>(),
-                "streakDays" to 0,
                 "referralCode" to "TT-" + (100000..999999).random(),
                 "stats" to emptyMap<String, Any>(),
             ),
@@ -364,96 +364,136 @@ class FirestoreRepository(
         ).await()
     }
 
-    override suspend fun submitCollection(draft: CollectionDraft): ProgressDelta {
-        val id = requireUid()
-        val now = System.currentTimeMillis()
-        val profile = loadProfile(id)
-        val segment = currentSegment(draft.segmentId)
-        val breakdown = ScoreEngine.score(draft, segment, profile)
-        val wasFirstSurvey = segment != null && !segment.hasBeenSurveyed
-
-        // The observation and the segment's new density go in together, keyed on
-        // the client's submission id.
-        //
-        // One transaction rather than three writes, because the three were not
-        // separable in practice: a retry after a half-finished submit used to
-        // write the observation again, drop the density again and award the
-        // points again. The observation document is now its own idempotency
-        // marker -- if it is already there, this submission has landed and the
-        // whole thing is a no-op.
-        //
-        // It is also still the thing that keeps two volunteers working the same
-        // block from clobbering each other's density update.
-        val observation = db.collection(COLLECTIONS).document(draft.submissionId)
-        val stateDoc = db.collection(SEGMENT_STATE).document(draft.segmentId)
-        val baseIndex = segment?.litterIndex ?: 0f
-        val load = (segment?.estimatedPieces ?: 1).coerceAtLeast(1)
-
-        val applied = db.runTransaction { tx ->
-            // Every read before any write: Firestore requires it.
-            if (tx.get(observation).exists()) return@runTransaction false
-            val snap = tx.get(stateDoc)
-
-            tx.set(
-                observation,
-                mapOf(
-                    "userId" to id,
-                    "userName" to profile.displayName,
-                    "teamId" to profile.teamId,
-                    "segmentId" to draft.segmentId,
-                    "segmentName" to draft.segmentName,
-                    "lat" to draft.lat,
-                    "lng" to draft.lng,
-                    "counts" to draft.counts.mapKeys { it.key.name },
-                    "photoUri" to draft.photoUri,
-                    "notes" to draft.notes,
-                    "createdAt" to now,
-                    "points" to breakdown.total,
-                    "wasFirstSurvey" to wasFirstSurvey,
-                    "minutes" to draft.minutes,
+    /**
+     * Describes a cleanup to the server and waits for what it was worth.
+     *
+     * The client used to compute the points and write them, along with the
+     * segment's new density and its own running total. That made every score
+     * a claim the client made about itself, which is fine right up until
+     * anything is competitive.
+     *
+     * Now it writes one document saying what it did, and the scoring function
+     * decides. Nothing here is trusted: not the points, not the ownership, not
+     * whether it was a first survey. The client's own ScoreEngine still runs,
+     * but only to show a number immediately -- a submission that scores in
+     * silence reads as broken -- and that number is a preview, not the award.
+     *
+     * The submission id comes from the caller and is what makes a retry safe.
+     */
+    override suspend fun submitCollection(draft: CollectionDraft): ProgressDelta =
+        submitToServer(
+            submissionId = draft.submissionId,
+            segments = listOf(
+                SubmittedSegment(
+                    segmentId = draft.segmentId,
+                    segmentName = draft.segmentName,
+                    counts = draft.counts,
+                    lat = draft.lat,
+                    lng = draft.lng,
+                    minutes = draft.minutes,
                 ),
-            )
-
-            // Density falls in proportion to the share of the segment's
-            // estimated load that was actually removed.
-            val current = (snap.getDouble("litterIndex") ?: baseIndex.toDouble()).toFloat()
-            val cleared = (draft.pieces.toFloat() / load).coerceIn(0f, 1f)
-            val next = (current * (1f - 0.75f * cleared)).coerceIn(0f, 1f)
-            tx.set(
-                stateDoc,
-                mapOf(
-                    "litterIndex" to next.toDouble(),
-                    "surveyCount" to FieldValue.increment(1),
-                    "cleanupCount" to FieldValue.increment(1),
-                    "piecesRemoved" to FieldValue.increment(draft.pieces.toLong()),
-                    "lastSurveyedAt" to now,
-                ),
-                SetOptions.merge(),
-            )
-            true
-        }.await()
-
-        // Already counted on an earlier attempt: award nothing a second time.
-        if (!applied) return ProgressDelta()
-
-        val streak = ScoreEngine.nextStreak(profile, now)
-        val stats = recomputeStats(profile.stats, id, now, draft, wasFirstSurvey)
-        val updated = profile.copy(
-            totalPoints = profile.totalPoints + breakdown.total,
-            streakDays = streak,
-            lastCollectionDay = ScoreEngine.dayIndex(now),
+            ),
+            track = emptyList(),
+            evidencePath = draft.photoUri,
         )
-        return commit(
-            updated, stats, now, breakdown.total, breakdown,
-            streak > profile.streakDays, wasFirstSurvey,
+
+    override suspend fun submitToServer(
+        submissionId: String,
+        segments: List<SubmittedSegment>,
+        track: List<TrackFix>,
+        evidencePath: String?,
+    ): ProgressDelta {
+        val uid = requireUid()
+        val now = System.currentTimeMillis()
+
+        // Written once, and a second attempt is expected rather than
+        // exceptional: the offline queue retries anything it could not
+        // distinguish from a failure, and the rules make submissions
+        // immutable so that a document cannot be edited after the function
+        // has read it.
+        //
+        // So a refused write here most likely means this submission already
+        // landed, and the right response is to go and wait for its result --
+        // not to report that the server refused the cleanup, which is what
+        // used to happen.
+        val write = runCatching {
+            db.collection(SUBMISSIONS).document(submissionId).set(
+            mapOf(
+                "userId" to uid,
+                "createdAt" to now,
+                "evidencePath" to evidencePath,
+                "segments" to segments.map { seg ->
+                    mapOf(
+                        "segmentId" to seg.segmentId,
+                        "segmentName" to seg.segmentName,
+                        "counts" to seg.counts.mapKeys { it.key.name },
+                        "lat" to seg.lat,
+                        "lng" to seg.lng,
+                        "minutes" to seg.minutes,
+                    )
+                },
+                "track" to track.map {
+                    mapOf(
+                        "lat" to it.lat,
+                        "lng" to it.lng,
+                        "at" to it.at,
+                        "accuracyMetres" to it.accuracyMeters.toDouble(),
+                        "isMock" to it.isMock,
+                    )
+                },
+            ),
+            ).await()
+        }
+        if (write.isFailure) {
+            Log.i(TAG, "submission $submissionId was already written; awaiting its result")
+        }
+
+        // The function answers in `results/{id}`. Waiting on a listener rather
+        // than polling, so the celebration fires the moment it lands.
+        val result = awaitResult(submissionId)
+            ?: throw IllegalStateException("the server did not answer in time")
+
+        if (result["status"] == "REJECTED") {
+            throw SubmissionRejected(
+                (result["reason"] as? String)
+                    ?: "This cleanup could not be scored.",
+            )
+        }
+
+        val awarded = (result["pointsAwarded"] as? Number)?.toInt() ?: 0
+        val profile = loadProfile(uid)
+        val firstSurvey = ((result["awards"] as? List<*>)?.firstOrNull() as? Map<*, *>)
+            ?.get("wasFirstSurvey") as? Boolean ?: false
+
+        return ProgressDelta(
+            pointsAwarded = awarded,
+            wasFirstSurvey = firstSurvey,
+            streakDays = profile.streakDays,
             shareCard = com.trashtalk.ui.share.ShareCardData.from(
-                segment = segment,
-                counts = draft.counts,
-                wasFirstSurvey = wasFirstSurvey,
+                segment = currentSegment(segments.firstOrNull()?.segmentId ?: ""),
+                counts = segments.firstOrNull()?.counts ?: emptyMap(),
+                wasFirstSurvey = firstSurvey,
                 neighborhood = network.neighborhood,
             ),
         )
     }
+
+    /** Listens for the scoring function's answer. */
+    private suspend fun awaitResult(submissionId: String): Map<String, Any?>? =
+        kotlinx.coroutines.withTimeoutOrNull(RESULT_TIMEOUT_MS) {
+            kotlinx.coroutines.suspendCancellableCoroutine { cont ->
+                val reg = db.collection(RESULTS).document(submissionId)
+                    .addSnapshotListener { snap, error ->
+                        when {
+                            error != null -> if (cont.isActive) cont.resumeWith(Result.failure(error))
+                            snap != null && snap.exists() ->
+                                if (cont.isActive) cont.resumeWith(Result.success(snap.data))
+                        }
+                    }
+                cont.invokeOnCancellation { reg.remove() }
+            }
+        }
+
 
     override suspend fun plantFlag(
         kind: FlagKind,
@@ -711,9 +751,10 @@ class FirestoreRepository(
         "cityId" to p.cityId,
         "teamId" to p.teamId,
         "teamName" to p.teamName,
-        "totalPoints" to p.totalPoints,
-        // Incremented rather than set, so the Monday reset function owns the field.
-        "weeklyPoints" to FieldValue.increment(weeklyDelta.toLong()),
+        // totalPoints, weeklyPoints and streakDays are deliberately absent:
+        // they are what the leaderboard ranks on and what the scoring
+        // multiplier reads, so the server owns them. Writing them here would
+        // be refused by the rules, and should be.
         "narrativeLevel" to p.narrativeLevel,
         "completedLevels" to p.completedLevels.toList(),
         "path" to p.path?.id,
@@ -721,7 +762,6 @@ class FirestoreRepository(
         "earned" to p.earned.map {
             mapOf("badgeId" to it.badgeId, "tier" to it.tier, "earnedAt" to it.earnedAt)
         },
-        "streakDays" to p.streakDays,
         "lastCollectionDay" to p.lastCollectionDay,
         "referralCode" to p.referralCode,
         "stats" to encodeStats(p.stats),
@@ -849,6 +889,18 @@ class FirestoreRepository(
         const val SEGMENT_STATE = "segment_state"
         const val TEAMS = "teams"
         const val FLAGS = "flags"
+        const val SUBMISSIONS = "submissions"
+        const val RESULTS = "results"
+
+        /**
+         * How long to wait for the scoring function.
+         *
+         * Longer than the client-side timeout used to be, because a cold
+         * function start is seconds before it has even read anything. Past
+         * this the walk stays PENDING and the queue tries again, which is the
+         * same path a dead spot takes.
+         */
+        const val RESULT_TIMEOUT_MS = 45_000L
 
         /**
          * The crews a fresh project starts with. The ids are referenced by the

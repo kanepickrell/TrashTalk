@@ -1,5 +1,6 @@
 package com.trashtalk.data
 
+import com.trashtalk.data.model.LitterType
 import com.trashtalk.data.model.BackendMode
 import com.trashtalk.data.model.CollectionEvent
 import com.trashtalk.data.model.FlagKind
@@ -54,6 +55,20 @@ interface TrashTalkRepository {
 
     suspend fun submitCollection(draft: CollectionDraft): ProgressDelta
 
+    /**
+     * Submits a whole walk as one document for the server to score.
+     *
+     * One submission rather than one per street: the track is shared, the
+     * anti-cheat checks apply to the walk as a whole, and the user did one
+     * walk so they get one answer.
+     */
+    suspend fun submitToServer(
+        submissionId: String,
+        segments: List<SubmittedSegment>,
+        track: List<TrackFix>,
+        evidencePath: String?,
+    ): ProgressDelta
+
     suspend fun plantFlag(
         kind: FlagKind,
         lat: Double,
@@ -95,3 +110,25 @@ enum class AdvocacyAction(val label: String, val blurb: String) {
     PEER_RESURVEY("Re-surveyed a peer's segment", "Scientist: Calibration"),
     ANSWER_REMINDER("Answered a reminder", "Seeker: Diligence"),
 }
+
+/** One street's worth of a submission. */
+data class SubmittedSegment(
+    val segmentId: String,
+    val segmentName: String,
+    val counts: Map<LitterType, Int>,
+    val lat: Double,
+    val lng: Double,
+    val minutes: Int = 0,
+)
+
+/** A recorded fix, as the server's anti-cheat expects it. */
+data class TrackFix(
+    val lat: Double,
+    val lng: Double,
+    val at: Long,
+    val accuracyMeters: Float,
+    val isMock: Boolean,
+)
+
+/** The server refused this cleanup, with a reason meant for the user. */
+class SubmissionRejected(message: String) : Exception(message)

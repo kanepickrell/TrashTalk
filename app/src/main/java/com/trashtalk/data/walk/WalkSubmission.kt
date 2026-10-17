@@ -1,6 +1,8 @@
 package com.trashtalk.data.walk
 
 import com.trashtalk.core.LatLng
+import com.trashtalk.data.SubmittedSegment
+import com.trashtalk.data.TrackFix
 import com.trashtalk.data.TrashTalkRepository
 import com.trashtalk.data.model.LitterType
 import com.trashtalk.data.model.Segment
@@ -121,29 +123,40 @@ class WalkSubmitter(
         // the path is on the walk.
         val evidencePath = summary.walk.evidencePath ?: uploadEvidence(summary)
 
-        val deltas = summary.tallies.map { tally ->
-            tally to repository.submitCollection(
-                CollectionDraft(
-                    // Derived, not random: the same walk retried produces the
-                    // same ids, which is what lets the server recognise a
-                    // repeat instead of counting it twice.
-                    submissionId = "${summary.walk.id}_${tally.segmentId}",
-                    segmentId = tally.segmentId,
-                    segmentName = tally.name,
-                    lat = tally.at.lat,
-                    lng = tally.at.lng,
-                    counts = tally.counts,
-                    minutes = tally.minutes,
-                    notes = notes,
-                    // The haul photo covers the whole walk, so it is attached
-                    // to the biggest segment rather than copied onto each --
-                    // duplicating it would read as four photos of four streets.
-                    photoUri = evidencePath.takeIf { tally == summary.tallies.firstOrNull() },
-                ),
+        // One submission for the whole walk, carrying the track.
+        //
+        // Per-segment submissions would each arrive without context, and the
+        // anti-cheat checks are about the walk as a whole: how fast it moved,
+        // whether the clock ran forwards, how many blocks it claims to have
+        // covered in the time. The mock-location flag the recorder has been
+        // collecting all along finally goes somewhere that can act on it.
+        val fixes = dao.points(summary.walk.id).map {
+            TrackFix(
+                lat = it.lat,
+                lng = it.lng,
+                at = it.at,
+                accuracyMeters = it.accuracyMeters,
+                isMock = it.isMock,
             )
         }
 
-        val combined = deltas.combine()
+        val combined = repository.submitToServer(
+            submissionId = summary.walk.id,
+            segments = summary.tallies.map { tally ->
+                SubmittedSegment(
+                    segmentId = tally.segmentId,
+                    segmentName = tally.name,
+                    counts = tally.counts,
+                    lat = tally.at.lat,
+                    lng = tally.at.lng,
+                    minutes = tally.minutes,
+                )
+            },
+            track = fixes,
+            evidencePath = evidencePath,
+        )
+
+
 
         // A walk that had already landed comes back worth nothing, because the
         // server recognised the repeat. That is the right answer to "what did

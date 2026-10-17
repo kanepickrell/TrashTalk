@@ -4,6 +4,8 @@ import android.content.Context
 import com.trashtalk.core.LatLng
 import com.trashtalk.data.AdvocacyAction
 import com.trashtalk.data.NeighborhoodNetwork
+import com.trashtalk.data.SubmittedSegment
+import com.trashtalk.data.TrackFix
 import com.trashtalk.data.TrashTalkRepository
 import com.trashtalk.data.model.BackendMode
 import com.trashtalk.data.model.CollectionEvent
@@ -126,6 +128,42 @@ class DemoRepository(
     }
 
     // --------------------------------------------------------------- writes
+
+    /**
+     * Demo mode has no server, so a walk is submitted segment by segment
+     * through the same local path a quick log takes.
+     *
+     * The awards are folded into one, because the user did one walk and
+     * should see one answer whichever backend is behind it.
+     */
+    override suspend fun submitToServer(
+        submissionId: String,
+        segments: List<SubmittedSegment>,
+        track: List<TrackFix>,
+        evidencePath: String?,
+    ): ProgressDelta {
+        var total = 0
+        var firstSurvey = false
+        var last = ProgressDelta()
+        for (seg in segments) {
+            val delta = submitCollection(
+                CollectionDraft(
+                    submissionId = "${submissionId}_${seg.segmentId}",
+                    segmentId = seg.segmentId,
+                    segmentName = seg.segmentName,
+                    lat = seg.lat,
+                    lng = seg.lng,
+                    counts = seg.counts,
+                    minutes = seg.minutes,
+                    photoUri = evidencePath,
+                ),
+            )
+            total += delta.pointsAwarded
+            firstSurvey = firstSurvey || delta.wasFirstSurvey
+            last = delta
+        }
+        return last.copy(pointsAwarded = total, wasFirstSurvey = firstSurvey)
+    }
 
     override suspend fun submitCollection(draft: CollectionDraft): ProgressDelta =
         writeLock.withLock {

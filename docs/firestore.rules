@@ -17,26 +17,76 @@ service cloud.firestore {
     }
 
     // Profiles: readable by anyone signed in, because leaderboards are the
-    // point. Writable only by their owner.
+    // point. Owners may edit who they are; they may not edit what they have
+    // earned.
+    //
+    // Before this, an owner could write totalPoints directly, which made the
+    // leaderboard a list of claims rather than results. Those fields are now
+    // written only by the scoring function through the Admin SDK, which these
+    // rules do not apply to.
+    // A denylist, not an allowlist. The client owns a lot of its profile --
+    // narrative progress, chosen path, badge tiers, the stats it derives for
+    // its own screens -- and enumerating all of that would mean this rule
+    // breaks every time a field is added, which is how rules end up loosened
+    // in a hurry by somebody debugging a denial.
+    //
+    // These three are the ones that decide anything:
+    //
+    //   totalPoints, weeklyPoints  what the leaderboard ranks on
+    //   streakDays                 feeds the scoring multiplier, so a client
+    //                              that could set it could inflate every
+    //                              future award by up to 1.6x
+    //
+    // They are written only by the scoring function through the Admin SDK,
+    // which these rules do not apply to.
+    function serverOwnedProfileFields() {
+      return ['totalPoints', 'weeklyPoints', 'streakDays'];
+    }
+
     match /users/{uid} {
       allow read: if signedIn();
-      allow create, update: if isOwner(uid);
+      allow create: if isOwner(uid)
+                    && !request.resource.data.keys().hasAny(serverOwnedProfileFields());
+      allow update: if isOwner(uid)
+                    && !request.resource.data.diff(resource.data)
+                         .affectedKeys().hasAny(serverOwnedProfileFields());
       allow delete: if false;
     }
 
-    // Pickups are an append-only log. A new document must be attributed to the
-    // caller, so nobody can log a collection as somebody else, and existing
-    // records are immutable: the dataset's value depends on observations not
-    // being quietly rewritten after the fact.
+    // Observations are the dataset. They are written by the scoring function
+    // and nobody else: a client that could write one could write its own
+    // points into it, which is what it used to do.
     match /collections/{id} {
       allow read: if signedIn();
+      allow write: if false;
+    }
+
+    // What a client actually submits: a description of what it did. The
+    // server decides what that was worth.
+    //
+    // Write-once, because a submission that can be edited after the function
+    // has read it is a submission that can be scored twice with different
+    // contents.
+    match /submissions/{id} {
+      allow read: if signedIn() && resource.data.userId == request.auth.uid;
       allow create: if signedIn()
                     && request.resource.data.userId == request.auth.uid
-                    && request.resource.data.keys().hasAll(['userId', 'segmentId', 'createdAt'])
-                    && request.resource.data.points is number
-                    && request.resource.data.points >= 0
-                    && request.resource.data.points <= 100000;
+                    && request.resource.data.segments is list
+                    && request.resource.data.segments.size() > 0
+                    && request.resource.data.segments.size() <= 100;
       allow update, delete: if false;
+    }
+
+    // The server's answer. Read it, never write it.
+    match /results/{id} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
+    // Per-user contest standing, maintained by the function.
+    match /segment_contest/{id} {
+      allow read: if signedIn();
+      allow write: if false;
     }
 
     // Flags: same attribution rule. The planter may delete their own.
@@ -49,27 +99,16 @@ service cloud.firestore {
                     && resource.data.userId == request.auth.uid;
     }
 
-    // Shared survey state. Any signed-in user may update a segment, because
-    // that is what a shared survey is: the next person to walk a block gets to
-    // correct the record. The guard against vandalism is social and
-    // statistical rather than a rule — every write is attributable through the
-    // collections log, and repeated surveys converge.
+    // Territory and density: server-write only.
     //
-    // The index stays in range and the guardian field, if set, must name the
-    // caller: you cannot adopt a segment on somebody else's behalf.
+    // This was open to any signed-in client, which meant the contest model and
+    // the anti-cheat checks were advisory -- a modified client could simply
+    // write itself the ownership it wanted. Ownership is now decided in one
+    // transaction by the scoring function, which runs under the Admin SDK and
+    // is not subject to these rules.
     match /segment_state/{segmentId} {
       allow read: if signedIn();
-      allow create, update: if signedIn()
-                            && (!('litterIndex' in request.resource.data)
-                                || (request.resource.data.litterIndex is number
-                                    && request.resource.data.litterIndex >= 0
-                                    && request.resource.data.litterIndex <= 1))
-                            && (!('guardianUserId' in request.resource.data)
-                                || request.resource.data.guardianUserId == null
-                                || request.resource.data.guardianUserId == request.auth.uid
-                                || resource == null
-                                || resource.data.guardianUserId == request.auth.uid);
-      allow delete: if false;
+      allow write: if false;
     }
 
     // Crews are curated rather than user-created, but requiring a human to
@@ -86,10 +125,11 @@ service cloud.firestore {
                     && isKnownCrew(teamId)
                     && request.resource.data.name is string
                     && request.resource.data.cityId is string;
+      // Membership is the client's to change; the crew's score is not.
       allow update: if signedIn()
                     && request.resource.data.diff(resource.data)
                          .affectedKeys()
-                         .hasOnly(['memberCount', 'weeklyPoints', 'totalPieces', 'totalPoints']);
+                         .hasOnly(['memberCount']);
       allow delete: if false;
     }
 

@@ -262,8 +262,29 @@ interface WalkDao {
 
     // ---- housekeeping ----------------------------------------------------
 
+    @Query("DELETE FROM track_points WHERE walkId = :walkId")
+    suspend fun deletePoints(walkId: String)
+
+    @Query("DELETE FROM pickups WHERE walkId = :walkId")
+    suspend fun deletePickups(walkId: String)
+
+    /**
+     * Removes a walk and everything recorded under it.
+     *
+     * Room does not cascade without a foreign key, so deleting only the walk
+     * row left its track behind: rows nothing referenced, holding the GPS
+     * trace of somebody's afternoon, which is the most sensitive thing this
+     * app stores.
+     */
+    @Transaction
+    suspend fun deleteWalk(walkId: String) {
+        deletePoints(walkId)
+        deletePickups(walkId)
+        deleteWalkRow(walkId)
+    }
+
     @Query("DELETE FROM walks WHERE id = :walkId")
-    suspend fun deleteWalk(walkId: String)
+    suspend fun deleteWalkRow(walkId: String)
 
     /**
      * Drops the raw track of walks the server has already scored.

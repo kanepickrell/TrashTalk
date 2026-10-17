@@ -12,6 +12,7 @@ import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.google.firebase.firestore.FirebaseFirestoreException
 import com.trashtalk.TrashTalkApp
+import com.trashtalk.data.SubmissionRejected
 import kotlinx.coroutines.TimeoutCancellationException
 import java.io.IOException
 import java.util.concurrent.TimeUnit
@@ -74,6 +75,12 @@ private sealed interface Failure {
 }
 
 private fun classify(cause: Throwable): Failure = when {
+    // The server looked at this and said no, in words meant for the user.
+    // Retrying will get the same answer, and replacing its reason with a
+    // generic one would throw away the only useful thing about the refusal.
+    cause is SubmissionRejected ->
+        Failure.Permanent(cause.message ?: "This cleanup could not be scored.")
+
     cause is TimeoutCancellationException ->
         Failure.Transient("timed out")
 
