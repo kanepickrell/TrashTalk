@@ -1,0 +1,125 @@
+{
+  "generatedFrom": "ScoreEngine.kt",
+  "cases": [
+    {
+      "name": "empty",
+      "counts": {},
+      "litterIndex": 0.5,
+      "streakDays": 0,
+      "isFirstSurvey": false,
+      "expected": {
+        "basePoints": 0,
+        "difficultyBonus": 0,
+        "streakBonus": 0,
+        "coverageBonus": 0,
+        "harmBonus": 0,
+        "total": 0
+      }
+    },
+    {
+      "name": "single cigarette",
+      "counts": {"CIGARETTE": 1},
+      "litterIndex": 0.0,
+      "streakDays": 0,
+      "isFirstSurvey": false,
+      "expected": {
+        "basePoints": 23,
+        "difficultyBonus": 0,
+        "streakBonus": 0,
+        "coverageBonus": 0,
+        "harmBonus": 0,
+        "total": 23
+      }
+    },
+    {
+      "name": "one of each plastic",
+      "counts": {"PLASTIC_BAG": 1, "FILM_WRAPPER": 1, "FOAM": 1, "FOOD_PACKAGING": 1, "PLASTIC_BOTTLE": 1},
+      "litterIndex": 0.0,
+      "streakDays": 0,
+      "isFirstSurvey": false,
+      "expected": {
+        "basePoints": 117,
+        "difficultyBonus": 0,
+        "streakBonus": 0,
+        "coverageBonus": 0,
+        "harmBonus": 10,
+        "total": 127
+      }
+    },
+    {
+      "name": "mixed haul, dirty block",
+      "counts": {"CIGARETTE": 7, "PLASTIC_BOTTLE": 3, "PAPER": 2, "GLASS": 1},
+      "litterIndex": 0.9,
+      "streakDays": 0,
+      "isFirstSurvey": false,
+      "expected": {
+        "basePoints": 265,
+        "difficultyBonus": 119,
+        "streakBonus": 0,
+        "coverageBonus": 0,
+        "harmBonus": 6,
+        "total": 390
+      }
+    },
+    {
+      "name": "first survey",
+      "counts": {"FOOD_PACKAGING": 5},
+      "litterIndex": 0.3,
+      "streakDays": 0,
+      "isFirstSurvey": true,
+      "expected": {
+        "basePoints": 110,
+        "difficultyBonus": 16,
+        "streakBonus": 0,
+        "coverageBonus": 50,
+        "harmBonus": 10,
+        "total": 186
+      }
+    },
+    {
+      "name": "long streak",
+      "counts": {"ALUMINUM_CAN": 10},
+      "litterIndex": 0.45,
+      "streakDays": 12,
+      "isFirstSurvey": false,
+      "expected": {
+        "basePoints": 130,
+        "difficultyBonus": 29,
+        "streakBonus": 38,
+        "coverageBonus": 0,
+        "harmBonus": 0,
+        "total": 197
+      }
+    },
+    {
+      "name": "capped streak",
+      "counts": {"ALUMINUM_CAN": 10},
+      "litterIndex": 0.45,
+      "streakDays": 99,
+      "isFirstSurvey": false,
+      "expected": {
+        "basePoints": 130,
+        "difficultyBonus": 29,
+        "streakBonus": 95,
+        "coverageBonus": 0,
+        "harmBonus": 0,
+        "total": 254
+      }
+    },
+    {
+      "name": "everything at once",
+      "counts": {"PLASTIC_BAG": 4, "CIGARETTE": 21, "OTHER": 3},
+      "litterIndex": 0.73,
+      "streakDays": 9,
+      "isFirstSurvey": true,
+      "expected": {
+        "basePoints": 634,
+        "difficultyBonus": 231,
+        "streakBonus": 156,
+        "coverageBonus": 50,
+        "harmBonus": 8,
+        "total": 1079
+      }
+    }
+  ]
+}

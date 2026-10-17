@@ -1,0 +1,23 @@
+{
+  "name": "trashtalk-functions",
+  "description": "Server-side scoring and the contest model.",
+  "private": true,
+  "main": "lib/index.js",
+  "engines": { "node": "22" },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "test": "node --test --import tsx lib-test/*.test.js || npm run test:ts",
+    "test:ts": "tsc -p tsconfig.test.json && node --test dist-test/**/*.test.js",
+    "serve": "npm run build && firebase emulators:start --only functions,firestore",
+    "deploy": "npm run build && firebase deploy --only functions"
+  },
+  "dependencies": {
+    "firebase-admin": "^13.0.2",
+    "firebase-functions": "^6.1.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.2",
+    "@types/node": "^22.10.2"
+  }
+}
