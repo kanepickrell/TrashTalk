@@ -1,16 +1,23 @@
 [versions]
-agp = "8.13.2"
-kotlin = "2.2.20"
+agp = "9.4.1"
+kotlin = "2.4.21"
 coreKtx = "1.17.0"
 lifecycle = "2.9.4"
 activityCompose = "1.10.1"
-composeBom = "2025.09.01"
+composeBom = "2026.09.00"
 navigation = "2.9.5"
 firebaseBom = "34.4.0"
 googleServices = "4.4.3"
 serialization = "1.9.0"
 coil = "2.7.0"
 junit = "4.13.2"
+
+maplibreCompose = "0.20.0"
+# The renderer backend ships separately from maplibre-compose and is not pulled
+# in transitively: without it libjniMaplibreNativeC.so has no libmaplibre-native-c.so
+# to dlopen and the first frame throws UnsatisfiedLinkError. OpenGL rather than
+# Vulkan because GL ES is present on every device the app targets.
+maplibreNativeFfi = "0.202610.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -32,6 +39,8 @@ firebase-storage = { group = "com.google.firebase", name = "firebase-storage" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+maplibre-compose = { group = "org.maplibre.compose", name = "maplibre-compose", version.ref = "maplibreCompose" }
+maplibre-renderer-opengl = { group = "org.maplibre.nativeffi", name = "maplibre-native-ffi-runtime-opengl", version.ref = "maplibreNativeFfi" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -1,6 +1,5 @@
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
 }
@@ -17,12 +16,19 @@ if (hasFirebaseConfig) {
 
 android {
     namespace = "com.trashtalk"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "com.trashtalk"
         minSdk = 26
         targetSdk = 36
+        ndk {
+            // The MapLibre renderer core publishes these three and no more.
+            // Without this filter AGP would still package lib/x86/ for the
+            // other native deps, so a 32-bit x86 device would install happily
+            // and then die on the first map frame with UnsatisfiedLinkError.
+            abiFilters += setOf("arm64-v8a", "armeabi-v7a", "x86_64")
+        }
         versionCode = 1
         versionName = "1.0"
         vectorDrawables.useSupportLibrary = true
@@ -63,6 +69,12 @@ android {
     }
     packaging {
         resources.excludes += setOf("/META-INF/{AL2.0,LGPL2.1}")
+        // The PMTiles archive is already gzip-internally; deflating it again in
+        // the APK buys nothing and costs a decompress on every read.
+        jniLibs.useLegacyPackaging = false
+    }
+    androidResources {
+        noCompress += "pmtiles"
     }
 }
 
@@ -85,6 +97,11 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.storage)
+
+    // Phase 2 spike: evaluating Path A (maplibre-compose) against Path B
+    // (MapLibre Android SDK in an AndroidView).
+    implementation(libs.maplibre.compose)
+    implementation(libs.maplibre.renderer.opengl)
 
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.coil.compose)

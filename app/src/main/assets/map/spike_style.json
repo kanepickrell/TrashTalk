@@ -1,0 +1,28 @@
+{
+  "version": 8,
+  "name": "TrashTalk spike",
+  "sources": {
+    "protomaps": {
+      "type": "vector",
+      "url": "pmtiles://asset://map/terrell_heights.pmtiles"
+    }
+  },
+  "layers": [
+    { "id": "bg", "type": "background", "paint": { "background-color": "#F3F2EE" } },
+    { "id": "earth", "type": "fill", "source": "protomaps", "source-layer": "earth",
+      "paint": { "fill-color": "#EDEBE6" } },
+    { "id": "landuse", "type": "fill", "source": "protomaps", "source-layer": "landuse",
+      "paint": { "fill-color": "#E4E9E1" } },
+    { "id": "water", "type": "fill", "source": "protomaps", "source-layer": "water",
+      "paint": { "fill-color": "#BBD3E8" } },
+    { "id": "roads", "type": "line", "source": "protomaps", "source-layer": "roads",
+      "paint": {
+        "line-color": "#FFFFFF",
+        "line-width": ["interpolate", ["exponential", 1.6], ["zoom"], 12, 0.6, 19, 14]
+      } },
+    { "id": "roads-casing", "type": "line", "source": "protomaps", "source-layer": "roads",
+      "paint": { "line-color": "#D8D5CE", "line-width": 0.6 } },
+    { "id": "buildings", "type": "fill", "source": "protomaps", "source-layer": "buildings",
+      "paint": { "fill-color": "#E2DFD8" } }
+  ]
+}
