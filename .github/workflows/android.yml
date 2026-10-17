@@ -30,6 +30,11 @@ jobs:
           distribution: temurin
           java-version: "17"
 
+      # compileSdk 37 is newer than the runner image ships. AGP will fetch the
+      # platform itself, but only once the licences are accepted, which is what
+      # this step is really for.
+      - uses: android-actions/setup-android@v3
+
       - uses: gradle/actions/setup-gradle@v4
 
       - name: Unit tests
