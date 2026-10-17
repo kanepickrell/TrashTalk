@@ -153,6 +153,13 @@ tasks.register("checkDownloadSize") {
     group = "verification"
     description = "Fails if any single-ABI download exceeds the size budget."
 
+    // Depending on the producing task is what actually orders these. Declaring
+    // the bundle as an input alone does not: with parallel execution Gradle is
+    // free to validate this task before the bundle exists, which is exactly
+    // what CI did. It passed locally only because an earlier manual run had
+    // left an .aab on disk -- a false green.
+    dependsOn("bundleRelease")
+
     val bundle = layout.buildDirectory.file("outputs/bundle/release/app-release.aab")
     inputs.file(bundle)
 
