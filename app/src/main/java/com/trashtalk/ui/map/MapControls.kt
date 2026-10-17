@@ -51,7 +51,7 @@ import com.trashtalk.ui.theme.HazardBand
 import com.trashtalk.ui.theme.TT
 
 /** The actions available on the map's control stack. */
-enum class MapAction { LOCATE, ZOOM_IN, ZOOM_OUT, FIT, SEARCH }
+enum class MapAction { LOCATE, ZOOM_IN, ZOOM_OUT, FIT, SEARCH, PLAN }
 
 /**
  * The control stack: locate, zoom, fit, search.
@@ -73,6 +73,11 @@ fun MapControlStack(
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.End,
     ) {
+        ControlButton(
+            onClick = { onAction(MapAction.PLAN) },
+            contentDescription = "Plan a walk",
+        ) { tint -> PlanGlyph(tint) }
+
         ControlButton(
             onClick = { onAction(MapAction.SEARCH) },
             contentDescription = "Find a street",
@@ -503,5 +508,37 @@ fun SegmentSearchSheet(
                 }
             }
         }
+    }
+}
+
+/**
+ * The plan glyph: a route through three stops.
+ *
+ * Drawn rather than lifted from an icon set so it matches the weight of the
+ * others in the stack; a heavier or lighter mark here would read as a
+ * different kind of control.
+ */
+@Composable
+private fun PlanGlyph(tint: androidx.compose.ui.graphics.Color) {
+    androidx.compose.foundation.Canvas(Modifier.size(20.dp)) {
+        // Proportional, not raw pixels: the canvas is 20dp, which is 52 px on
+        // this phone and 40 on a cheaper one, so a hard-coded 2.6 px dot is
+        // invisible on the first and wrong on both.
+        val r = size.minDimension * 0.11f
+        val stops = listOf(
+            androidx.compose.ui.geometry.Offset(size.width * 0.18f, size.height * 0.78f),
+            androidx.compose.ui.geometry.Offset(size.width * 0.52f, size.height * 0.30f),
+            androidx.compose.ui.geometry.Offset(size.width * 0.86f, size.height * 0.64f),
+        )
+        for (i in 0 until stops.lastIndex) {
+            drawLine(
+                color = tint,
+                start = stops[i],
+                end = stops[i + 1],
+                strokeWidth = size.minDimension * 0.085f,
+                cap = androidx.compose.ui.graphics.StrokeCap.Round,
+            )
+        }
+        stops.forEach { drawCircle(tint, radius = r, center = it) }
     }
 }

@@ -118,6 +118,8 @@ fun MapScreen(
     var flagTarget by remember { mutableStateOf<Pair<LatLng, Segment?>?>(null) }
     var showLegend by remember { mutableStateOf(false) }
     var showSearch by remember { mutableStateOf(false) }
+    var showPlanner by remember { mutableStateOf(false) }
+    var plannedTargets by remember { mutableStateOf<Set<String>>(emptySet()) }
     // "Following" means the camera tracks the fix until the user pans away,
     // which is the behaviour every maps app has trained people to expect.
     var followMe by remember { mutableStateOf(false) }
@@ -301,6 +303,11 @@ fun MapScreen(
                         }
                     }
 
+                    MapAction.PLAN -> {
+                        motion.lightTick()
+                        showPlanner = true
+                    }
+
                     MapAction.ZOOM_IN -> scope.launch {
                         camera.flyTo(camera.center, camera.zoom + 1f, durationMs = 260)
                     }
@@ -459,6 +466,28 @@ fun MapScreen(
                         note = "Reported from the segment sheet",
                     )
                 },
+            )
+        }
+    }
+
+    if (showPlanner) {
+        val anchor = locationState.fix?.location ?: camera.center
+        ModalBottomSheet(
+            onDismissRequest = { showPlanner = false },
+            containerColor = TT.Surface1,
+        ) {
+            PlannerSheet(
+                from = anchor,
+                segments = segments,
+                onStart = { plan ->
+                    // Highlighting the targets is the whole handoff for now:
+                    // the walk screen does not draw a route, because there is
+                    // no routing engine behind it to draw one from.
+                    plannedTargets = plan.targets.map { it.id }.toSet()
+                    showPlanner = false
+                    onStartWalk()
+                },
+                onDismiss = { showPlanner = false },
             )
         }
     }
