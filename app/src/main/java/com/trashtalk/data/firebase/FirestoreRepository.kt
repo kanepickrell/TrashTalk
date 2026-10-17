@@ -73,6 +73,10 @@ class FirestoreRepository(
 
     private val uid = MutableStateFlow<String?>(auth.currentUser?.uid)
 
+    /** Guards the one-time crew seeding check per process. */
+    @Volatile
+    private var crewsChecked = false
+
     init {
         runCatching {
             db.firestoreSettings = FirebaseFirestoreSettings.Builder()
@@ -289,15 +293,53 @@ class FirestoreRepository(
     // --------------------------------------------------------------- writes
 
     override suspend fun ensureSignedIn() {
-        auth.currentUser?.let {
-            uid.value = it.uid
-            ensureProfileDocument(it.uid)
-            return
-        }
-        val result = auth.signInAnonymously().await()
-        val id = result.user?.uid ?: error("anonymous sign-in returned no user")
+        // Reuse the existing anonymous session when there is one; it persists
+        // across launches, so this is the usual path after first run.
+        val id = auth.currentUser?.uid
+            ?: auth.signInAnonymously().await().user?.uid
+            ?: error("anonymous sign-in returned no user")
+
         uid.value = id
         ensureProfileDocument(id)
+        // Deliberately outside the sign-in branch: the roster has to be checked
+        // on every launch, not only the one that creates the account. An early
+        // return here is why a returning user saw an empty crew list.
+        ensureCrewsSeeded()
+    }
+
+    /**
+     * Creates the starting crews if the roster is empty.
+     *
+     * A brand-new project would otherwise show an empty Crews list until
+     * somebody hand-created four documents in the console, which is a poor
+     * first run and an easy step to get subtly wrong. The security rules permit
+     * creation of exactly these four ids, so this can seed the roster it ships
+     * with and cannot invent crews. Writes use merge, so a crew that already
+     * exists keeps its accumulated counters.
+     */
+    private suspend fun ensureCrewsSeeded() {
+        if (crewsChecked) return
+        crewsChecked = true
+        runCatching {
+            val existing = db.collection(TEAMS).limit(1).get().await()
+            if (!existing.isEmpty) return
+
+            for ((id, name, blurb) in DEFAULT_TEAMS) {
+                db.collection(TEAMS).document(id).set(
+                    mapOf(
+                        "name" to name,
+                        "blurb" to blurb,
+                        "cityId" to network.cityId,
+                        "memberCount" to 0,
+                        "weeklyPoints" to 0,
+                        "totalPieces" to 0,
+                        "totalPoints" to 0,
+                    ),
+                    SetOptions.merge(),
+                ).await()
+            }
+            Log.i(TAG, "seeded ${DEFAULT_TEAMS.size} crews")
+        }.onFailure { Log.w(TAG, "crew seeding skipped: ${it.message}") }
     }
 
     private suspend fun ensureProfileDocument(id: String) {
@@ -777,12 +819,32 @@ class FirestoreRepository(
         const val TEAMS = "teams"
         const val FLAGS = "flags"
 
-        /** Seed documents a fresh project needs; see docs/FIREBASE_SETUP.md. */
+        /**
+         * The crews a fresh project starts with. The ids are referenced by the
+         * security rules, so adding one here means updating
+         * `isKnownCrew` in docs/firestore.rules too.
+         */
         val DEFAULT_TEAMS = listOf(
-            "team_trashers" to "Terrell Heights Trashers",
-            "team_austin" to "Austin Hwy Alliance",
-            "team_wilshire" to "Wilshire Walkers",
-            "team_night" to "Nacogdoches Night Crew",
+            Triple(
+                "team_trashers",
+                "Terrell Heights Trashers",
+                "The original crew. Meets Saturdays at the park.",
+            ),
+            Triple(
+                "team_austin",
+                "Austin Hwy Alliance",
+                "Arterial specialists. Somebody has to do it.",
+            ),
+            Triple(
+                "team_wilshire",
+                "Wilshire Walkers",
+                "Parents doing the school run with grabbers.",
+            ),
+            Triple(
+                "team_night",
+                "Nacogdoches Night Crew",
+                "Evening shift, high-vis vests, strong opinions.",
+            ),
         )
     }
 }

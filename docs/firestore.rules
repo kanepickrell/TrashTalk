@@ -72,15 +72,25 @@ service cloud.firestore {
       allow delete: if false;
     }
 
-    // Crews are curated, not user-created: membership counts are maintained by
-    // the client, but the roster itself is seeded from the console.
+    // Crews are curated rather than user-created, but requiring a human to
+    // hand-create four documents before the app works is a bad first run. So
+    // creation is allowed for exactly the four known crew ids and nothing else:
+    // the client can seed the roster it ships with, and cannot invent crews.
+    function isKnownCrew(teamId) {
+      return teamId in ['team_trashers', 'team_austin', 'team_wilshire', 'team_night'];
+    }
+
     match /teams/{teamId} {
       allow read: if signedIn();
+      allow create: if signedIn()
+                    && isKnownCrew(teamId)
+                    && request.resource.data.name is string
+                    && request.resource.data.cityId is string;
       allow update: if signedIn()
                     && request.resource.data.diff(resource.data)
                          .affectedKeys()
                          .hasOnly(['memberCount', 'weeklyPoints', 'totalPieces', 'totalPoints']);
-      allow create, delete: if false;
+      allow delete: if false;
     }
 
     // Everything else is closed.
