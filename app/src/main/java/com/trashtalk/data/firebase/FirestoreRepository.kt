@@ -423,7 +423,16 @@ class FirestoreRepository(
             streakDays = streak,
             lastCollectionDay = ScoreEngine.dayIndex(now),
         )
-        return commit(updated, stats, now, breakdown.total, breakdown, streak > profile.streakDays, wasFirstSurvey)
+        return commit(
+            updated, stats, now, breakdown.total, breakdown,
+            streak > profile.streakDays, wasFirstSurvey,
+            shareCard = com.trashtalk.ui.share.ShareCardData.from(
+                segment = segment,
+                counts = draft.counts,
+                wasFirstSurvey = wasFirstSurvey,
+                neighborhood = network.neighborhood,
+            ),
+        )
     }
 
     override suspend fun plantFlag(
@@ -655,6 +664,7 @@ class FirestoreRepository(
         breakdown: ScoreBreakdown? = null,
         streakExtended: Boolean = false,
         wasFirstSurvey: Boolean = false,
+        shareCard: com.trashtalk.ui.share.ShareCardData? = null,
     ): ProgressDelta {
         val levelBefore = profile.path?.let { profile.pathLevel(it) }
         val (withBadges, newBadges) = BadgeEngine.evaluate(profile, stats, now)
@@ -667,6 +677,7 @@ class FirestoreRepository(
         return ProgressDelta(
             pointsAwarded = pointsAwarded + badgePoints,
             breakdown = breakdown,
+            shareCard = shareCard,
             newBadges = newBadges,
             pathLevelUp = if (levelAfter != null && levelBefore != null && levelAfter > levelBefore) levelAfter else null,
             streakDays = final.streakDays,

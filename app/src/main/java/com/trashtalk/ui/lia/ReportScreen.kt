@@ -41,6 +41,8 @@ import com.trashtalk.ui.components.OrdinalBars
 import com.trashtalk.ui.components.Panel
 import com.trashtalk.ui.components.SectionHeader
 import com.trashtalk.ui.components.ShareSlice
+import com.trashtalk.ui.components.SkeletonBox
+import com.trashtalk.ui.components.SkeletonRows
 import com.trashtalk.ui.components.StackedShareBar
 import com.trashtalk.ui.components.StatusBars
 import com.trashtalk.ui.components.StatusChip
@@ -73,8 +75,17 @@ fun ReportScreen(
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val report by vm.report.collectAsStateWithLifecycle()
+    val reportOrNull by vm.report.collectAsStateWithLifecycle()
     val segments by vm.segments.collectAsStateWithLifecycle()
+
+    // The assessment is built from the collection feed, so it has a genuine
+    // loading state. Showing zeroes here would be worse than showing nothing:
+    // an assessment that reads "0 pieces" is a claim, not a placeholder.
+    val report = reportOrNull
+    if (report == null) {
+        ReportSkeleton(onBack = onBack, modifier = modifier)
+        return
+    }
 
     val dateFormat = remember { SimpleDateFormat("d MMM yyyy", Locale.getDefault()) }
 
@@ -573,6 +584,66 @@ fun ReportScreen(
                         color = TT.InkMuted,
                     )
                 }
+            }
+        }
+    }
+}
+
+/**
+ * The assessment while its data is still arriving: the masthead it will have,
+ * and blocks where the figures and charts will land.
+ */
+@Composable
+private fun ReportSkeleton(onBack: () -> Unit, modifier: Modifier = Modifier) {
+    Column(
+        modifier
+            .fillMaxSize()
+            .background(TT.Void)
+            .padding(horizontal = 16.dp)
+            .padding(top = 8.dp),
+    ) {
+        Text(
+            text = "Back",
+            style = MaterialTheme.typography.labelLarge,
+            color = TT.Teal,
+            modifier = Modifier.clickable(onClick = onBack),
+        )
+        Spacer(Modifier.height(14.dp))
+        Eyebrow("Litter Impact Assessment")
+        Spacer(Modifier.height(8.dp))
+        SkeletonBox(Modifier.fillMaxWidth(0.55f).height(30.dp))
+        Spacer(Modifier.height(8.dp))
+        SkeletonBox(Modifier.fillMaxWidth(0.4f).height(12.dp))
+
+        Spacer(Modifier.height(24.dp))
+        Panel {
+            Column {
+                SkeletonBox(Modifier.fillMaxWidth(0.3f).height(11.dp))
+                Spacer(Modifier.height(14.dp))
+                SkeletonBox(Modifier.fillMaxWidth(0.75f).height(14.dp))
+                Spacer(Modifier.height(8.dp))
+                SkeletonBox(Modifier.fillMaxWidth(0.6f).height(14.dp))
+            }
+        }
+
+        Spacer(Modifier.height(12.dp))
+        Panel {
+            Column {
+                SkeletonBox(Modifier.fillMaxWidth(0.35f).height(11.dp))
+                Spacer(Modifier.height(16.dp))
+                SkeletonBox(Modifier.fillMaxWidth(0.45f).height(40.dp))
+                Spacer(Modifier.height(18.dp))
+                SkeletonRows(count = 3, rowHeight = 30.dp)
+            }
+        }
+
+        Spacer(Modifier.height(12.dp))
+        Panel {
+            Column {
+                SkeletonBox(Modifier.fillMaxWidth(0.4f).height(11.dp))
+                Spacer(Modifier.height(16.dp))
+                // Where the trend chart lands.
+                SkeletonBox(Modifier.fillMaxWidth().height(120.dp), corner = 12.dp)
             }
         }
     }

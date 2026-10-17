@@ -132,6 +132,8 @@ object ScoreEngine {
 data class ProgressDelta(
     val pointsAwarded: Int = 0,
     val breakdown: ScoreBreakdown? = null,
+    /** Everything a share card needs, when this delta came from a pickup. */
+    val shareCard: com.trashtalk.ui.share.ShareCardData? = null,
     val newBadges: List<EarnedBadgeInfo> = emptyList(),
     val pathLevelUp: Int? = null,
     val streakDays: Int = 0,

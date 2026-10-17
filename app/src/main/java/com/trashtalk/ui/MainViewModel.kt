@@ -53,37 +53,42 @@ class MainViewModel(private val repo: TrashTalkRepository) : ViewModel() {
     val profile: StateFlow<UserProfile> = repo.observeProfile()
         .stateIn(viewModelScope, SharingStarted.Eagerly, UserProfile())
 
-    val collections: StateFlow<List<CollectionEvent>> = repo.observeCollections(200)
-        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+    /**
+     * Null means "not loaded yet", empty means "loaded, and there is nothing".
+     * Collapsing the two is what made cold starts flash "Nothing logged yet".
+     */
+    val collections: StateFlow<List<CollectionEvent>?> = repo.observeCollections(200)
+        .stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
     val flags: StateFlow<List<MapFlag>> = repo.observeFlags()
         .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
-    val teams: StateFlow<List<Team>> = repo.observeTeams()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
+    val teams: StateFlow<List<Team>?> = repo.observeTeams()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
     private val _leaderboardScope = MutableStateFlow(LeaderboardScope.CITY_WEEK)
     val leaderboardScope: StateFlow<LeaderboardScope> = _leaderboardScope.asStateFlow()
 
     @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
-    val leaderboard: StateFlow<List<LeaderboardEntry>> = _leaderboardScope
+    val leaderboard: StateFlow<List<LeaderboardEntry>?> = _leaderboardScope
         .flatMapLatest { repo.observeLeaderboard(it) }
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
 
     /** The assessment, recomputed whenever the underlying observations change. */
-    val report: StateFlow<LiaEngine.Report> = combine(segments, collections) { segs, cols ->
-        LiaEngine.build(
-            neighborhood = repo.network.neighborhood,
-            city = "${repo.network.city}, ${repo.network.state}",
-            segments = segs,
-            pois = repo.network.pois,
-            collections = cols,
-        )
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.WhileSubscribed(5_000),
-        LiaEngine.build(repo.network.neighborhood, repo.network.city, emptyList(), emptyList(), emptyList()),
-    )
+    /** Null until the collection feed has arrived; see [collections]. */
+    val report: StateFlow<LiaEngine.Report?> = combine(segments, collections) { segs, cols ->
+        if (cols == null) {
+            null
+        } else {
+            LiaEngine.build(
+                neighborhood = repo.network.neighborhood,
+                city = "${repo.network.city}, ${repo.network.state}",
+                segments = segs,
+                pois = repo.network.pois,
+                collections = cols,
+            )
+        }
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
 
     // ------------------------------------------------------------- map state
 
@@ -151,10 +156,10 @@ class MainViewModel(private val repo: TrashTalkRepository) : ViewModel() {
         _leaderboardScope.value = scope
     }
 
-    /** Collections logged by the signed-in user, newest first. */
-    fun myCollections(): List<CollectionEvent> {
+    /** Collections logged by the signed-in user, newest first; null while loading. */
+    fun myCollections(): List<CollectionEvent>? {
         val me = profile.value.id
-        return collections.value.filter { it.userId == me }
+        return collections.value?.filter { it.userId == me }
     }
 
     // --------------------------------------------------------------- actions

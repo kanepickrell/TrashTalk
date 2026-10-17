@@ -1,6 +1,11 @@
 package com.trashtalk.ui.components
 
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -27,7 +32,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
@@ -39,7 +46,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.trashtalk.ui.theme.CardCorner
 import com.trashtalk.ui.theme.EyebrowStyle
+import com.trashtalk.ui.theme.LocalReduceMotion
 import com.trashtalk.ui.theme.TT
+import com.trashtalk.ui.theme.rememberMotion
 
 /** The standard panel: one hairline ring, generous padding, no drop shadow. */
 @Composable
@@ -243,8 +252,12 @@ fun TrashTalkButton(
     enabled: Boolean = true,
     tone: Color = TT.Teal,
 ) {
+    val motion = rememberMotion()
     Surface(
-        modifier = modifier.clickable(enabled = enabled, onClick = onClick),
+        modifier = modifier.clickable(enabled = enabled) {
+            motion.lightTick()
+            onClick()
+        },
         color = if (enabled) tone else TT.Surface2,
         shape = RoundedCornerShape(13.dp),
     ) {
@@ -267,8 +280,12 @@ fun TrashTalkOutlineButton(
     enabled: Boolean = true,
     tint: Color = TT.InkSecondary,
 ) {
+    val motion = rememberMotion()
     Surface(
-        modifier = modifier.clickable(enabled = enabled, onClick = onClick),
+        modifier = modifier.clickable(enabled = enabled) {
+            motion.lightTick()
+            onClick()
+        },
         color = Color.Transparent,
         shape = RoundedCornerShape(13.dp),
         border = BorderStroke(1.dp, tint.copy(alpha = 0.4f)),
@@ -460,6 +477,91 @@ fun Hairline(modifier: Modifier = Modifier) {
             .height(1.dp)
             .background(TT.Hairline),
     )
+}
+
+/**
+ * A shimmering placeholder for content that is still loading.
+ *
+ * The point is to distinguish "we are fetching this" from "there is nothing
+ * here" -- an empty state shown during a load is a small lie, and the reader
+ * acts on it by leaving. Under reduce-motion the sweep is dropped and a static
+ * block is drawn, which still says "pending" without the movement.
+ */
+@Composable
+fun SkeletonBox(
+    modifier: Modifier = Modifier,
+    corner: Dp = 8.dp,
+) {
+    val reduced = LocalReduceMotion.current
+    val base = TT.Surface2
+    val highlight = TT.Surface3
+
+    if (reduced) {
+        Box(modifier.clip(RoundedCornerShape(corner)).background(base))
+        return
+    }
+
+    val transition = rememberInfiniteTransition(label = "skeleton")
+    val progress by transition.animateFloat(
+        initialValue = -1f,
+        targetValue = 2f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 1200, easing = LinearEasing),
+        ),
+        label = "sweep",
+    )
+
+    Box(
+        modifier
+            .clip(RoundedCornerShape(corner))
+            .drawWithCache {
+                // The sweep is a gradient whose stops slide across the box, so
+                // the brush is rebuilt only when the size or progress changes.
+                val width = size.width
+                val brush = Brush.linearGradient(
+                    colorStops = arrayOf(
+                        0f to base,
+                        0.5f to highlight,
+                        1f to base,
+                    ),
+                    start = Offset(progress * width - width * 0.4f, 0f),
+                    end = Offset(progress * width + width * 0.4f, 0f),
+                )
+                onDrawBehind { drawRect(brush) }
+            },
+    )
+}
+
+/** A stack of skeleton lines standing in for a list of rows. */
+@Composable
+fun SkeletonRows(
+    count: Int = 4,
+    modifier: Modifier = Modifier,
+    rowHeight: Dp = 44.dp,
+) {
+    Column(modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        repeat(count) { i ->
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                SkeletonBox(Modifier.size(rowHeight * 0.4f), corner = 20.dp)
+                Spacer(Modifier.width(12.dp))
+                Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    // Varied widths so it reads as text rather than a grid.
+                    SkeletonBox(
+                        Modifier
+                            .fillMaxWidth(if (i % 2 == 0) 0.62f else 0.48f)
+                            .height(12.dp),
+                    )
+                    SkeletonBox(
+                        Modifier
+                            .fillMaxWidth(if (i % 3 == 0) 0.34f else 0.28f)
+                            .height(9.dp),
+                    )
+                }
+                Spacer(Modifier.width(12.dp))
+                SkeletonBox(Modifier.width(38.dp).height(14.dp))
+            }
+        }
+    }
 }
 
 /** Empty-state block: says what is missing and what to do about it. */

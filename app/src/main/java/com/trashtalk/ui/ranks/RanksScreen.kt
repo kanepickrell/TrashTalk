@@ -39,6 +39,7 @@ import com.trashtalk.ui.components.Eyebrow
 import com.trashtalk.ui.components.Panel
 import com.trashtalk.ui.components.SectionHeader
 import com.trashtalk.ui.components.SegmentedPicker
+import com.trashtalk.ui.components.SkeletonRows
 import com.trashtalk.ui.components.TabularNumber
 import com.trashtalk.ui.components.TrashTalkOutlineButton
 import com.trashtalk.ui.theme.TT
@@ -59,6 +60,8 @@ fun RanksScreen(
     val scope by vm.leaderboardScope.collectAsStateWithLifecycle()
     val rows by vm.leaderboard.collectAsStateWithLifecycle()
     val teams by vm.teams.collectAsStateWithLifecycle()
+    val loadingRows = rows == null
+    val loadingTeams = teams == null
     val profile by vm.profile.collectAsStateWithLifecycle()
 
     LazyColumn(
@@ -82,7 +85,17 @@ fun RanksScreen(
             }
         }
 
-        if (scope == LeaderboardScope.TEAM_WEEK && profile.teamId == null) {
+        if (loadingRows) {
+            item {
+                Panel {
+                    Column {
+                        Eyebrow(scope.label)
+                        Spacer(Modifier.height(12.dp))
+                        SkeletonRows(count = 6)
+                    }
+                }
+            }
+        } else if (scope == LeaderboardScope.TEAM_WEEK && profile.teamId == null) {
             item {
                 Panel {
                     EmptyState(
@@ -92,7 +105,7 @@ fun RanksScreen(
                     )
                 }
             }
-        } else if (rows.isEmpty()) {
+        } else if (rows!!.isEmpty()) {
             item {
                 Panel {
                     EmptyState(
@@ -103,7 +116,8 @@ fun RanksScreen(
             }
         } else {
             // The player's own standing is pinned so it never requires scrolling.
-            val me = rows.firstOrNull { it.isCurrentUser }
+            val entries = rows!!
+            val me = entries.firstOrNull { it.isCurrentUser }
             if (me != null && me.rank > 5) {
                 item {
                     Panel(accent = TT.Teal) {
@@ -121,13 +135,13 @@ fun RanksScreen(
                     Column {
                         Eyebrow(scope.label)
                         Spacer(Modifier.height(4.dp))
-                        rows.take(25).forEach { entry ->
+                        entries.take(25).forEach { entry ->
                             LeaderRow(entry = entry, highlight = entry.isCurrentUser)
                         }
-                        if (rows.size > 25) {
+                        if (entries.size > 25) {
                             Spacer(Modifier.height(8.dp))
                             Text(
-                                text = "Showing the top 25 of ${rows.size}",
+                                text = "Showing the top 25 of ${entries.size}",
                                 style = MaterialTheme.typography.labelSmall,
                                 color = TT.InkMuted,
                             )
@@ -146,7 +160,13 @@ fun RanksScreen(
             }
         }
 
-        items(teams.sortedByDescending { it.weeklyPoints }, key = { it.id }) { team ->
+        if (loadingTeams) {
+            item {
+                Panel { SkeletonRows(count = 3, rowHeight = 56.dp) }
+            }
+        }
+
+        items(teams.orEmpty().sortedByDescending { it.weeklyPoints }, key = { it.id }) { team ->
             TeamCard(
                 team = team,
                 isMine = profile.teamId == team.id,

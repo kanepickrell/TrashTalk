@@ -68,6 +68,8 @@ import com.trashtalk.ui.components.StatusChip
 import com.trashtalk.ui.components.TrashTalkButton
 import com.trashtalk.ui.components.TrashTalkOutlineButton
 import com.trashtalk.ui.theme.HazardBand
+import com.trashtalk.ui.theme.LocalReduceMotion
+import com.trashtalk.ui.theme.rememberMotion
 import com.trashtalk.ui.theme.TT
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
@@ -89,7 +91,7 @@ fun MapScreen(
     modifier: Modifier = Modifier,
 ) {
     val segments by vm.segments.collectAsStateWithLifecycle()
-    val collections by vm.collections.collectAsStateWithLifecycle()
+    val collections = vm.collections.collectAsStateWithLifecycle().value.orEmpty()
     val flags by vm.flags.collectAsStateWithLifecycle()
     val layer by vm.mapLayer.collectAsStateWithLifecycle()
     val scrubDay by vm.scrubDay.collectAsStateWithLifecycle()
@@ -97,7 +99,7 @@ fun MapScreen(
     val showGenerators by vm.showGenerators.collectAsStateWithLifecycle()
     val showFlags by vm.showFlags.collectAsStateWithLifecycle()
     val showCollections by vm.showCollections.collectAsStateWithLifecycle()
-    val teams by vm.teams.collectAsStateWithLifecycle()
+    val teams = vm.teams.collectAsStateWithLifecycle().value.orEmpty()
     val profile by vm.profile.collectAsStateWithLifecycle()
 
     // A crew keeps the same hue everywhere it appears. Teams are identities, so
@@ -125,6 +127,7 @@ fun MapScreen(
     // which is the behaviour every maps app has trained people to expect.
     var followMe by remember { mutableStateOf(false) }
     val locationState = rememberDeviceLocation()
+    val motion = rememberMotion()
     val scope = rememberCoroutineScope()
     var selectedBin by remember { mutableStateOf<HexBins.Bin?>(null) }
     var showBasemap by remember { mutableStateOf(true) }
@@ -187,10 +190,14 @@ fun MapScreen(
             showFlags = showFlags,
             showCollections = showCollections,
             showBasemap = showBasemap,
+            reduceMotion = LocalReduceMotion.current,
             onSurfaceBuilt = { surface = it },
             onBinTap = { selectedBin = it },
             onCameraMoved = { followMe = false },
-            onSegmentTap = { vm.selectSegment(it.id) },
+            onSegmentTap = {
+                motion.mediumTick()
+                vm.selectSegment(it.id)
+            },
             onLongPress = { point, segment -> flagTarget = point to segment },
             modifier = Modifier.fillMaxSize(),
         )

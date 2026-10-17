@@ -1,7 +1,11 @@
 package com.trashtalk.ui
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.Easing
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.fadeIn
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
@@ -30,6 +34,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -37,10 +42,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.foundation.layout.offset
+import androidx.compose.runtime.withFrameNanos
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.rememberGraphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -54,8 +65,10 @@ import com.trashtalk.domain.ProgressDelta
 import com.trashtalk.ui.collect.CollectScreen
 import com.trashtalk.ui.components.Chip
 import com.trashtalk.ui.components.Eyebrow
+import com.trashtalk.ui.components.Hairline
 import com.trashtalk.ui.components.Panel
 import com.trashtalk.ui.components.TrashTalkButton
+import com.trashtalk.ui.components.TrashTalkOutlineButton
 import com.trashtalk.ui.levels.LevelDetailScreen
 import com.trashtalk.ui.levels.LevelsScreen
 import com.trashtalk.ui.lia.ReportScreen
@@ -63,7 +76,14 @@ import com.trashtalk.ui.map.MapScreen
 import com.trashtalk.ui.paths.PathsScreen
 import com.trashtalk.ui.profile.MeScreen
 import com.trashtalk.ui.ranks.RanksScreen
+import com.trashtalk.ui.theme.rememberMotion
+import com.trashtalk.data.AdvocacyAction
+import com.trashtalk.ui.share.ShareCard
+import com.trashtalk.ui.share.ShareCardData
+import com.trashtalk.ui.share.shareCardIntent
+import com.trashtalk.ui.share.writeShareCard
 import com.trashtalk.ui.theme.TT
+import kotlin.math.roundToInt
 import kotlinx.coroutines.delay
 
 /** Top-level destinations, in the order they appear in the bar. */
@@ -92,10 +112,13 @@ fun TrashTalkRoot(vm: MainViewModel) {
     // be re-emitted many times.
     var celebration by remember { mutableStateOf<ProgressDelta?>(null) }
     var toast by remember { mutableStateOf<String?>(null) }
+    var pendingShare by remember { mutableStateOf<ShareCardData?>(null) }
 
     LaunchedEffect(Unit) {
         vm.events.collect { delta ->
-            if (delta.isNoteworthy) celebration = delta
+            // Every award earns the moment, not just badge unlocks: a pickup
+            // that scores and shows nothing reads as though it failed.
+            if (delta.pointsAwarded > 0 || delta.isNoteworthy) celebration = delta
         }
     }
     LaunchedEffect(Unit) {
@@ -243,7 +266,20 @@ fun TrashTalkRoot(vm: MainViewModel) {
     }
 
     celebration?.let { delta ->
-        CelebrationOverlay(delta = delta, onDismiss = { celebration = null })
+        CelebrationOverlay(
+            delta = delta,
+            shareData = delta.shareCard,
+            onShare = { pendingShare = delta.shareCard },
+            onDismiss = { celebration = null },
+        )
+    }
+
+    pendingShare?.let { data ->
+        ShareCardLauncher(
+            data = data,
+            onShared = { vm.recordAdvocacy(AdvocacyAction.SHARE_STATSHOT) },
+            onDone = { pendingShare = null },
+        )
     }
 }
 
@@ -375,17 +411,71 @@ private fun TabGlyph(tab: Tab, selected: Boolean) {
 }
 
 /**
- * The reward moment: a full-screen acknowledgement of badge tiers and path
- * level-ups. Deliberately a single modal that lists everything earned, rather
- * than a queue of popups, so logging a big haul does not become a tapping chore.
+ * The reward moment.
+ *
+ * A submit that scores points and shows nothing reads as though it failed, so
+ * this plays every award rather than only badge unlocks. The breakdown lines
+ * arrive one at a time and count up, because the interesting part is not the
+ * total but *why* it is that total -- "first survey of this segment" is the
+ * sentence that changes where somebody walks next.
+ *
+ * The whole sequence is skippable with a tap. Under reduce-motion every
+ * duration collapses to zero, so it lands fully-formed on the first frame
+ * without any special-casing here.
  */
 @Composable
-private fun CelebrationOverlay(delta: ProgressDelta, onDismiss: () -> Unit) {
+private fun CelebrationOverlay(
+    delta: ProgressDelta,
+    shareData: ShareCardData?,
+    onShare: () -> Unit,
+    onDismiss: () -> Unit,
+) {
+    val motion = rememberMotion()
+    val lines = delta.breakdown?.lines.orEmpty()
+
+    // How many breakdown lines have landed; -1 until the sequence starts.
+    var revealed by remember(delta) { mutableIntStateOf(0) }
+    var showTotal by remember(delta) { mutableStateOf(false) }
+    var showRest by remember(delta) { mutableStateOf(false) }
+    var skipped by remember(delta) { mutableStateOf(false) }
+
+    val totalScale = remember(delta) { Animatable(1f) }
+
+    fun skip() {
+        skipped = true
+        revealed = lines.size
+        showTotal = true
+        showRest = true
+    }
+
+    LaunchedEffect(delta) {
+        if (lines.isEmpty()) {
+            showTotal = true
+        } else {
+            for (i in lines.indices) {
+                if (skipped) break
+                delay(motion.fast.toLong())
+                revealed = i + 1
+                motion.selectionTick()
+            }
+            if (!skipped) delay(motion.fast.toLong())
+            showTotal = true
+        }
+        if (!skipped) {
+            // The total lands with weight: a burst and a scale bump.
+            motion.heavyBurst()
+            totalScale.animateTo(1.12f, tween(motion.fast, easing = motion.easeOut))
+            totalScale.animateTo(1f, tween(motion.standard, easing = motion.bounceOut))
+            delay(motion.fast.toLong())
+        }
+        showRest = true
+    }
+
     Box(
         Modifier
             .fillMaxSize()
             .background(TT.Void.copy(alpha = 0.93f))
-            .clickable(onClick = onDismiss),
+            .clickable { if (showRest) onDismiss() else skip() },
         contentAlignment = Alignment.Center,
     ) {
         Column(
@@ -394,42 +484,144 @@ private fun CelebrationOverlay(delta: ProgressDelta, onDismiss: () -> Unit) {
                 .padding(26.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            delta.pathLevelUp?.let { level ->
-                Eyebrow("Level up", color = TT.Teal)
-                Spacer(Modifier.height(6.dp))
-                Text(
-                    text = "Level $level",
+            if (delta.wasFirstSurvey) {
+                Eyebrow("First survey of this segment", color = TT.Teal)
+                Spacer(Modifier.height(14.dp))
+            }
+
+            // --- the breakdown, line by line ---------------------------------
+            lines.take(revealed).forEachIndexed { i, (label, value) ->
+                AnimatedVisibility(
+                    visible = true,
+                    enter = fadeIn(tween(motion.fast)) +
+                        slideInVertically(tween(motion.fast, easing = motion.easeOut)) { it / 3 },
+                ) {
+                    Row(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 5.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = label,
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = TT.InkSecondary,
+                            modifier = Modifier.weight(1f),
+                        )
+                        Spacer(Modifier.width(12.dp))
+                        CountUpValue(
+                            target = value,
+                            durationMs = motion.countUp,
+                            easing = motion.easeOut,
+                            prefix = "+",
+                            style = MaterialTheme.typography.titleSmall,
+                            color = TT.Ink,
+                        )
+                    }
+                }
+                if (i < revealed - 1) Hairline()
+            }
+
+            // --- the total ---------------------------------------------------
+            if (showTotal) {
+                if (lines.isNotEmpty()) {
+                    Spacer(Modifier.height(10.dp))
+                    Hairline()
+                }
+                Spacer(Modifier.height(16.dp))
+                Eyebrow("Earned")
+                Spacer(Modifier.height(4.dp))
+                CountUpValue(
+                    target = delta.pointsAwarded,
+                    durationMs = motion.countUp,
+                    easing = motion.easeOut,
+                    suffix = " pts",
                     style = MaterialTheme.typography.displaySmall,
                     color = TT.Teal,
-                    textAlign = TextAlign.Center,
+                    modifier = Modifier.graphicsLayer {
+                        scaleX = totalScale.value
+                        scaleY = totalScale.value
+                    },
                 )
-                Spacer(Modifier.height(22.dp))
             }
 
-            if (delta.newBadges.isNotEmpty()) {
-                Eyebrow(
-                    if (delta.newBadges.size == 1) "Badge earned" else "${delta.newBadges.size} badges earned",
-                )
-                Spacer(Modifier.height(12.dp))
-                delta.newBadges.forEach { info ->
-                    BadgeAward(info)
-                    Spacer(Modifier.height(9.dp))
+            // --- badges and level-ups, after the total ------------------------
+            if (showRest) {
+                delta.pathLevelUp?.let { level ->
+                    Spacer(Modifier.height(22.dp))
+                    Eyebrow("Level up", color = TT.Teal)
+                    Spacer(Modifier.height(6.dp))
+                    Text(
+                        text = "Level $level",
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = TT.Teal,
+                        textAlign = TextAlign.Center,
+                    )
                 }
-            }
 
-            if (delta.pointsAwarded > 0) {
-                Spacer(Modifier.height(6.dp))
+                if (delta.newBadges.isNotEmpty()) {
+                    Spacer(Modifier.height(20.dp))
+                    Eyebrow(
+                        if (delta.newBadges.size == 1) "Badge earned"
+                        else "${delta.newBadges.size} badges earned",
+                    )
+                    Spacer(Modifier.height(12.dp))
+                    delta.newBadges.forEach { info ->
+                        BadgeAward(info)
+                        Spacer(Modifier.height(9.dp))
+                    }
+                }
+
+                Spacer(Modifier.height(26.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    TrashTalkButton(text = "Keep going", onClick = onDismiss)
+                    if (shareData != null) {
+                        TrashTalkOutlineButton(
+                            text = "Share",
+                            onClick = { onShare() },
+                            tint = TT.Teal,
+                        )
+                    }
+                }
+            } else {
+                Spacer(Modifier.height(26.dp))
                 Text(
-                    text = "+${delta.pointsAwarded} points",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = TT.Ink,
+                    text = "Tap to skip",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = TT.InkMuted,
                 )
             }
-
-            Spacer(Modifier.height(26.dp))
-            TrashTalkButton(text = "Keep going", onClick = onDismiss)
         }
     }
+}
+
+/**
+ * A number that rolls up to its value.
+ *
+ * Animating the figure rather than swapping it in is what makes an award feel
+ * earned instead of assigned; the eye follows the climb.
+ */
+@Composable
+private fun CountUpValue(
+    target: Int,
+    durationMs: Int,
+    easing: Easing,
+    style: androidx.compose.ui.text.TextStyle,
+    color: Color,
+    modifier: Modifier = Modifier,
+    prefix: String = "",
+    suffix: String = "",
+) {
+    val value = remember(target) { Animatable(0f) }
+    LaunchedEffect(target, durationMs) {
+        value.animateTo(target.toFloat(), tween(durationMs, easing = easing))
+    }
+    Text(
+        text = "$prefix${value.value.roundToInt()}$suffix",
+        style = style,
+        color = color,
+        modifier = modifier,
+    )
 }
 
 @Composable
@@ -466,5 +658,63 @@ private fun BadgeAward(info: EarnedBadgeInfo) {
             Spacer(Modifier.width(8.dp))
             Chip(text = info.def.path.label, tint = TT.InkSecondary)
         }
+    }
+}
+
+/**
+ * Renders a share card, captures it to a PNG and opens the system share sheet.
+ *
+ * The card is composed into a graphics layer rather than screenshotted, so the
+ * exported image is the card at its own size and density regardless of what the
+ * screen is doing behind it.
+ *
+ * Credit for the Advocate "Sharing" badge is awarded when the chooser actually
+ * launches, and exactly once per card. Android never reports whether a share
+ * completed, so launching is the most honest signal available -- and it is a
+ * great deal more honest than the previous behaviour, which credited a share
+ * for merely tapping a button that shared nothing.
+ */
+@Composable
+private fun ShareCardLauncher(
+    data: ShareCardData,
+    onShared: () -> Unit,
+    onDone: () -> Unit,
+) {
+    val context = LocalContext.current
+    val graphicsLayer = rememberGraphicsLayer()
+    var captured by remember(data) { mutableStateOf(false) }
+
+    // Drawn into the layer but kept off-screen: the user sees the sheet, not
+    // the card being built.
+    // Laid out at its real size but drawn far off-screen. A zero-size box would
+    // measure the card at 0x0, and capturing an empty layer throws.
+    Box(
+        Modifier
+            .offset(x = (-4000).dp)
+            .drawWithContent {
+                graphicsLayer.record { this@drawWithContent.drawContent() }
+            },
+    ) {
+        ShareCard(data)
+    }
+
+    LaunchedEffect(data) {
+        if (captured) return@LaunchedEffect
+        captured = true
+        // Wait for the card to actually draw before reading the layer back.
+        withFrameNanos {}
+        withFrameNanos {}
+        runCatching {
+            val image = graphicsLayer.toImageBitmap()
+            val uri = writeShareCard(context, image)
+            shareCardIntent(
+                context = context,
+                uri = uri,
+                caption = "${data.pieces} pieces off ${data.segmentName} " +
+                    "in ${data.neighborhood}. Mapped with TrashTalk.",
+            )
+            onShared()
+        }.onFailure { android.util.Log.w("TrashTalkShare", "share card failed", it) }
+        onDone()
     }
 }

@@ -21,15 +21,21 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.foundation.layout.offset
+import androidx.compose.runtime.withFrameNanos
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.rememberGraphicsLayer
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -51,11 +57,17 @@ import com.trashtalk.ui.components.LegendGrid
 import com.trashtalk.ui.components.Panel
 import com.trashtalk.ui.components.ProgressTrack
 import com.trashtalk.ui.components.SectionHeader
+import com.trashtalk.ui.components.SkeletonRows
 import com.trashtalk.ui.components.ShareSlice
 import com.trashtalk.ui.components.StackedShareBar
 import com.trashtalk.ui.components.StatTile
 import com.trashtalk.ui.components.TrashTalkButton
 import com.trashtalk.ui.components.TrashTalkOutlineButton
+import com.trashtalk.ui.share.ShareCard
+import com.trashtalk.ui.share.ShareCardData
+import com.trashtalk.ui.share.shareCardIntent
+import com.trashtalk.ui.share.writeShareCard
+import com.trashtalk.ui.theme.HazardBand
 import com.trashtalk.ui.theme.TT
 import java.util.concurrent.TimeUnit
 import kotlin.math.roundToInt
@@ -75,12 +87,15 @@ fun MeScreen(
     modifier: Modifier = Modifier,
 ) {
     val profile by vm.profile.collectAsStateWithLifecycle()
-    val mine = vm.myCollections()
+    val mineOrNull = vm.myCollections()
+    val loadingMine = mineOrNull == null
+    val mine = mineOrNull.orEmpty()
     val backend = vm.backendMode
 
     var editingName by remember { mutableStateOf(false) }
     var nameDraft by remember(profile.displayName) { mutableStateOf(profile.displayName) }
     var showReset by remember { mutableStateOf(false) }
+    var shareRequest by remember { mutableStateOf<ShareCardData?>(null) }
 
     val grams = mine.sumOf { it.grams }
     val myCounts = remember(mine) {
@@ -90,6 +105,33 @@ fun MeScreen(
     }
     val myPieces = myCounts.values.sum()
     val singleUse = myCounts.entries.filter { it.key.isSingleUsePlastic }.sumOf { it.value }
+
+    // The statshot is the player's record, so its "segment" is the neighbourhood
+    // and its headline is lifetime pieces.
+    fun buildStatshot(): ShareCardData {
+        val top = myCounts.entries.maxByOrNull { (type, n) -> type.harm * n }
+        return ShareCardData(
+            segmentName = profile.title,
+            pieces = myPieces,
+            grams = grams,
+            topMaterial = top?.key?.label,
+            topMaterialShare = if (myPieces > 0 && top != null) {
+                (top.value * 100.0 / myPieces).roundToInt()
+            } else 0,
+            coverageBonus = profile.stats.segmentsFirstSurveyed > 0,
+            hazard = HazardBand.CLEAR,
+            path = emptyList(),
+            neighborhood = vm.network.neighborhood,
+        )
+    }
+
+    shareRequest?.let { data ->
+        StatshotLauncher(
+            data = data,
+            onShared = { vm.recordAdvocacy(AdvocacyAction.SHARE_STATSHOT) },
+            onDone = { shareRequest = null },
+        )
+    }
 
     LazyColumn(
         modifier = modifier
@@ -222,7 +264,10 @@ fun MeScreen(
                     Row(horizontalArrangement = Arrangement.spacedBy(9.dp)) {
                         TrashTalkButton(
                             text = "Share statshot",
-                            onClick = { vm.recordAdvocacy(AdvocacyAction.SHARE_STATSHOT) },
+                            // Credit is awarded by the launcher once the chooser
+                            // opens, not here: this button used to bank a
+                            // "Sharing" badge tier for sharing nothing at all.
+                            onClick = { shareRequest = buildStatshot() },
                         )
                         TrashTalkOutlineButton(
                             text = "Open the LIA",
@@ -347,7 +392,9 @@ fun MeScreen(
                 Column {
                     Eyebrow("Your recent pickups")
                     Spacer(Modifier.height(10.dp))
-                    if (mine.isEmpty()) {
+                    if (loadingMine) {
+                        SkeletonRows(count = 4)
+                    } else if (mine.isEmpty()) {
                         EmptyState(
                             title = "Nothing logged yet",
                             body = "Your first survey is worth a coverage bonus. " +
@@ -470,5 +517,51 @@ private fun relativeTime(millis: Long): String {
         hours < 24 -> "${hours}h ago"
         days < 7 -> "${days}d ago"
         else -> "${days / 7}w ago"
+    }
+}
+
+/**
+ * Renders the statshot off-screen, captures it, and opens the share sheet.
+ *
+ * Same contract as the pickup card: the Advocate "Sharing" tier is credited
+ * when the chooser launches, once per card. Android gives no completion signal,
+ * so launching is the most honest trigger available.
+ */
+@Composable
+private fun StatshotLauncher(
+    data: ShareCardData,
+    onShared: () -> Unit,
+    onDone: () -> Unit,
+) {
+    val context = LocalContext.current
+    val layer = rememberGraphicsLayer()
+    var captured by remember(data) { mutableStateOf(false) }
+
+    // Laid out at its real size but drawn off-screen; a zero-size box would
+    // capture an empty layer.
+    Box(
+        Modifier
+            .offset(x = (-4000).dp)
+            .drawWithContent { layer.record { this@drawWithContent.drawContent() } },
+    ) {
+        ShareCard(data)
+    }
+
+    LaunchedEffect(data) {
+        if (captured) return@LaunchedEffect
+        captured = true
+        withFrameNanos {}
+        withFrameNanos {}
+        runCatching {
+            val uri = writeShareCard(context, layer.toImageBitmap())
+            shareCardIntent(
+                context = context,
+                uri = uri,
+                caption = "${data.pieces} pieces off the street in ${data.neighborhood}, " +
+                    "mapped with TrashTalk.",
+            )
+            onShared()
+        }.onFailure { android.util.Log.w("TrashTalkShare", "statshot failed", it) }
+        onDone()
     }
 }

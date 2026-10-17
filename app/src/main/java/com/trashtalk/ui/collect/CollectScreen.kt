@@ -75,6 +75,7 @@ import com.trashtalk.ui.components.TrashTalkButton
 import com.trashtalk.ui.components.TrashTalkOutlineButton
 import com.trashtalk.ui.theme.HazardBand
 import com.trashtalk.ui.theme.TT
+import com.trashtalk.ui.theme.rememberMotion
 import java.io.File
 import kotlin.math.roundToInt
 
@@ -98,6 +99,7 @@ fun CollectScreen(
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
+    val motion = rememberMotion()
     val segments by vm.segments.collectAsStateWithLifecycle()
     val profile by vm.profile.collectAsStateWithLifecycle()
 
@@ -483,6 +485,8 @@ fun CollectScreen(
         TrashTalkButton(
             text = if (pieces == 0) "Count something first" else "Save this pickup",
             onClick = {
+                // The payoff for the whole form; the celebration follows.
+                motion.heavyBurst()
                 if (timerRunning) {
                     elapsedMinutes = ((SystemClock.elapsedRealtime() - timerStart) / 60_000L)
                         .toInt().coerceAtLeast(1)
@@ -561,12 +565,16 @@ private fun CounterRow(
 
 @Composable
 private fun StepperButton(symbol: String, enabled: Boolean, onClick: () -> Unit) {
+    val motion = rememberMotion()
     Surface(
         color = if (enabled) TT.Surface3 else TT.Surface2,
         shape = CircleShape,
         modifier = Modifier
             .size(40.dp)
-            .clickable(enabled = enabled, onClick = onClick),
+            .clickable(enabled = enabled) {
+                motion.selectionTick()
+                onClick()
+            },
     ) {
         Box(contentAlignment = Alignment.Center) {
             Text(

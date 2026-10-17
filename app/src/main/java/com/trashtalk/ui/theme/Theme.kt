@@ -1,11 +1,14 @@
 package com.trashtalk.ui.theme
 
 import android.app.Activity
+import android.provider.Settings
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
@@ -297,7 +300,30 @@ val EyebrowStyle = TextStyle(
 val CardCorner = 18.dp
 val ScreenGutter = 16.dp
 
+/**
+ * Whether the viewer has asked the system to stop animating.
+ *
+ * Provided by [TrashTalkTheme] from the global animator duration scale, which
+ * is what the accessibility setting and every battery saver actually write.
+ * Declaring this without providing it meant it silently read false, so the map
+ * pulse ran regardless of the setting.
+ */
 val LocalReduceMotion = staticCompositionLocalOf { false }
+
+/** Reads the system animation setting; true when animations are disabled. */
+@Composable
+private fun systemReduceMotion(): Boolean {
+    val context = LocalContext.current
+    return remember(context) {
+        runCatching {
+            Settings.Global.getFloat(
+                context.contentResolver,
+                Settings.Global.ANIMATOR_DURATION_SCALE,
+                1f,
+            ) == 0f
+        }.getOrDefault(false)
+    }
+}
 
 @Composable
 fun TrashTalkTheme(content: @Composable () -> Unit) {
@@ -313,9 +339,11 @@ fun TrashTalkTheme(content: @Composable () -> Unit) {
     // The app is dark by design: the map's whole visual argument depends on a
     // near-black ground, so a light scheme is not offered rather than offered badly.
     @Suppress("UNUSED_EXPRESSION") isSystemInDarkTheme()
-    MaterialTheme(
-        colorScheme = TrashTalkColorScheme,
-        typography = TrashTalkTypography,
-        content = content,
-    )
+    CompositionLocalProvider(LocalReduceMotion provides systemReduceMotion()) {
+        MaterialTheme(
+            colorScheme = TrashTalkColorScheme,
+            typography = TrashTalkTypography,
+            content = content,
+        )
+    }
 }
