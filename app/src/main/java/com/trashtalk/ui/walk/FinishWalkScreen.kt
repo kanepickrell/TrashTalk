@@ -1,5 +1,7 @@
 package com.trashtalk.ui.walk
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -37,6 +39,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import coil.compose.AsyncImage
 import com.trashtalk.data.model.LitterType
 import com.trashtalk.data.walk.SegmentTally
@@ -71,6 +74,37 @@ fun FinishWalkScreen(
     val camera = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { ok ->
         if (ok) haulPhoto = pendingPhoto
         pendingPhoto = null
+    }
+
+    // CAMERA has to be asked for before the capture intent is launched, and
+    // this screen used to launch straight into it. Because the manifest
+    // declares the permission, Android enforces it even on an intent handled
+    // by somebody else's camera app, so a revoked permission did not fail
+    // softly -- it threw SecurityException and killed the process at the end
+    // of a walk, with the haul unsubmitted. CollectScreen already gated it
+    // this way; this is the same gate, not a new idea.
+    val cameraPermission = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission(),
+    ) { granted ->
+        if (granted) {
+            val uri = newHaulPhotoUri(context)
+            pendingPhoto = uri
+            camera.launch(uri)
+        }
+    }
+
+    fun takeHaulPhoto() {
+        val granted = ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.CAMERA,
+        ) == PackageManager.PERMISSION_GRANTED
+        if (granted) {
+            val uri = newHaulPhotoUri(context)
+            pendingPhoto = uri
+            camera.launch(uri)
+        } else {
+            cameraPermission.launch(Manifest.permission.CAMERA)
+        }
     }
 
     Column(
@@ -134,9 +168,7 @@ fun FinishWalkScreen(
                     photo = haulPhoto,
                     onTake = {
                         motion.lightTick()
-                        val uri = newHaulPhotoUri(context)
-                        pendingPhoto = uri
-                        camera.launch(uri)
+                        takeHaulPhoto()
                     },
                     onClear = { haulPhoto = null },
                 )
