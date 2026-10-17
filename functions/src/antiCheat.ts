@@ -24,6 +24,7 @@ export interface Fix {
 }
 
 export type RejectionCode =
+  | 'NO_TRACK'
   | 'TOO_SHORT'
   | 'TIME_WENT_BACKWARDS'
   | 'IMPOSSIBLE_JUMP'
@@ -70,13 +71,23 @@ export function haversineMetres(a: Fix, b: Fix): number {
 export function validateTrace(fixes: Fix[]): TraceVerdict {
   const empty = { distanceMetres: 0, durationSeconds: 0 };
 
+  // Distinct from TOO_SHORT on purpose. "No fixes" and "walked for ten
+  // seconds" are different failures with different remedies -- one means
+  // location is not reaching the app at all, the other means keep walking --
+  // and reporting both as "too short" tells somebody whose GPS is broken to
+  // walk further, which will not help.
   if (fixes.length < 2) {
     return {
       ok: false,
       ...empty,
       rejection: {
-        code: 'TOO_SHORT',
-        reason: 'This walk was too short to record a route.',
+        code: 'NO_TRACK',
+        reason:
+          fixes.length === 0
+            ? 'No location fixes were recorded, so this walk has no route. ' +
+              'Check that location permission is granted and try again.'
+            : 'Only one location fix was recorded, so this walk has no route. ' +
+              'Check that location permission is granted and try again.',
       },
     };
   }
@@ -88,7 +99,9 @@ export function validateTrace(fixes: Fix[]): TraceVerdict {
       ...empty,
       rejection: {
         code: 'TOO_SHORT',
-        reason: 'This walk was too short to record a route.',
+        reason:
+          `This walk lasted ${Math.round(durationSeconds)} seconds. ` +
+          `A walk needs at least ${TUNING.trace.minDurationSeconds} to be scored.`,
       },
     };
   }

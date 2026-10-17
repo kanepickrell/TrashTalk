@@ -88,8 +88,21 @@ test('time running backwards is rejected', () => {
 });
 
 test('a walk too short to be a walk is rejected', () => {
-  assert.equal(validateTrace([]).rejection?.code, 'TOO_SHORT');
   assert.equal(validateTrace(walk(10, 5)).rejection?.code, 'TOO_SHORT');
+});
+
+test('no track and a short track are told apart', () => {
+  // They used to share one message, which sent somebody whose location was
+  // never reaching the app off to walk further.
+  assert.equal(validateTrace([]).rejection?.code, 'NO_TRACK');
+  // One fix is a position, not a route. walk() always emits 31, so take one.
+  assert.equal(validateTrace(walk(100, 60).slice(0, 1)).rejection?.code, 'NO_TRACK');
+
+  const short = validateTrace(walk(10, 5)).rejection;
+  assert.equal(short?.code, 'TOO_SHORT');
+  // The message should say how short, and how short is long enough.
+  assert.match(short?.reason ?? '', /\d+ seconds/);
+  assert.match(short?.reason ?? '', /at least 30/);
 });
 
 test('GPS drift while standing still does not read as sprinting', () => {
