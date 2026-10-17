@@ -29,7 +29,7 @@ const DOWNLOADS = [
   {
     name: "terrell-heights-segments.csv",
     desc: "One row per street segment. Opens in anything.",
-    meta: "CSV · 184 rows",
+    meta: `CSV · ${stats.segments} rows`,
   },
   {
     name: "terrell-heights-segments.geojson",

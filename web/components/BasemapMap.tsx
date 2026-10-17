@@ -55,28 +55,56 @@ export default function BasemapMap({
     if (!host.current || map.current) return;
     registerPmtiles();
 
-    const m = new maplibregl.Map({
-      container: host.current,
-      style: "/map/style.json",
-      center,
-      zoom,
-      // The pilot area is one neighbourhood; letting someone zoom to the whole
-      // planet would only show them an empty archive.
-      minZoom: 12,
-      maxZoom: 18,
-      attributionControl: { compact: false },
-    });
+    let cancelled = false;
 
-    m.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), "top-right");
-    m.addControl(new maplibregl.ScaleControl({ unit: "metric" }), "bottom-left");
-    m.on("error", (e) => {
-      console.error("[basemap]", e.error?.message ?? e);
-      setFailed(true);
-    });
+    // The style is fetched and patched rather than handed over by URL, because
+    // MapLibre GL JS rejects a root-relative `sprite`: it must be absolute,
+    // and the origin is only known at runtime. Glyphs are templated and
+    // resolve relative fine; the sprite is the one that does not, and it fails
+    // quietly -- the map still draws, just with no road shields, one-way
+    // arrows or town spots, which is easy to miss in review.
+    (async () => {
+      let style: maplibregl.StyleSpecification;
+      try {
+        const res = await fetch("/map/style.json");
+        if (!res.ok) throw new Error(`style.json ${res.status}`);
+        style = await res.json();
+      } catch (err) {
+        console.error("[basemap]", err);
+        if (!cancelled) setFailed(true);
+        return;
+      }
+      if (cancelled || !host.current) return;
 
-    map.current = m;
+      if (typeof style.sprite === "string" && style.sprite.startsWith("/")) {
+        style.sprite = `${window.location.origin}${style.sprite}`;
+      }
+
+      const m = new maplibregl.Map({
+        container: host.current,
+        style,
+        center,
+        zoom,
+        // The pilot area is one neighbourhood; letting someone zoom to the
+        // whole planet would only show them an empty archive.
+        minZoom: 12,
+        maxZoom: 18,
+        attributionControl: { compact: false },
+      });
+
+      m.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), "top-right");
+      m.addControl(new maplibregl.ScaleControl({ unit: "metric" }), "bottom-left");
+      m.on("error", (e) => {
+        console.error("[basemap]", e.error?.message ?? e);
+        setFailed(true);
+      });
+
+      map.current = m;
+    })();
+
     return () => {
-      m.remove();
+      cancelled = true;
+      map.current?.remove();
       map.current = null;
     };
     // Deliberately once: the camera props are the *initial* camera, and
