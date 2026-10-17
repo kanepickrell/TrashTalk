@@ -17,8 +17,14 @@ docker compose logs -f valhalla    # watch the first build
 ```
 
 The first run downloads ~700 MB and builds tiles; budget twenty minutes or so.
-After that `./data` holds the tiles and startup is seconds. `./data` is
-gitignored — it is a build artefact, not source.
+After that `./data` holds the tiles and startup is seconds.
+
+Two directories, and the split matters: `./cache` holds the Texas extract so a
+re-clip need not download it again, and `./data` is what Valhalla serves from.
+The state file must stay out of `./data` — the container builds from *every*
+`.osm.pbf` under `/custom_files`, so a Texas file left beside the clipped one
+is silently built too, which is the whole-state build the clip stage exists to
+avoid. Both directories are gitignored; they are build artefacts, not source.
 
 Check it is up:
 

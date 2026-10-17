@@ -21,19 +21,25 @@ services:
   # that stops at the pilot boundary cannot route a walk that steps outside it,
   # and map matching needs the roads either side of a junction to decide which
   # one somebody actually took.
+  #
+  # The state extract is cached in ./cache, deliberately not in ./data. The
+  # Valhalla container builds from every .osm.pbf it finds in /custom_files,
+  # so a Texas file left next to the clipped one gets built as well -- which
+  # is the whole-state build this two-stage setup exists to avoid.
   clip:
     image: stefda/osmium-tool:latest
     volumes:
       - ./data:/data
+      - ./cache:/cache
     working_dir: /data
     entrypoint:
       - /bin/sh
       - -c
       - |
         set -e
-        if [ ! -f texas-latest.osm.pbf ]; then
+        if [ ! -f /cache/texas-latest.osm.pbf ]; then
           echo "downloading Texas extract (~700 MB)..."
-          wget -q --show-progress -O texas-latest.osm.pbf \
+          wget -q --show-progress -O /cache/texas-latest.osm.pbf \
             https://download.geofabrik.de/north-america/us/texas-latest.osm.pbf
         fi
         echo "clipping to San Antonio metro..."
@@ -41,9 +47,9 @@ services:
           --bbox=-98.90,29.20,-98.20,29.75 \
           --set-bounds \
           --overwrite \
-          -o san-antonio.osm.pbf \
-          texas-latest.osm.pbf
-        ls -lh san-antonio.osm.pbf
+          -o /data/san-antonio.osm.pbf \
+          /cache/texas-latest.osm.pbf
+        ls -lh /data/san-antonio.osm.pbf
 
   valhalla:
     image: ghcr.io/gis-ops/docker-valhalla/valhalla:3.5.1
