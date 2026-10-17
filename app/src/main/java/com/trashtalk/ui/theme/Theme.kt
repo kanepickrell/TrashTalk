@@ -105,6 +105,31 @@ object TT {
     val WorseningArm = listOf(Color(0xFF8E2B2B), Color(0xFFD03B3B), Color(0xFFF08080))
     val DivergingMid = Color(0xFF39404A)
 
+    // ---- The same encodings, re-tuned for the light basemap -------------
+    // The ramps above are correct on the app's dark surfaces, where a dark
+    // neutral reads as quiet and bright arms read as loud. On the pale map
+    // ground that inverts: measured against #F3F2EE, DivergingMid lands at
+    // 9.3:1 -- the most prominent mark on the map -- while the far end of
+    // ImprovingArm fades to 1.9:1. "Nothing changed" would shout and "much
+    // improved" would whisper.
+    //
+    // These run the other way. The midpoint is quiet (1.17:1) and each arm
+    // climbs with magnitude to about 7.3:1, with the two arms matched to
+    // within 0.24 of each other at every stop so equal change reads equally
+    // loud whichever direction it went. Arm endpoints separate at dE 16.4
+    // under protanopia, 23.1 for normal vision.
+    val MapImprovingArm = listOf(Color(0xFFB9D1E8), Color(0xFF5E95D6), Color(0xFF14508F))
+    val MapWorseningArm = listOf(Color(0xFFF2CAC2), Color(0xFFD2705C), Color(0xFF8E2B2B))
+    val MapDivergingMid = Color(0xFFE3E1DA)
+
+    /** Cleanup activity on the light ground: one hue, light to dark. */
+    val MapActivityRamp = listOf(
+        Color(0xFFDCE6F2),
+        Color(0xFF8FB3DD),
+        Color(0xFF3C77BE),
+        Color(0xFF14406F),
+    )
+
     // ---- Light basemap ------------------------------------------------
     // The survey map sits on a pale vector basemap -- Protomaps tiles bundled
     // in the APK, styled from these two tokens (see tools/build_basemap_style.mjs).
@@ -116,9 +141,15 @@ object TT {
     /**
      * Five classes for binned litter density, ordered light to dark.
      *
-     * Validated against the basemap ground: monotone lightness, adjacent dL
-     * >= 0.06, hue spread 31 degrees -- so it reads as one ordered sequence
-     * rather than a rainbow. The lightest class sits at 1.6:1 against the pale
+     * Validated against the basemap ground: OKLab lightness falls monotonically
+     * 0.813 -> 0.486 with every adjacent step at least 0.062 apart, so it reads
+     * as one ordered sequence. It is multi-hue -- 147 degrees, yellow through
+     * magenta to violet, the viridis/magma idiom -- which is what keeps five
+     * classes discriminable where a single hue would not. Lightness is doing
+     * the ordering; hue is only making the steps easier to tell apart.
+     * (An earlier version of this comment claimed a 31-degree spread. It was
+     * measured wrong; the ordering claim it was defending holds.)
+     * The lightest class sits at 1.6:1 against the pale
      * basemap, below the 2:1 ordinal floor, which is a deliberate trade for the
      * classed-choropleth look. The relief is that value never rests on fill
      * alone: every cell carries a dark outline (11:1 on the ground), the legend
@@ -166,6 +197,14 @@ object TT {
      * Colour for a signed change, diverging around zero. [magnitude] is normalised
      * so a half-point swing in the litter index saturates the arm.
      */
+    /** [changeColor] against the light basemap. See the map ramps above. */
+    fun mapChangeColor(delta: Float): Color {
+        val m = (kotlin.math.abs(delta) / 0.25f).coerceIn(0f, 1f)
+        if (m < 0.08f) return MapDivergingMid
+        val arm = if (delta > 0) MapWorseningArm else MapImprovingArm
+        return sample(arm, m)
+    }
+
     fun changeColor(delta: Float): Color {
         val m = (kotlin.math.abs(delta) / 0.25f).coerceIn(0f, 1f)
         if (m < 0.08f) return DivergingMid

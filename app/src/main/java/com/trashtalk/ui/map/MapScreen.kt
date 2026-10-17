@@ -111,17 +111,10 @@ fun MapScreen(
     }
 
     val network = vm.network
-    val camera = remember {
-        MapCameraState(
-            initialCenter = network.bounds.center,
-            initialZoom = 15.2f,
-            limit = network.bounds.pad(0.35),
-        )
-    }
+    val basemap by rememberBasemapStyle()
 
     var flagTarget by remember { mutableStateOf<Pair<LatLng, Segment?>?>(null) }
     var showLegend by remember { mutableStateOf(false) }
-    var surface by remember { mutableStateOf<HexBins.Surface?>(null) }
     var showSearch by remember { mutableStateOf(false) }
     // "Following" means the camera tracks the fix until the user pans away,
     // which is the behaviour every maps app has trained people to expect.
@@ -130,7 +123,6 @@ fun MapScreen(
     val motion = rememberMotion()
     val scope = rememberCoroutineScope()
     var selectedBin by remember { mutableStateOf<HexBins.Bin?>(null) }
-    var showBasemap by remember { mutableStateOf(true) }
 
     // The map is full-bleed with chrome floating over it, so the camera is framed
     // against the band between the two overlays rather than the raw viewport.
@@ -139,6 +131,50 @@ fun MapScreen(
     var topChromePx by remember { mutableFloatStateOf(0f) }
     var bottomChromePx by remember { mutableFloatStateOf(0f) }
     var framed by remember { mutableStateOf(false) }
+
+    val ready = basemap
+    if (ready !is BasemapStyle.Ready) {
+        // There is no network fallback by design, so name the state rather
+        // than leaving an empty rectangle and hoping.
+        Box(
+            modifier.fillMaxSize().background(TT.Void),
+            contentAlignment = Alignment.Center,
+        ) {
+            Text(
+                text = when (ready) {
+                    is BasemapStyle.Failed -> "The offline map could not be opened."
+                    else -> "Preparing the map…"
+                },
+                color = TT.InkSecondary,
+            )
+        }
+        return
+    }
+
+    val map = rememberSegmentMap(
+        basemap = ready.style,
+        data = MapData(
+            segments = segments,
+            collections = if (showCollections) collections else emptyList(),
+            flags = flags,
+            pois = network.pois,
+            teamColors = teamColors,
+            currentUserId = profile.id,
+        ),
+        layer = layer,
+        initialCenter = network.bounds.center,
+        initialZoom = 15.2,
+        scrubDay = scrubDay,
+        selectedSegmentId = selectedId,
+        showMarkers = showFlags || showGenerators || showCollections,
+        onSegmentTap = {
+            motion.mediumTick()
+            vm.selectSegment(it.id)
+        },
+        onBinTap = { selectedBin = it },
+    )
+    val camera = map.camera
+    val surface: HexBins.Surface? = map.surface.takeIf { !it.isEmpty }
 
     LaunchedEffect(viewport, topChromePx, bottomChromePx) {
         if (!framed && viewport.width > 0f && bottomChromePx > 0f) {
@@ -172,33 +208,8 @@ fun MapScreen(
     ) {
 
         SegmentMap(
-            camera = camera,
-            data = MapData(
-                segments = segments,
-                collections = if (showCollections) collections else emptyList(),
-                flags = flags,
-                pois = network.pois,
-                teamColors = teamColors,
-                currentUserId = profile.id,
-            ),
-            layer = layer,
-            scrubDay = scrubDay,
-            selectedSegmentId = selectedId,
-            selectedBin = selectedBin,
-            userFix = locationState.fix,
-            showGenerators = showGenerators,
-            showFlags = showFlags,
-            showCollections = showCollections,
-            showBasemap = showBasemap,
-            reduceMotion = LocalReduceMotion.current,
-            onSurfaceBuilt = { surface = it },
-            onBinTap = { selectedBin = it },
+            holder = map,
             onCameraMoved = { followMe = false },
-            onSegmentTap = {
-                motion.mediumTick()
-                vm.selectSegment(it.id)
-            },
-            onLongPress = { point, segment -> flagTarget = point to segment },
             modifier = Modifier.fillMaxSize(),
         )
 
@@ -658,7 +669,7 @@ private fun LegendPanel(
             // Tile providers require attribution, and it belongs on the map
             // rather than buried in an about screen.
             Text(
-                text = TileSource.ATTRIBUTION,
+                text = Basemap.ATTRIBUTION,
                 style = MaterialTheme.typography.labelSmall,
                 color = TT.InkMuted,
             )
