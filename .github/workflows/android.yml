@@ -30,10 +30,24 @@ jobs:
           distribution: temurin
           java-version: "17"
 
-      # compileSdk 37 is newer than the runner image ships. AGP will fetch the
-      # platform itself, but only once the licences are accepted, which is what
-      # this step is really for.
-      - uses: android-actions/setup-android@v3
+      # compileSdk 37 is newer than the runner image ships. The runner already
+      # has an Android SDK, so this accepts the licences and installs whichever
+      # 37.x platform the SDK repository currently offers -- the exact package
+      # name has moved (there is no plain `platforms;android-37`), so it is
+      # discovered rather than hard-coded.
+      - name: Install compileSdk 37
+        run: |
+          set -euo pipefail
+          SDKMGR="$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager"
+          yes | "$SDKMGR" --licenses > /dev/null 2>&1 || true
+          PKG=$("$SDKMGR" --list 2>/dev/null             | grep -oE 'platforms;android-37[^ |]*' | sort -u | head -1)
+          if [ -z "$PKG" ]; then
+            echo "No android-37 platform offered by this SDK repository."
+            "$SDKMGR" --list 2>/dev/null | grep -oE 'platforms;android-[0-9.]+' | sort -u
+            exit 1
+          fi
+          echo "Installing $PKG"
+          "$SDKMGR" "$PKG"
 
       - uses: gradle/actions/setup-gradle@v4
 
