@@ -170,6 +170,7 @@ fun MapScreen(
         initialZoom = 15.2,
         scrubDay = scrubDay,
         selectedSegmentId = selectedId,
+        plannedSegmentIds = plannedTargets,
         showMarkers = showFlags || showGenerators || showCollections,
         onSegmentTap = {
             motion.mediumTick()

@@ -13,6 +13,7 @@ import org.maplibre.compose.expressions.dsl.condition
 import org.maplibre.compose.expressions.dsl.const
 import org.maplibre.compose.expressions.dsl.eq
 import org.maplibre.compose.expressions.dsl.not
+import org.maplibre.compose.expressions.dsl.or
 import org.maplibre.compose.expressions.dsl.exponential
 import org.maplibre.compose.expressions.dsl.feature
 import org.maplibre.compose.expressions.dsl.interpolate
@@ -20,6 +21,7 @@ import org.maplibre.compose.expressions.dsl.linear
 import org.maplibre.compose.expressions.dsl.step
 import org.maplibre.compose.expressions.dsl.switch
 import org.maplibre.compose.expressions.dsl.zoom
+import org.maplibre.compose.expressions.value.BooleanValue
 import org.maplibre.compose.expressions.value.ColorValue
 import org.maplibre.compose.expressions.value.DpValue
 import org.maplibre.compose.expressions.value.FloatValue
@@ -60,6 +62,7 @@ fun MapDataLayers(
     layer: MapLayer,
     showMarkers: Boolean = true,
     selectedSegmentId: String? = null,
+    plannedSegmentIds: Set<String> = emptySet(),
     onSegmentTap: (String) -> Unit = {},
     onBinTap: (q: Int, r: Int) -> Unit = { _, _ -> },
 ) {
@@ -158,6 +161,26 @@ fun MapDataLayers(
             width = const(1.4.dp),
             dasharray = const(listOf(1.5f, 2.5f)),
         )
+
+        // ---- planned targets -----------------------------------------------
+        // The output of the planner, drawn so somebody can actually see where
+        // they agreed to walk. Under the selection layer, because a tapped
+        // segment is a more immediate question than a planned one.
+        if (plannedSegmentIds.isNotEmpty()) {
+            LineLayer(
+                id = "tt-segment-planned",
+                source = segments,
+                filter = plannedFilter(plannedSegmentIds),
+                // The brand teal at full strength: a plan is the app talking
+                // about its own suggestion, not a status. TT.Warning would
+                // have read as something being wrong with those blocks.
+                color = const(TT.Teal),
+                width = segmentWidth(pad = 2.6f),
+                opacity = const(0.85f),
+                cap = const(org.maplibre.compose.expressions.value.LineCap.Round),
+                join = const(org.maplibre.compose.expressions.value.LineJoin.Round),
+            )
+        }
 
         // ---- selection ----------------------------------------------------
         // A filter on the segment's own id, not on the numeric feature id:
@@ -335,3 +358,14 @@ private fun flagColor(): Expression<ColorValue> =
         ),
         fallback = const(Color(0xFFB4529F)),
     )
+
+/**
+ * True when the segment is one of [ids].
+ *
+ * An OR chain rather than the style spec's `in` operator, because a plan is a
+ * handful of blocks and a chain of equalities is something the next reader can
+ * see the meaning of without consulting the spec.
+ */
+private fun plannedFilter(ids: Set<String>): Expression<BooleanValue> =
+    ids.map { feature.get("sid").asString() eq const(it) }
+        .reduce { acc, next -> acc or next }

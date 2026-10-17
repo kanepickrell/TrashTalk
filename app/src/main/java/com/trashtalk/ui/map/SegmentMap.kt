@@ -93,6 +93,7 @@ fun rememberSegmentMap(
     initialZoom: Double = 15.0,
     scrubDay: Int? = null,
     selectedSegmentId: String? = null,
+    plannedSegmentIds: Set<String> = emptySet(),
     showMarkers: Boolean = true,
     onSegmentTap: (Segment) -> Unit = {},
     onBinTap: (HexBins.Bin?) -> Unit = {},
@@ -123,6 +124,7 @@ fun rememberSegmentMap(
     // recreating the map.
     val currentLayer by rememberUpdatedState(layer)
     val currentSelected by rememberUpdatedState(selectedSegmentId)
+    val currentPlanned by rememberUpdatedState(plannedSegmentIds)
     val currentMarkers by rememberUpdatedState(showMarkers)
     val currentTap by rememberUpdatedState(onSegmentTap)
     val currentBinTap by rememberUpdatedState(onBinTap)
@@ -139,6 +141,7 @@ fun rememberSegmentMap(
                 layer = currentLayer,
                 showMarkers = currentMarkers,
                 selectedSegmentId = currentSelected,
+                plannedSegmentIds = currentPlanned,
                 onSegmentTap = { sid -> byId[sid]?.let(currentTap) },
                 onBinTap = { q, r ->
                     currentBinTap(currentSurface.bins.firstOrNull { it.q == q && it.r == r })
