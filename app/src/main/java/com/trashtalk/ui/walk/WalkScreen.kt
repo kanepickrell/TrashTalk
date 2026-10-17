@@ -91,15 +91,25 @@ fun WalkScreen(
     // failing soft once the manifest declares it.
     val scope = rememberCoroutineScope()
     var pendingSpotCheck by remember { mutableStateOf<Uri?>(null) }
-    var dismissedAfterTag by remember { mutableIntStateOf(-1) }
+    // Counts skips rather than remembering which tag was skipped: the
+    // prompt is due again four tags after each one, taken or waved away.
+    var skippedSpotChecks by remember { mutableIntStateOf(0) }
 
     val spotCheckCamera = rememberLauncherForActivityResult(
         ActivityResultContracts.TakePicture(),
     ) { ok ->
         val uri = pendingSpotCheck
         pendingSpotCheck = null
+        // Logged because the capture and the upload happen minutes apart --
+        // the upload only runs when the walk is submitted -- so without this
+        // a photo that was never actually written looks exactly like one the
+        // uploader could not read.
+        android.util.Log.i("TrashTalkWalk", "spot check capture ok=$ok uri=$uri")
         if (ok && uri != null) {
-            scope.launch { repository.attachSpotCheck(uri.toString()) }
+            scope.launch {
+                val attached = repository.attachSpotCheck(uri.toString())
+                android.util.Log.i("TrashTalkWalk", "spot check attached=$attached")
+            }
         }
     }
     val spotCheckPermission = rememberLauncherForActivityResult(
@@ -188,7 +198,7 @@ fun WalkScreen(
             color = TT.InkSecondary,
         )
 
-        if (state.wantsSpotCheck(dismissedAfterTag)) {
+        if (state.wantsSpotCheck(skippedSpotChecks)) {
             Spacer(Modifier.height(20.dp))
             SpotCheckPrompt(
                 what = state.lastTagLabel,
@@ -198,7 +208,7 @@ fun WalkScreen(
                 },
                 onSkip = {
                     motion.lightTick()
-                    dismissedAfterTag = state.tagCount
+                    skippedSpotChecks += 1
                 },
             )
         }

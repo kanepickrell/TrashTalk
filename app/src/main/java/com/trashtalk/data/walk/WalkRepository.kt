@@ -50,17 +50,23 @@ class WalkRepository(private val context: Context) {
         /**
          * Whether to ask for a photo of what was just tagged.
          *
-         * Every fourth tag, and only while that tag is still the last thing
-         * logged -- the prompt has to be about something the walker can still
-         * see. Dismissing it or tagging again moves on; nothing is blocked
-         * either way, because refusing to photograph a crisp packet should
-         * not cost somebody the work of picking it up.
+         * Due once four tags have gone by since the last one that was either
+         * photographed or waved away, and it then stays up until one of those
+         * happens. The first version keyed on `tagCount % 4 == 0`, which put
+         * the prompt on screen for exactly one tag: log a fifth thing and the
+         * ask silently vanished. Six tags in two minutes produced no photo
+         * and no prompt anybody saw.
+         *
+         * Staying up is safe because the question moves with you -- it always
+         * names the most recent tag, so what it points at is whatever is
+         * still at your feet, not something three streets back.
+         *
+         * Nothing is blocked either way. Refusing to photograph a crisp
+         * packet should not cost somebody the work of having picked it up.
          */
-        fun wantsSpotCheck(dismissedAfterTag: Int): Boolean =
-            tagCount > 0 &&
-                tagCount % SPOT_CHECK_EVERY == 0 &&
-                !lastTagHasPhoto &&
-                dismissedAfterTag != tagCount
+        fun wantsSpotCheck(skipped: Int): Boolean =
+            !lastTagHasPhoto &&
+                tagCount >= SPOT_CHECK_EVERY * (spotCheckCount + skipped + 1)
     }
 
     @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
