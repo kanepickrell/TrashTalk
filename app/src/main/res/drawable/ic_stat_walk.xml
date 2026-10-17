@@ -1,0 +1,16 @@
+<!-- Status-bar icon for the recording notification.
+
+     Single-colour and solid: Android tints status icons white and discards
+     anything else, so a detailed mark would arrive as a white blob. This is
+     the megaphone from the app mark, reduced to the one shape that survives
+     at 24dp. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:tint="#FFFFFF">
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M4,9.5L4,14.5A1.5,1.5 0 0,0 5.5,16L7,16L8.2,20.3A1,1 0 0,0 9.2,21L10.5,21A1,1 0 0,0 11.4,19.7L10.3,16L13,16L19,20L19,4L13,8L5.5,8A1.5,1.5 0 0,0 4,9.5Z" />
+</vector>

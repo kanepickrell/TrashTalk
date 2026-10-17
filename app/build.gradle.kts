@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.baselineprofile)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.room)
 }
 
 // TrashTalk ships in two modes. Without a Firebase config the app runs on a
@@ -77,6 +79,11 @@ android {
     androidResources {
         noCompress += "pmtiles"
     }
+    room {
+        // Checked in, so a schema change shows up in review as a diff rather
+        // than as a crash on somebody's phone after an update.
+        schemaDirectory("$projectDir/schemas")
+    }
     bundle {
         // The renderer core is 9-14 MB per ABI and the basemap package is
         // another 1.8 MB. Splitting means a phone downloads one ABI's worth
@@ -116,6 +123,9 @@ dependencies {
     // (MapLibre Android SDK in an AndroidView).
     implementation(libs.maplibre.compose)
     implementation(libs.maplibre.renderer.opengl)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.metrics.jankstats)
     baselineProfile(project(":benchmark"))
 

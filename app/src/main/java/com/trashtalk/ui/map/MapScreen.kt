@@ -88,6 +88,7 @@ fun MapScreen(
     vm: MainViewModel,
     onLogPickup: (Segment?) -> Unit,
     onOpenReport: () -> Unit,
+    onStartWalk: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val segments by vm.segments.collectAsStateWithLifecycle()
@@ -356,20 +357,31 @@ fun MapScreen(
             Spacer(Modifier.height(10.dp))
 
             Row(verticalAlignment = Alignment.CenterVertically) {
+                // Recording a walk is the primary act now: it produces a track
+                // the server can verify, where a one-off log is only ever the
+                // user's word for it. The quick log stays for people who do not
+                // want to be tracked at all.
                 TrashTalkButton(
-                    text = "Log a pickup",
-                    onClick = { onLogPickup(selected) },
+                    text = "Record a cleanup",
+                    onClick = onStartWalk,
                 )
                 Spacer(Modifier.width(10.dp))
-                ScaleBar(metersPerPixel = camera.metersPerPixel())
+                TrashTalkOutlineButton(
+                    text = "Quick log",
+                    onClick = { onLogPickup(selected) },
+                )
             }
 
-            Spacer(Modifier.height(6.dp))
-            Text(
-                text = "Long-press the map to plant a flag",
-                style = MaterialTheme.typography.labelSmall,
-                color = TT.InkMuted,
-            )
+            Spacer(Modifier.height(8.dp))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                ScaleBar(metersPerPixel = camera.metersPerPixel())
+                Spacer(Modifier.width(10.dp))
+                Text(
+                    text = "Long-press the map to plant a flag",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = TT.InkMuted,
+                )
+            }
         }
 
         // Selected-cell readout. Anchored top-centre so it never collides with

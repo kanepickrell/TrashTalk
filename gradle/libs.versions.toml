@@ -19,12 +19,17 @@ maplibreCompose = "0.20.0"
 # Vulkan because GL ES is present on every device the app targets.
 maplibreNativeFfi = "0.202610.0"
 jankstats = "1.0.0-beta02"
+room = "2.8.5"
+ksp = "2.3.12"
 benchmark = "1.6.0-alpha01"
 uiautomator = "2.3.0"
 baselineprofile = "1.6.0-alpha01"
 
 [libraries]
 androidx-metrics-jankstats = { group = "androidx.metrics", name = "metrics-performance", version.ref = "jankstats" }
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 androidx-benchmark-macro-junit4 = { group = "androidx.benchmark", name = "benchmark-macro-junit4", version.ref = "benchmark" }
 androidx-test-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomator" }
 androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version = "1.2.1" }
@@ -52,6 +57,8 @@ maplibre-compose = { group = "org.maplibre.compose", name = "maplibre-compose", 
 maplibre-renderer-opengl = { group = "org.maplibre.nativeffi", name = "maplibre-native-ffi-runtime-opengl", version.ref = "maplibreNativeFfi" }
 
 [plugins]
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+room = { id = "androidx.room", version.ref = "room" }
 baselineprofile = { id = "androidx.baselineprofile", version.ref = "baselineprofile" }
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

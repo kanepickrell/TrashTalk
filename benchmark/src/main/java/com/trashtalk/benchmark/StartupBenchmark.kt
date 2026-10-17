@@ -25,6 +25,23 @@ private const val TARGET = "com.trashtalk"
  *
  * These assert nothing on their own -- Macrobenchmark reports, CI compares
  * against the previous run. The point is that the claim is checkable.
+ *
+ * Measured on a Pixel 6a, 2026-10-16:
+ *
+ *  - first launch after install  1008 ms median (466 min, 2833 max)
+ *  - cold launch thereafter       321 ms median (580 P90)
+ *
+ * Both numbers are real and they measure different things. The first run
+ * copies the 937 kB tile archive out of the APK, which only ever happens once;
+ * the second is what the app costs every day after. Quoting only the faster
+ * one would flatter the install experience, and only the slower one would
+ * misrepresent daily use.
+ *
+ * The frame metrics below are NOT yet trustworthy. They report a frame count
+ * with no timing, and the count is bimodal -- a median of 2 against a maximum
+ * of ~200 -- which says most iterations never drove the map at all. The
+ * harness is here and the startup number is sound; treat any jank figure from
+ * these two as unmeasured until that is fixed.
  */
 @RunWith(AndroidJUnit4::class)
 class StartupBenchmark {
@@ -80,6 +97,7 @@ class StartupBenchmark {
         iterations = 10,
         startupMode = StartupMode.WARM,
     ) {
+        pressHome()
         startActivityAndWait()
         device.wait(Until.hasObject(By.textContains("Terrell Heights")), 10_000)
 
@@ -103,6 +121,7 @@ class StartupBenchmark {
         iterations = 10,
         startupMode = StartupMode.WARM,
     ) {
+        pressHome()
         startActivityAndWait()
         device.wait(Until.hasObject(By.textContains("Terrell Heights")), 10_000)
 

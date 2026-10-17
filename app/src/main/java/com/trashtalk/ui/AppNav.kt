@@ -37,6 +37,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -83,9 +84,14 @@ import com.trashtalk.ui.share.ShareCardData
 import com.trashtalk.ui.share.shareCardIntent
 import com.trashtalk.ui.share.writeShareCard
 import com.trashtalk.core.TrackJank
+import com.trashtalk.data.walk.WalkRepository
+import com.trashtalk.ui.walk.WalkScreen
+import com.trashtalk.data.model.LitterType
+import com.trashtalk.core.rememberDeviceLocation
 import com.trashtalk.ui.theme.TT
 import kotlin.math.roundToInt
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /** Top-level destinations, in the order they appear in the bar. */
 private enum class Tab(val route: String, val label: String) {
@@ -100,6 +106,7 @@ private object Routes {
     const val COLLECT = "collect"
     const val REPORT = "report"
     const val LEVEL_DETAIL = "level"
+    const val WALK = "walk"
 }
 
 @Composable
@@ -169,7 +176,45 @@ fun TrashTalkRoot(vm: MainViewModel) {
                             nav.navigate("${Routes.COLLECT}?segmentId=${segment?.id ?: ""}")
                         },
                         onOpenReport = { nav.navigate(Routes.REPORT) },
+                        onStartWalk = { nav.navigate(Routes.WALK) },
                         modifier = Modifier.padding(bottom = padding.calculateBottomPadding()),
+                    )
+                }
+
+                composable(Routes.WALK) {
+                    TrackJank("walk")
+                    val context = LocalContext.current
+                    val walks = remember(context) { WalkRepository(context) }
+                    val fix = rememberDeviceLocation().fix
+                    val scope = rememberCoroutineScope()
+                    WalkScreen(
+                        repository = walks,
+                        quickTypes = remember {
+                            listOf(
+                                LitterType.CIGARETTE,
+                                LitterType.PLASTIC_BOTTLE,
+                                LitterType.FOOD_PACKAGING,
+                                LitterType.PLASTIC_BAG,
+                                LitterType.ALUMINUM_CAN,
+                            )
+                        },
+                        onLogPiece = { type ->
+                            val at = fix ?: return@WalkScreen
+                            scope.launch {
+                                walks.logPickup(
+                                    type = type,
+                                    count = 1,
+                                    at = at.location,
+                                    accuracyMeters = at.accuracyMeters,
+                                    segments = vm.network.segments,
+                                )
+                            }
+                        },
+                        onFinish = { nav.popBackStack() },
+                        modifier = Modifier.padding(
+                            top = padding.calculateTopPadding(),
+                            bottom = padding.calculateBottomPadding(),
+                        ),
                     )
                 }
 
