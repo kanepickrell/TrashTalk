@@ -11,7 +11,11 @@ captures/
 *.aab
 
 # Firebase config is per-developer and must not be committed
-app/google-services.json
+
+# app/google-services.json is deliberately NOT ignored. It holds a project id
+# and an Android API key, both of which are already compiled into every APK we
+# ship -- so ignoring it protected nothing and only broke CI and fresh clones.
+# What protects the project is firestore.rules and App Check, not hiding this.
 
 # Node / Next.js (web/)
 node_modules/

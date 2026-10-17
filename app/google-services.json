@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "184874130593",
+    "project_id": "trashtalk-de1e9",
+    "storage_bucket": "trashtalk-de1e9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:184874130593:android:762acb84a526cc448f24e0",
+        "android_client_info": {
+          "package_name": "com.trashtalk"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDYLo4ttHOSX3HRTQ8O6zyNGrYKpAr7_w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:184874130593:android:f36bb501474be21e8f24e0",
+        "android_client_info": {
+          "package_name": "com.trashtalk.debug"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDYLo4ttHOSX3HRTQ8O6zyNGrYKpAr7_w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
