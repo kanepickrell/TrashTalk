@@ -71,7 +71,10 @@ services:
       - serve_tiles=True
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost:8002/status"]
+      # curl, not wget: the gis-ops image ships curl and python3 but no wget,
+      # and a probe naming a binary that is not there fails every time while
+      # the server itself is fine.
+      test: ["CMD", "curl", "-fsS", "http://localhost:8002/status"]
       interval: 30s
       timeout: 5s
       retries: 10
