@@ -104,8 +104,13 @@ fun rememberSegmentMap(
         if (layer != MapLayer.DENSITY) {
             HexBins.Surface(emptyList(), listOf(1.0), 0.0, 0.0)
         } else {
+            // Only blocks somebody has actually walked. An unsurveyed segment
+            // has no measurement, and binning it would paint a colour over a
+            // block nobody has ever looked at -- which reads as data. Before
+            // the first survey the litter layer is simply empty, and the map
+            // shows streets and your position, which is the truth.
             HexBins.build(
-                segments = data.segments,
+                segments = data.segments.filter { it.hasBeenSurveyed },
                 referenceLat = data.segments.firstOrNull()?.midpoint?.lat ?: initialCenter.lat,
                 valueOf = { it.indexOn(scrubDay) },
                 weightOf = { it.piecesOn(scrubDay) },

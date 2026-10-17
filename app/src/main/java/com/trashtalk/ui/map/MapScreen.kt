@@ -181,14 +181,28 @@ fun MapScreen(
     val camera = map.camera
     val surface: HexBins.Surface? = map.surface.takeIf { !it.isEmpty }
 
-    LaunchedEffect(viewport, topChromePx, bottomChromePx) {
+    // The first frame goes to where you are standing, when that is somewhere
+    // the network covers. Fitting the whole network instead was right when it
+    // was one 2 km neighbourhood and wrong as soon as it was not: a survey
+    // area several kilometres across, framed whole, opens on a view too far
+    // out to see a single block -- and the one block you can actually walk
+    // right now is the one under your feet.
+    //
+    // A fix outside the network still frames the network, because that at
+    // least shows where the app does have streets to survey.
+    LaunchedEffect(viewport, topChromePx, bottomChromePx, locationState.fix) {
         if (!framed && viewport.width > 0f && bottomChromePx > 0f) {
-            camera.fitBounds(
-                bounds = network.bounds,
-                size = viewport,
-                insetTopPx = topChromePx,
-                insetBottomPx = bottomChromePx,
-            )
+            val fix = locationState.fix
+            if (fix != null && network.bounds.contains(fix.location)) {
+                camera.flyTo(fix.location, targetZoom = 16.5f, durationMs = 0)
+            } else {
+                camera.fitBounds(
+                    bounds = network.bounds,
+                    size = viewport,
+                    insetTopPx = topChromePx,
+                    insetBottomPx = bottomChromePx,
+                )
+            }
             framed = true
         }
     }

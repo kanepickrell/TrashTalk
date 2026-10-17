@@ -12,17 +12,23 @@ segment carries its OSM way ids and both end nodes. That last part is the point
 of the exercise: map matching returns way ids, so this is the join between a
 recorded walk and the segment it belongs to.
 
-The litter model is still synthetic. Accumulation rate, history and composition
-are fitted to the real segments but remain a model, not an observation, until
-survey data replaces them. Anything published from this has to say so.
+By default nothing on this network is observed. Every segment comes out
+unsurveyed -- no litter index, no history, no composition -- because a
+simulated index is indistinguishable on screen from a measured one, and a map
+that colours a block nobody has walked is lying to the person reading it.
+
+--synthetic-litter brings back the fitted model for demos and screenshots. It
+is a model, not an observation, and anything published from it has to say so.
 
 Usage:
     python tools/generate_street_network.py
+    python tools/generate_street_network.py --synthetic-litter   # demos only
 """
 
 import hashlib
 import json
 import math
+import argparse
 import random
 from pathlib import Path
 
@@ -42,7 +48,15 @@ NEIGHBORHOOD = "Terrell Heights"
 CITY, STATE, CITY_ID = "San Antonio", "TX", "san-antonio-tx"
 
 # (west, south, east, north)
-BBOX = (-98.4660, 29.4950, -98.4460, 29.5100)
+#
+# Covers Alamo Heights as well as Terrell Heights. The original box was the
+# 2 km pilot and nothing else, so the app opened on a map that was empty the
+# moment you stood one street outside it.
+#
+# Widening is safe for data already collected: segment_id hashes the OSM node
+# pair at each end of a block, not anything about this box, so a block keeps
+# its id and its history when the area around it grows.
+BBOX = (-98.4880, 29.4650, -98.4460, 29.5100)
 
 # Exactly the classes a volunteer can walk and survey. Anchored with ^...$
 # because osmnx passes this to Overpass as a regex -- an unanchored
@@ -227,7 +241,7 @@ def name_segments(segments):
 
 # --------------------------------------------------------- the litter model
 
-def propensity(seg, arterial_polys):
+def propensity(seg, arterial_polys, jitter=True):
     """How fast this segment accumulates litter, in [0,1].
 
     Drivers, in rough order of real-world effect size: arterial traffic,
@@ -257,7 +271,8 @@ def propensity(seg, arterial_polys):
         else:
             score += 0.07 * decay(d, 160.0)
 
-    score += random.uniform(-0.05, 0.05)
+    if jitter:
+        score += random.uniform(-0.05, 0.05)
     return max(0.0, min(1.0, score))
 
 
@@ -286,8 +301,40 @@ def composition(seg, prop):
     return {k: round(v / total, 4) for k, v in w.items()}
 
 
+def unsurveyed(segs):
+    """The real network with nothing observed on it yet.
+
+    This is the default, and it is the honest starting state: a block nobody
+    has walked has no litter index, no history and no composition, and the map
+    should say so by showing nothing rather than by showing a plausible colour.
+
+    Propensity stays, because it is not an observation. It is a prior derived
+    from the street's own attributes -- class, arterial proximity, nearby POIs
+    -- and the planner needs something to rank an unwalked block by. The random
+    jitter the simulator added to it does not stay.
+    """
+    arterial_polys = [
+        [tuple(c) for c in s["coords"]] for s in segs if s["cls"] == "arterial"
+    ]
+    for s in segs:
+        s["propensity"] = round(propensity(s, arterial_polys, jitter=False), 4)
+        s["litterIndex"] = 0.0
+        s["history"] = []
+        s["cleanups"] = 0
+        s["estimatedPieces"] = 0
+        s["composition"] = {}
+        s["surveyCount"] = 0
+    return segs
+
+
 def simulate(segs):
-    """Run DAYS of accumulation and cleanup to produce a history series."""
+    """Run DAYS of accumulation and cleanup to produce a history series.
+
+    Opt-in via --synthetic-litter, and only ever for demos and screenshots.
+    What comes out is a model fitted to real geometry, not measurement, and it
+    is indistinguishable on screen from the real thing -- which is exactly why
+    it is not the default.
+    """
     arterial_polys = [
         [tuple(c) for c in s["coords"]] for s in segs if s["cls"] == "arterial"
     ]
@@ -333,13 +380,21 @@ def simulate(segs):
 
 
 def main():
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument(
+        "--synthetic-litter",
+        action="store_true",
+        help="fill in a simulated litter index and history (demos only)",
+    )
+    args = ap.parse_args()
+
     random.seed(SEED)
 
     print("fetching OSM network for {} ...".format(NEIGHBORHOOD))
     segs = fetch_segments()
     print("  {} segments from OSM".format(len(segs)))
 
-    segs = simulate(segs)
+    segs = simulate(segs) if args.synthetic_litter else unsurveyed(segs)
 
     lats = [c[0] for s in segs for c in s["coords"]]
     lngs = [c[1] for s in segs for c in s["coords"]]
@@ -360,10 +415,17 @@ def main():
                 "minLat": min(lats), "maxLat": max(lats),
                 "minLng": min(lngs), "maxLng": max(lngs),
             },
-            "note": "Street geometry is real, from OpenStreetMap (ODbL). The litter "
-                    "index, history and composition are a synthetic model fitted to "
-                    "that geometry, not survey observations -- do not publish them "
-                    "as measurements.",
+            "litterData": "synthetic" if args.synthetic_litter else "none",
+            "note": (
+                "Street geometry is real, from OpenStreetMap (ODbL). The litter "
+                "index, history and composition are a synthetic model fitted to "
+                "that geometry, not survey observations -- do not publish them "
+                "as measurements."
+                if args.synthetic_litter else
+                "Street geometry is real, from OpenStreetMap (ODbL). No litter "
+                "observations: every segment starts unsurveyed, and anything the "
+                "app shows on this network was measured by somebody walking it."
+            ),
         },
         "pois": [{"id": p[0], "name": p[1], "kind": p[2], "lat": p[3], "lng": p[4]}
                  for p in POIS],
@@ -374,7 +436,6 @@ def main():
     dest.parent.mkdir(parents=True, exist_ok=True)
     dest.write_text(json.dumps(out, separators=(",", ":")), encoding="utf-8")
 
-    idxs = sorted(s["litterIndex"] for s in segs)
     classes = {}
     for s in segs:
         classes[s["cls"]] = classes.get(s["cls"], 0) + 1
@@ -384,10 +445,14 @@ def main():
     print("  classes        : {}".format(classes))
     print("  network length : {:.2f} km".format(sum(s["lengthM"] for s in segs) / 1000))
     print("  multi-way edges: {}".format(multi))
-    print("  litterIndex    : min {:.3f} median {:.3f} max {:.3f}".format(
-        idxs[0], idxs[len(idxs) // 2], idxs[-1]))
-    print("  unsurveyed     : {} of {}".format(
-        sum(1 for s in segs if s["surveyCount"] == 0), len(segs)))
+    if args.synthetic_litter:
+        idxs = sorted(s["litterIndex"] for s in segs)
+        print("  litterIndex    : min {:.3f} median {:.3f} max {:.3f}".format(
+            idxs[0], idxs[len(idxs) // 2], idxs[-1]))
+        print("  unsurveyed     : {} of {}".format(
+            sum(1 for s in segs if s["surveyCount"] == 0), len(segs)))
+    else:
+        print("  litter data    : none -- every segment unsurveyed")
 
 
 if __name__ == "__main__":
