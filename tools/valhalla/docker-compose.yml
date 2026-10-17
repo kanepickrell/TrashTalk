@@ -1,0 +1,72 @@
+# Valhalla for TrashTalk: map matching (Phase 4.2) and pedestrian routing (7.2).
+#
+# Two stages, because building a routing graph for all of Texas to serve one
+# neighbourhood is forty minutes and several gigabytes of tiles nobody queries.
+# `clip` cuts a San Antonio metro extract out of the state file once; `valhalla`
+# builds tiles from that and serves them.
+#
+#   cd tools/valhalla
+#   docker compose run --rm clip      # once, or when the extract is stale
+#   docker compose up -d valhalla     # builds tiles on first run, then serves
+#
+# First run takes a while (the download is ~700 MB and the tile build a few
+# minutes). After that the tiles persist in ./data and startup is seconds.
+
+name: trashtalk-valhalla
+
+services:
+  # Downloads the Texas extract if absent and clips it to the metro bbox.
+  #
+  # The bbox is deliberately much larger than the pilot area: a routing graph
+  # that stops at the pilot boundary cannot route a walk that steps outside it,
+  # and map matching needs the roads either side of a junction to decide which
+  # one somebody actually took.
+  clip:
+    image: stefda/osmium-tool:latest
+    volumes:
+      - ./data:/data
+    working_dir: /data
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        set -e
+        if [ ! -f texas-latest.osm.pbf ]; then
+          echo "downloading Texas extract (~700 MB)..."
+          wget -q --show-progress -O texas-latest.osm.pbf \
+            https://download.geofabrik.de/north-america/us/texas-latest.osm.pbf
+        fi
+        echo "clipping to San Antonio metro..."
+        osmium extract \
+          --bbox=-98.90,29.20,-98.20,29.75 \
+          --set-bounds \
+          --overwrite \
+          -o san-antonio.osm.pbf \
+          texas-latest.osm.pbf
+        ls -lh san-antonio.osm.pbf
+
+  valhalla:
+    image: ghcr.io/gis-ops/docker-valhalla/valhalla:3.5.1
+    container_name: trashtalk-valhalla
+    ports:
+      - "8002:8002"
+    volumes:
+      - ./data:/custom_files
+    environment:
+      # Build from the clipped file the `clip` service produced.
+      - tile_urls=
+      - use_tiles_ignore_pbf=False
+      - force_rebuild=False
+      - build_elevation=False
+      # Admin and timezone data matter for routing responses; they cost a
+      # couple of minutes once and are cached in ./data afterwards.
+      - build_admins=True
+      - build_time_zones=True
+      - serve_tiles=True
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8002/status"]
+      interval: 30s
+      timeout: 5s
+      retries: 10
+      start_period: 300s

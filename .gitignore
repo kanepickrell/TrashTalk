@@ -36,3 +36,6 @@ cache/
 
 # Macrobenchmark outputs
 benchmark/build/
+
+# Valhalla tiles and OSM extracts: build artefacts, hundreds of megabytes
+tools/valhalla/data/
