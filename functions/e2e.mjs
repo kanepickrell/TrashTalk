@@ -158,6 +158,33 @@ async function main() {
   check('no evidence is unverified', r5?.trustLevel === 'unverified');
   check('no evidence takes no ground', r5?.awards?.[0]?.claimed === false);
 
+  // ------------------------------------- a cleanup that did not go anywhere
+  //
+  // Standing at one corner filling a bag records a single fix, because the
+  // recorder stores a point only after five metres of movement. That used to
+  // be rejected outright while a submission with no track at all was scored,
+  // so sending less data beat sending a little. The pickups carry their own
+  // positions either way.
+  const id6 = 'sub-onefix-' + Date.now();
+  const r6 = await submit(id6, {
+    userId: uid,
+    segments: [{ segmentId: 's_fff', segmentName: 'Standing Still Street',
+      counts: { PLASTIC_BAG: 3 }, lat: 29.5035, lng: -98.4575 }],
+    track: track(40, 900).slice(0, 1),
+  });
+  check('a single-fix track is not rejected', r6?.status === 'SCORED', r6?.reason);
+  check('a stationary cleanup still scores', (r6?.pointsAwarded ?? 0) > 0,
+    `${r6?.pointsAwarded} pts`);
+
+  const id7 = 'sub-notrack-' + Date.now();
+  const r7 = await submit(id7, {
+    userId: uid,
+    segments: [{ segmentId: 's_ggg', segmentName: 'Quick Log Lane',
+      counts: { PLASTIC_BAG: 3 }, lat: 29.5045, lng: -98.4585 }],
+  });
+  check('one fix and no fixes agree', r6?.status === r7?.status,
+    `one=${r6?.status} none=${r7?.status}`);
+
   console.log(`\n  ${PASS.length} passed, ${FAIL.length} failed`);
   if (FAIL.length) {
     console.log('  failed: ' + FAIL.join(', '));

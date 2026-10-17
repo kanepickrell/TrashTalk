@@ -145,8 +145,23 @@ async function processSubmission(
   const segments = submission.segments ?? [];
 
   // --- anti-cheat --------------------------------------------------------
+  // Two fixes, not one: a single point is a position, not a route, and there
+  // is nothing in it to validate. Gating on `> 0` meant one fix was treated
+  // worse than none -- a quick log with no track skipped these checks and
+  // scored, while a recorded walk that produced a single fix was rejected
+  // outright, taking its pickups with it. Submitting less data must not beat
+  // submitting a little.
+  //
+  // A stationary cleanup produces exactly that single fix, because the
+  // recorder stores a point only once you have moved five metres, which is
+  // the right way to stop a still phone writing its own noise down as
+  // distance. Standing at one corner filling a bag is real work and the
+  // pickups carry their own positions, so it is scored on those.
+  //
+  // This opens no door that was not already open: a submission with no track
+  // at all has always taken this path.
   const track = submission.track ?? [];
-  if (track.length > 0) {
+  if (track.length > 1) {
     const verdict = validateTrace(track);
     if (!verdict.ok) {
       return reject(tx, resultRef, submissionId, verdict.rejection!.reason);
