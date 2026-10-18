@@ -1,104 +1,21 @@
 {
   "neighborhood": "Terrell Heights",
   "city": "San Antonio, TX",
-  "segments": 317,
-  "surveyedSegments": 194,
-  "coveragePct": 61,
-  "unwalkedSegments": 123,
-  "networkKm": 46.1,
-  "pieces": 1161,
-  "piecesPer100m": 2.5,
-  "singleUsePct": 56,
+  "segments": 1545,
+  "surveyedSegments": 0,
+  "coveragePct": 0,
+  "unwalkedSegments": 1545,
+  "networkKm": 224.1,
   "generators": 10,
-  "historyDays": 14,
-  "crews": [
-    {
-      "name": "Austin Hwy Alliance",
-      "color": "#3987E5"
-    },
-    {
-      "name": "Nacogdoches Night Crew",
-      "color": "#D95926"
-    },
-    {
-      "name": "Terrell Heights Trashers",
-      "color": "#199E70"
-    },
-    {
-      "name": "Wilshire Walkers",
-      "color": "#C98500"
-    }
-  ],
-  "heldSegments": 46,
-  "composition": [
-    {
-      "label": "Plastic bottles",
-      "share": 0.1575,
-      "key": "PLASTIC_BOTTLE"
-    },
-    {
-      "label": "Film & wrappers",
-      "share": 0.123,
-      "key": "FILM_WRAPPER"
-    },
-    {
-      "label": "Aluminium cans",
-      "share": 0.1192,
-      "key": "ALUMINUM_CAN"
-    },
-    {
-      "label": "Paper",
-      "share": 0.1107,
-      "key": "PAPER"
-    },
-    {
-      "label": "Cigarette butts",
-      "share": 0.1105,
-      "key": "CIGARETTE"
-    },
-    {
-      "label": "Food packaging",
-      "share": 0.1077,
-      "key": "FOOD_PACKAGING"
-    },
-    {
-      "label": "Plastic bags",
-      "share": 0.1019,
-      "key": "PLASTIC_BAG"
-    }
-  ],
-  "hotspots": [
-    {
-      "name": "Nacogdoches Road (8)",
-      "piecesPer100m": 9.9,
-      "index": 0.8895
-    },
-    {
-      "name": "Nacogdoches Road (4)",
-      "piecesPer100m": 9.1,
-      "index": 0.8466
-    },
-    {
-      "name": "Nacogdoches Road (11)",
-      "piecesPer100m": 8.9,
-      "index": 0.8608
-    },
-    {
-      "name": "Nacogdoches Road (7)",
-      "piecesPer100m": 8.8,
-      "index": 0.7812
-    },
-    {
-      "name": "Nacogdoches Road (9)",
-      "piecesPer100m": 8.8,
-      "index": 0.7924
-    },
-    {
-      "name": "North New Braunfels Avenue (21)",
-      "piecesPer100m": 8.6,
-      "index": 0.7551
-    }
-  ],
+  "hasObservations": false,
   "license": "CC BY 4.0",
-  "note": "Street geometry is real, from OpenStreetMap (ODbL). The litter index, history and composition are a synthetic model fitted to that geometry, not survey observations -- do not publish them as measurements."
+  "note": "Street geometry is real, from OpenStreetMap (ODbL). No litter observations: every segment starts unsurveyed, and anything the app shows on this network was measured by somebody walking it.",
+  "pieces": 0,
+  "piecesPer100m": 0,
+  "singleUsePct": 0,
+  "historyDays": 0,
+  "crews": [],
+  "heldSegments": 0,
+  "composition": [],
+  "hotspots": []
 }

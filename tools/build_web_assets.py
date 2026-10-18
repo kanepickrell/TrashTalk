@@ -8,9 +8,18 @@ crew territory washed in behind. Two reasons that is the better choice -- the
 hero image is then literally the product rather than an illustration of it, and
 a site about making data available should be built out of the data.
 
+Two modes, decided by whether the network carries observations. Until
+somebody has walked a block there is nothing measured to publish, so the
+heroes fall back to the network itself, the downloads carry geometry alone,
+and stats.json says `hasObservations: false` with its observation figures
+zeroed. Publishing a simulated litter index as an open dataset was the
+previous behaviour and it was indefensible: the numbers were a model fitted
+to real streets, indistinguishable on the page from measurement, under a
+CC BY 4.0 licence and with no caveat anywhere on the site.
+
 Outputs, all into web/public:
-  hero-density.svg      the network coloured by litter density
-  hero-territory.svg    the same network coloured by which crew holds it
+  hero-density.svg      litter density, or the bare network when unsurveyed
+  hero-territory.svg    crew territory, or the bare network when unsurveyed
   data/*.csv/.geojson   the downloadable dataset
   stats.json            headline figures the pages read at build time
 """
@@ -124,6 +133,47 @@ def svg_header():
     )
 
 
+def has_observations(meta, segments):
+    """Whether anything here was actually measured.
+
+    The network ships unsurveyed now -- real OSM geometry, no litter model --
+    so everything downstream has two modes. Publishing zeros in the shape of
+    measurements would be its own kind of lie: a reader cannot tell "nobody
+    has walked this block" from "somebody walked it and found nothing", and
+    those are opposite claims.
+    """
+    if meta.get("litterData") == "none":
+        return False
+    return any(s.get("surveyCount", 0) > 0 for s in segments)
+
+
+def render_network(segments, to_px):
+    """The survey network itself, drawn by street class.
+
+    What the site has to show when there are no observations: the real thing
+    the project is built on, which is a neighbourhood resolved into blocks
+    that can each be adopted and surveyed. Geometry is the honest half of this
+    dataset and it is worth looking at on its own.
+    """
+    out = [
+        svg_header(),
+        'aria-label="The TrashTalk survey network: every street segment that '
+        'can be walked and surveyed">',
+        '<rect width="100%%" height="100%%" fill="%s"/>' % VOID,
+    ]
+    # Arterials last so the structure of the neighbourhood reads at a glance.
+    order = {"residential": 0, "collector": 1, "arterial": 2}
+    shade = {"residential": "#24323F", "collector": "#3C5668", "arterial": "#5F8296"}
+    for s in sorted(segments, key=lambda s: order.get(s["cls"], 0)):
+        out.append(
+            '<path d="%s" stroke="%s" stroke-width="%.1f" fill="none" '
+            'stroke-linecap="round" stroke-linejoin="round"/>'
+            % (polyline(s, to_px), shade.get(s["cls"], BASEMAP), stroke_weight(s))
+        )
+    out.append("</svg>")
+    return "\n".join(out)
+
+
 def render_density(segments, to_px):
     out = [
         svg_header(),
@@ -208,37 +258,55 @@ def assign_claims(segments):
     return claims
 
 
-def write_downloads(meta, segments, pois):
+def write_downloads(meta, segments, pois, surveyed):
     DATA_DIR.mkdir(parents=True, exist_ok=True)
 
     csv_path = DATA_DIR / "terrell-heights-segments.csv"
     with csv_path.open("w", newline="", encoding="utf-8") as fh:
         w = csv.writer(fh)
-        w.writerow([
-            "segment_id", "street_name", "street_class", "length_m",
-            "litter_index", "pieces_estimated", "pieces_per_100m",
-            "accumulation_rate", "surveys", "cleanups", "trust_level",
-            "mid_lat", "mid_lng",
-        ])
-        for s in segments:
-            mid = s["coords"][len(s["coords"]) // 2]
-            per100 = (s["estimatedPieces"] / s["lengthM"] * 100) if s["lengthM"] else 0
+        if not surveyed:
+            # Geometry only. An observation column full of zeros reads as "we
+            # looked and there was nothing", which is not what no data means.
             w.writerow([
-                s["id"], s["name"], s["cls"], round(s["lengthM"], 1),
-                s["litterIndex"], s["estimatedPieces"], round(per100, 2),
-                s["propensity"], s["surveyCount"], s["cleanups"], TRUST_LEVEL,
-                mid[0], mid[1],
+                "segment_id", "street_name", "street_class", "length_m",
+                "osm_way_ids", "mid_lat", "mid_lng",
             ])
+            for s in segments:
+                mid = s["coords"][len(s["coords"]) // 2]
+                w.writerow([
+                    s["id"], s["name"], s["cls"], round(s["lengthM"], 1),
+                    " ".join(str(w_) for w_ in s.get("osmWayIds") or []),
+                    mid[0], mid[1],
+                ])
+        else:
+            w.writerow([
+                "segment_id", "street_name", "street_class", "length_m",
+                "litter_index", "pieces_estimated", "pieces_per_100m",
+                "accumulation_rate", "surveys", "cleanups", "trust_level",
+                "mid_lat", "mid_lng",
+            ])
+            for s in segments:
+                mid = s["coords"][len(s["coords"]) // 2]
+                per100 = (s["estimatedPieces"] / s["lengthM"] * 100) if s["lengthM"] else 0
+                w.writerow([
+                    s["id"], s["name"], s["cls"], round(s["lengthM"], 1),
+                    s["litterIndex"], s["estimatedPieces"], round(per100, 2),
+                    s["propensity"], s["surveyCount"], s["cleanups"], TRUST_LEVEL,
+                    mid[0], mid[1],
+                ])
 
     geo = {
         "type": "FeatureCollection",
-        "metadata": {
-            "neighborhood": meta["neighborhood"],
-            "city": meta["city"],
-            "license": "CC BY 4.0",
-            "note": meta["note"],
-            "trust_levels": TRUST_NOTE,
-        },
+        "metadata": dict(
+            {
+                "neighborhood": meta["neighborhood"],
+                "city": meta["city"],
+                "license": "CC BY 4.0",
+                "note": meta["note"],
+                "contains_observations": bool(surveyed),
+            },
+            **({"trust_levels": TRUST_NOTE} if surveyed else {}),
+        ),
         "features": [
             {
                 "type": "Feature",
@@ -246,20 +314,29 @@ def write_downloads(meta, segments, pois):
                     "type": "LineString",
                     "coordinates": [[lng, lat] for lat, lng in s["coords"]],
                 },
-                "properties": {
-                    "id": s["id"],
-                    "name": s["name"],
-                    "street_class": s["cls"],
-                    "length_m": s["lengthM"],
-                    "litter_index": s["litterIndex"],
-                    "pieces_estimated": s["estimatedPieces"],
-                    "accumulation_rate": s["propensity"],
-                    "surveys": s["surveyCount"],
-                    "cleanups": s["cleanups"],
-                    "trust_level": TRUST_LEVEL,
-                    "composition": s["composition"],
-                    "history_daily_index": s["history"],
-                },
+                "properties": dict(
+                    {
+                        "id": s["id"],
+                        "name": s["name"],
+                        "street_class": s["cls"],
+                        "length_m": s["lengthM"],
+                        "osm_way_ids": s.get("osmWayIds") or [],
+                    },
+                    **(
+                        {
+                            "litter_index": s["litterIndex"],
+                            "pieces_estimated": s["estimatedPieces"],
+                            "accumulation_rate": s["propensity"],
+                            "surveys": s["surveyCount"],
+                            "cleanups": s["cleanups"],
+                            "trust_level": TRUST_LEVEL,
+                            "composition": s["composition"],
+                            "history_daily_index": s["history"],
+                        }
+                        if surveyed
+                        else {}
+                    ),
+                ),
             }
             for s in segments
         ],
@@ -308,61 +385,99 @@ def main():
     meta, segments, pois = raw["meta"], raw["segments"], raw["pois"]
     WEB_PUBLIC.mkdir(parents=True, exist_ok=True)
 
+    surveyed_mode = has_observations(meta, segments)
     to_px = project(segments)
-    claims = assign_claims(segments)
 
-    (WEB_PUBLIC / "hero-density.svg").write_text(
-        render_density(segments, to_px), encoding="utf-8")
-    (WEB_PUBLIC / "hero-territory.svg").write_text(
-        render_territory(segments, to_px, claims), encoding="utf-8")
+    if surveyed_mode:
+        claims = assign_claims(segments)
+        (WEB_PUBLIC / "hero-density.svg").write_text(
+            render_density(segments, to_px), encoding="utf-8")
+        (WEB_PUBLIC / "hero-territory.svg").write_text(
+            render_territory(segments, to_px, claims), encoding="utf-8")
+    else:
+        # Both heroes become the network itself. The density hero had nothing
+        # to colour by, and the territory hero was drawing crews that do not
+        # exist -- assign_claims invents them with random.choice. A marketing
+        # image is still a claim about the data.
+        claims = {}
+        network_svg = render_network(segments, to_px)
+        (WEB_PUBLIC / "hero-density.svg").write_text(network_svg, encoding="utf-8")
+        (WEB_PUBLIC / "hero-territory.svg").write_text(network_svg, encoding="utf-8")
 
-    write_downloads(meta, segments, pois)
+    write_downloads(meta, segments, pois, surveyed_mode)
 
-    comp = composition_totals(segments)
-    total_pieces = sum(s["estimatedPieces"] for s in segments)
     network_m = sum(s["lengthM"] for s in segments)
-    surveyed = sum(1 for s in segments if s["surveyCount"] > 0)
+    surveyed = sum(1 for s in segments if s.get("surveyCount", 0) > 0)
 
     stats = {
         "neighborhood": meta["neighborhood"],
         "city": "%s, %s" % (meta["city"], meta["state"]),
         "segments": len(segments),
         "surveyedSegments": surveyed,
-        "coveragePct": round(100 * surveyed / len(segments)),
+        "coveragePct": round(100 * surveyed / len(segments)) if segments else 0,
         "unwalkedSegments": len(segments) - surveyed,
         "networkKm": round(network_m / 1000, 1),
-        "pieces": total_pieces,
-        "piecesPer100m": round(total_pieces / network_m * 100, 1),
-        "singleUsePct": round(100 * sum(v for k, v in comp.items() if k in SINGLE_USE)),
         "generators": len(pois),
-        "historyDays": meta["historyDays"],
-        "crews": [{"name": n, "color": CREW_COLORS[i]} for i, (_, n) in enumerate(CREWS)],
-        "heldSegments": len(claims),
-        "composition": [
-            {"label": LABELS.get(k, k), "share": round(v, 4), "key": k}
-            for k, v in list(comp.items())[:7]
-        ],
-        "hotspots": [
-            {
-                "name": s["name"],
-                "piecesPer100m": round(s["estimatedPieces"] / s["lengthM"] * 100, 1),
-                "index": s["litterIndex"],
-            }
-            for s in sorted(
-                segments,
-                key=lambda s: -(s["estimatedPieces"] / s["lengthM"] if s["lengthM"] else 0),
-            )[:6]
-        ],
+        "hasObservations": surveyed_mode,
         "license": "CC BY 4.0",
         "note": meta["note"],
     }
+
+    if not surveyed_mode:
+        # The observation fields stay present and zeroed rather than being
+        # dropped. The site reads them in a dozen places, and a missing key
+        # would be a build error where a zero plus `hasObservations` is a
+        # state the pages can actually render: nobody has walked this yet.
+        stats.update({
+            "pieces": 0,
+            "piecesPer100m": 0,
+            "singleUsePct": 0,
+            "historyDays": 0,
+            "crews": [],
+            "heldSegments": 0,
+            "composition": [],
+            "hotspots": [],
+        })
+    else:
+        comp = composition_totals(segments)
+        total_pieces = sum(s["estimatedPieces"] for s in segments)
+        stats.update({
+            "pieces": total_pieces,
+            "piecesPer100m": round(total_pieces / network_m * 100, 1),
+            "singleUsePct": round(
+                100 * sum(v for k, v in comp.items() if k in SINGLE_USE)),
+            "historyDays": meta.get("historyDays", 0),
+            "crews": [
+                {"name": n, "color": CREW_COLORS[i]}
+                for i, (_, n) in enumerate(CREWS)
+            ],
+            "heldSegments": len(claims),
+            "composition": [
+                {"label": LABELS.get(k, k), "share": round(v, 4), "key": k}
+                for k, v in list(comp.items())[:7]
+            ],
+            "hotspots": [
+                {
+                    "name": s["name"],
+                    "piecesPer100m": round(s["estimatedPieces"] / s["lengthM"] * 100, 1),
+                    "index": s["litterIndex"],
+                }
+                for s in sorted(
+                    segments,
+                    key=lambda s: -(s["estimatedPieces"] / s["lengthM"] if s["lengthM"] else 0),
+                )[:6]
+            ],
+        })
+
     (WEB_PUBLIC / "stats.json").write_text(json.dumps(stats, indent=2), encoding="utf-8")
 
-    print("wrote hero-density.svg, hero-territory.svg")
-    print("wrote data/ (csv + 2 geojson)")
-    print("segments=%d coverage=%d%% pieces=%d single-use=%d%% held=%d"
-          % (len(segments), stats["coveragePct"], total_pieces,
-             stats["singleUsePct"], len(claims)))
+    print("wrote hero svgs and data/ (csv + 2 geojson)")
+    if surveyed_mode:
+        print("segments=%d coverage=%d%% pieces=%d"
+              % (len(segments), stats["coveragePct"], stats["pieces"]))
+    else:
+        print("segments=%d  no observations -- geometry only, no litter figures"
+              % len(segments))
 
 
 if __name__ == "__main__":

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import stats from "@/public/stats.json";
+import stats from "@/lib/stats";
 import BasemapMap from "@/components/BasemapMap";
 
 export const metadata: Metadata = {
@@ -26,6 +26,14 @@ const FIELDS = [
   ["history_daily_index", "array", `Daily litter index, ${stats.historyDays} days (GeoJSON only)`],
 ];
 
+// Which of those a reader will actually find in the file they download. The
+// schema is the shape the dataset takes once blocks have been surveyed; the
+// current release stops after osm_way_ids, and saying so here is cheaper
+// than letting somebody write a parser against columns that are not there.
+const PRESENT_NOW = new Set([
+  "segment_id", "street_name", "street_class", "length_m", "osm_way_ids",
+]);
+
 const DOWNLOADS = [
   {
     name: "terrell-heights-segments.csv",
@@ -34,7 +42,9 @@ const DOWNLOADS = [
   },
   {
     name: "terrell-heights-segments.geojson",
-    desc: "LineString geometry with full properties, composition and daily history.",
+    desc: stats.hasObservations
+      ? "LineString geometry with full properties, composition and daily history."
+      : "LineString geometry with segment identifiers. No observations yet.",
     meta: "GeoJSON · EPSG:4326",
   },
   {
@@ -58,8 +68,32 @@ export default function Data() {
             are expensive, infrequent, and reported as neighbourhood averages. A
             gamified survey network produces the opposite — repeated
             observations per segment, composition by material, and a daily
-            series. This is the {stats.neighborhood} pilot, published in full.
+            series.
+            {stats.hasObservations
+              ? ` This is the ${stats.neighborhood} pilot, published in full.`
+              : " No observations have been collected yet. What is published" +
+                " below is the survey network itself: every block that can be" +
+                " walked, with the identifiers the observations will carry."}
           </p>
+
+          {!stats.hasObservations && (
+            <div
+              className="card"
+              style={{ marginBlock: "18px 4px", borderColor: "var(--amber)" }}
+            >
+              <p className="eyebrow" style={{ color: "var(--amber)" }}>
+                No survey data yet
+              </p>
+              <p style={{ marginTop: 8 }}>
+                This release contains street geometry and nothing else. Earlier
+                versions of this page published a <b>simulated</b> litter index
+                — a model fitted to these streets — in the same tables and
+                under the same licence as measurement. It has been withdrawn.
+                Figures below that count litter read zero because nobody has
+                surveyed these blocks yet, not because they are clean.
+              </p>
+            </div>
+          )}
 
           <div className="stats">
             <div className="stat">
@@ -75,7 +109,9 @@ export default function Data() {
               <span>of street network</span>
             </div>
             <div className="stat">
-              <b className="tnum">{stats.piecesPer100m}</b>
+              <b className="tnum">
+                {stats.hasObservations ? stats.piecesPer100m : "—"}
+              </b>
               <span>mean pieces per 100 m</span>
             </div>
           </div>
@@ -159,7 +195,12 @@ export default function Data() {
                       {f[0]}
                     </td>
                     <td className="dl-meta">{f[1]}</td>
-                    <td style={{ textAlign: "left", color: "var(--ink-2)" }}>{f[2]}</td>
+                    <td style={{ textAlign: "left", color: "var(--ink-2)" }}>
+                      {f[2]}
+                      {!stats.hasObservations && !PRESENT_NOW.has(f[0]) && (
+                        <span className="dl-meta"> · not in this release</span>
+                      )}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -169,7 +210,7 @@ export default function Data() {
       </section>
 
       {/* ---------------------------------------------------------- findings */}
-      <section style={{ paddingTop: 0 }}>
+      <section style={{ paddingTop: 0, display: stats.hasObservations ? undefined : "none" }}>
         <div className="wrap">
           <div className="grid-2" style={{ alignItems: "start" }}>
             <div className="card">
@@ -227,7 +268,9 @@ export default function Data() {
                 </div>
               ))}
               <p className="small" style={{ marginTop: 14 }}>
-                {stats.singleUsePct}% of all pieces are single-use plastic.
+                {stats.hasObservations
+                  ? `${stats.singleUsePct}% of all pieces are single-use plastic.`
+                  : "Composition will appear here once blocks have been surveyed."}
               </p>
             </div>
           </div>

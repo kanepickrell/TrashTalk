@@ -1,318 +1,1546 @@
-segment_id,street_name,street_class,length_m,litter_index,pieces_estimated,pieces_per_100m,accumulation_rate,surveys,cleanups,trust_level,mid_lat,mid_lng
-s_78a254ea65fa,Camelback Drive,residential,357.0,0.0931,4,1.12,0.1232,2,1,unverified,29.49419,-98.459125
-s_b66f2b287f96,North New Braunfels Avenue (2),residential,105.2,0.1341,2,1.9,0.1325,1,1,unverified,29.494683,-98.459127
-s_c36be613398a,Briarwood Drive (1),residential,357.4,0.0757,3,0.84,0.0909,2,2,unverified,29.495136,-98.459129
-s_aeb954ef9373,Briarwood Drive (2),residential,19.6,0.0928,0,0.0,0.073,2,2,unverified,29.495136,-98.459129
-s_bebcfe4e1741,North New Braunfels Avenue (1),collector,46.2,0.119,1,2.16,0.2606,3,3,unverified,29.495194,-98.459321
-s_04489788dd3a,North New Braunfels Avenue (3),collector,57.0,0.095,1,1.75,0.255,5,5,unverified,29.495268,-98.459317
-s_e6d1ed3844ff,Scotsdale Drive (2),residential,63.0,0.1417,1,1.59,0.123,0,0,unverified,29.49515,-98.455436
-s_c31cc597e214,Scotsdale Drive (1),residential,104.3,0.0593,1,0.96,0.1184,5,5,unverified,29.494707,-98.455437
-s_972cafea30f9,Eisenhauer Road (1),collector,177.4,0.4016,8,4.51,0.3933,0,0,unverified,29.495716,-98.455447
-s_01f2ad53add0,Eisenhauer Road (3),collector,80.8,0.186,2,2.48,0.2888,5,5,unverified,29.495718,-98.454973
-s_fe9deb8b1efb,Greenwich Boulevard (2),residential,28.4,0.063,0,0.0,0.1903,5,5,unverified,29.49547,-98.454544
-s_c7cd7a73b6a2,Larchmont Drive (2),residential,162.9,0.2128,4,2.46,0.1912,1,0,unverified,29.495182,-98.454195
-s_6b6bbd472f55,Greenwich Boulevard (1),residential,156.7,0.1199,2,1.28,0.0858,0,0,unverified,29.49504,-98.454437
-s_8fb3e7623cb8,Larchmont Drive (3),residential,162.2,0.1098,2,1.23,0.1156,1,1,unverified,29.495103,-98.452639
-s_f93b0c16f73e,Larchmont Drive (1),residential,178.4,0.1653,3,1.68,0.1185,1,0,unverified,29.49469,-98.453951
-s_123bfff3b017,Larchmont Drive (4),residential,286.7,0.0432,1,0.35,0.0354,0,0,unverified,29.495184,-98.451363
-s_de0edc0fd4eb,Kenilworth Boulevard (3),residential,60.4,0.1115,1,1.66,0.081,0,0,unverified,29.495184,-98.451363
-s_3b960579cc4c,Kenilworth Boulevard (1),residential,111.8,0.0545,1,0.89,0.0982,2,2,unverified,29.494704,-98.451306
-s_3cca70feabc8,Larchmont Drive (5),residential,302.9,0.0735,2,0.66,0.0742,1,1,unverified,29.495195,-98.448401
-s_3d007bdca9a2,Chevy Chase Drive (1),residential,97.3,0.106,1,1.03,0.0761,0,0,unverified,29.494763,-98.448376
-s_e221226cf7d2,Chevy Chase Drive (2),residential,71.5,0.1126,1,1.4,0.0963,0,0,unverified,29.495467,-98.448237
-s_b7e2a777d396,Chevy Chase Drive (3),residential,73.5,0.0587,0,0.0,0.0397,0,0,unverified,29.495453,-98.44856
-s_96f17e980b58,Knibbe Avenue,residential,370.1,0.6581,27,7.3,0.6441,0,0,unverified,29.501475,-98.464775
-s_b09225ff4fa9,Broadway (6),arterial,105.0,0.3768,4,3.81,0.8036,2,1,unverified,29.50163,-98.466562
-s_b97293182020,Broadway (4),arterial,114.0,0.7553,9,7.89,0.7407,0,0,unverified,29.500767,-98.466566
-s_d351b549b944,Nacogdoches Road (6),arterial,140.1,0.6466,10,7.14,0.8472,3,3,unverified,29.502196,-98.462003
-s_8326dbde73a8,Nacogdoches Road (4),arterial,143.6,0.8466,13,9.05,0.8405,0,0,unverified,29.501248,-98.462927
-s_4f598449132d,Woodhaven Street,residential,310.1,0.2753,9,2.9,0.4593,4,4,unverified,29.504974,-98.462095
-s_650a56d3b116,East Terra Alta Road (4),residential,298.1,0.6763,22,7.38,0.6565,0,0,unverified,29.505417,-98.459307
-s_a47a3aa16b94,East Terra Alta Road (3),residential,98.2,0.1882,2,2.04,0.3884,2,1,unverified,29.505413,-98.462427
-s_7a14f0f0e6b9,Ridgehaven Place (1),residential,182.3,0.2627,5,2.74,0.2512,1,0,unverified,29.497024,-98.459169
-s_ac790b5c9d35,North New Braunfels Avenue (6),collector,52.8,0.3256,2,3.79,0.3383,0,0,unverified,29.496637,-98.459199
-s_e71a62f832d8,North New Braunfels Avenue (7),collector,64.4,0.2814,2,3.11,0.2921,1,1,unverified,29.497467,-98.45916
-s_a81df9236f55,Ridgehaven Place (2),residential,289.0,0.1317,4,1.38,0.375,5,5,unverified,29.497037,-98.457285
-s_d9ff9d2b0c43,Bartell Drive (3),residential,93.4,0.2061,2,2.14,0.3055,1,1,unverified,29.497473,-98.45729
-s_ed509cac97fe,Bartell Drive (2),residential,93.9,0.2688,3,3.19,0.3082,1,1,unverified,29.496631,-98.45728
-s_af7c4e24be4c,Ridgehaven Place (3),residential,234.0,0.26,7,2.99,0.2366,0,0,unverified,29.497058,-98.453286
-s_f183e67862b1,Greenwich Boulevard (5),residential,92.7,0.3692,4,4.31,0.3438,0,0,unverified,29.49748,-98.454304
-s_7588d6ec1547,Greenwich Boulevard (3),residential,96.0,0.0802,1,1.04,0.4121,4,4,unverified,29.496637,-98.454342
-s_9fdd70152c8a,Kenilworth Boulevard (5),residential,92.9,0.1844,2,2.15,0.1601,0,0,unverified,29.49749,-98.451885
-s_263be14d0766,Kenilworth Boulevard (4),residential,93.2,0.1275,1,1.07,0.1316,1,1,unverified,29.496655,-98.451877
-s_5f23abf18687,Shadylane Drive (1),residential,54.9,0.602,4,7.29,0.6121,0,0,unverified,29.503037,-98.461198
-s_64896eaa321c,Glendalough Court,residential,196.8,0.4849,10,5.08,0.4747,0,0,unverified,29.50283,-98.460065
-s_a0c2071b1fc2,Nacogdoches Road (8),arterial,313.7,0.8895,31,9.88,0.8606,1,0,unverified,29.504743,-98.459492
-s_cdf1a3510cc6,Nacogdoches Road (7),arterial,90.5,0.7812,8,8.84,0.8117,0,0,unverified,29.502589,-98.461622
-s_ddf8d3f1c7d4,Shadylane Drive (2),residential,287.9,0.3698,12,4.17,0.366,0,0,unverified,29.504562,-98.463032
-s_b4b7c27c0dfe,East Terra Alta Road (1),residential,95.0,0.2447,3,3.16,0.3979,5,5,unverified,29.505409,-98.463959
-s_4dda42696488,Haskin Drive (1),residential,53.8,0.0606,0,0.0,0.0759,0,0,unverified,29.495741,-98.446377
-s_fb6f64d17b42,Eisenhauer Road (11),collector,191.7,0.16,3,1.56,0.1443,0,0,unverified,29.495741,-98.446377
-s_437a92f319a2,Eisenhauer Road (10),collector,92.7,0.2136,2,2.16,0.2158,0,0,unverified,29.495741,-98.446377
-s_dee7bca238ba,Haskin Drive (2),residential,91.4,0.1169,1,1.09,0.0827,0,0,unverified,29.496224,-98.446385
-s_95a26f37fdf1,Sir Philip Drive,residential,208.0,0.0696,2,0.96,0.0499,0,0,unverified,29.496224,-98.446385
-s_b656ee12b9ba,Haskin Drive (3),residential,127.2,0.1464,2,1.57,0.1299,0,0,unverified,29.497452,-98.446404
-s_de942ef2e4d6,Knight Robin Drive,residential,210.3,0.0802,2,0.95,0.0616,0,0,unverified,29.497043,-98.44598
-s_42d64d69b8db,Haskin Drive (4),residential,93.2,0.089,1,1.07,0.1114,1,1,unverified,29.49819,-98.44641
-s_5b48c55bd481,Bent Bow Drive,residential,210.5,0.022,1,0.48,0.0719,7,7,unverified,29.49826,-98.445264
-s_f7fef356384e,Haskin Drive (5),residential,94.9,0.1002,1,1.05,0.0586,0,0,unverified,29.499028,-98.446391
-s_ba5ef81b4eeb,Little John Drive,residential,206.5,0.0139,0,0.0,0.1218,7,7,unverified,29.499031,-98.44568
-s_a6e266dd6b6e,Haskin Drive (6),residential,129.5,0.0202,0,0.0,0.093,7,7,unverified,29.50057,-98.446399
-s_a42681c08e77,Albin Drive (1),residential,207.5,0.1077,2,0.96,0.0672,1,0,unverified,29.499879,-98.444821
-s_ba369de6d825,Albin Drive (2),residential,135.1,0.1007,1,0.74,0.1143,4,4,unverified,29.499881,-98.446572
-s_8807e7d9abb9,Northridge Drive (2),residential,207.5,0.0803,2,0.96,0.0779,2,2,unverified,29.501046,-98.446401
-s_386179267b2f,Northridge Drive (1),residential,179.6,0.1159,2,1.11,0.0985,1,1,unverified,29.501046,-98.446401
-s_490bf2629292,Haskin Drive (7),residential,109.1,0.0721,1,0.92,0.0604,1,0,unverified,29.501541,-98.446405
-s_78c318ee57a9,Haskin Drive (8),residential,71.4,0.0293,0,0.0,0.0458,0,0,unverified,29.502245,-98.446414
-s_3c79e77108c1,Larkwood Drive (1),residential,211.4,0.0188,0,0.0,0.0935,7,7,unverified,29.501862,-98.445797
-s_512e79ab16ec,Larkwood Drive (2),residential,179.6,0.0133,0,0.0,0.0417,7,6,unverified,29.502028,-98.448163
-s_778d35b4f7b6,Haskin Drive (9),residential,38.3,0.0283,0,0.0,0.0889,2,2,unverified,29.502669,-98.446422
-s_68eb3b22c45a,Woodcrest Drive (1),residential,210.1,0.0483,1,0.48,0.0422,0,0,unverified,29.502665,-98.445386
-s_a4e46571327e,Haskin Drive (10),residential,108.9,0.0664,1,0.92,0.0594,1,0,unverified,29.503594,-98.446423
-s_f678a98ddb63,Woodcrest Drive (2),residential,346.8,0.0115,0,0.0,0.0813,9,9,unverified,29.503021,-98.448776
-s_5466b8fd2382,Oakleaf Drive (1),residential,298.6,0.0807,3,1.0,0.1019,3,3,unverified,29.503992,-98.446423
-s_79cc958a274b,Haskin Drive (11),residential,103.4,0.0626,1,0.97,0.0598,1,0,unverified,29.504452,-98.446428
-s_845b12b4f6cb,Haskin Drive (13),residential,55.1,0.077,0,0.0,0.1238,1,1,unverified,29.504922,-98.446433
-s_4099097cc9a4,Burnside Drive (5),residential,50.7,0.0268,0,0.0,0.0582,2,2,unverified,29.504922,-98.446433
-s_efc2eabd8a44,Haskin Drive (14),residential,84.3,0.0138,0,0.0,0.0337,6,6,unverified,29.505417,-98.44642
-s_4783b6d3e8d0,Urban Crest Drive,residential,98.0,0.1315,1,1.02,0.1211,0,0,unverified,29.505417,-98.44642
-s_4adb934fb870,Haskin Drive (12),residential,74.7,0.0195,0,0.0,0.0779,2,2,unverified,29.505385,-98.446455
-s_11f96ddefa59,Forrest Hill Drive,residential,169.5,0.0322,1,0.59,0.0668,3,3,unverified,29.505914,-98.446892
-s_a887390ea86b,Haskin Drive (15),residential,141.7,0.0391,1,0.71,0.0462,7,7,unverified,29.506437,-98.445216
-s_22bbf1c76def,Rockhill Drive (3),collector,262.7,0.1663,5,1.9,0.1374,0,0,unverified,29.506877,-98.446844
-s_1a74456f0bae,Haskin Drive (16),residential,107.7,0.0597,1,0.93,0.1093,2,2,unverified,29.507348,-98.444713
-s_7771d9eefef8,Haskin Drive (17),residential,105.3,0.1033,1,0.95,0.1296,0,0,unverified,29.507851,-98.444712
-s_e63bedf50373,Wyndale Street,residential,275.8,0.126,4,1.45,0.124,0,0,unverified,29.507861,-98.446715
-s_f8e14b05c771,Cave Lane (7),residential,166.2,0.0407,1,0.6,0.0438,3,3,unverified,29.508798,-98.444719
-s_d1da1ff920b3,Haskin Drive (18),residential,110.5,0.0996,1,0.9,0.0866,0,0,unverified,29.508798,-98.444719
-s_92cdbb721c0e,Laramie Drive,residential,223.4,0.1019,3,1.34,0.1066,0,0,unverified,29.509558,-98.446007
-s_1c045bb3c8ec,Haskin Drive (19),residential,113.7,0.0013,0,0.0,0.0377,6,6,unverified,29.510318,-98.444775
-s_d3568ab3be9c,Oak Glen Drive,residential,277.1,0.0085,0,0.0,0.0996,4,4,unverified,29.510503,-98.446461
-s_8a0431617910,East Sunset Road (4),collector,302.7,0.5945,20,6.61,0.6006,0,0,unverified,29.507237,-98.465902
-s_26d551910bb1,Broadway (8),arterial,276.6,0.7127,22,7.95,0.7143,0,0,unverified,29.508224,-98.466225
-s_0fce49ee3576,Broadway (7),arterial,202.7,0.3259,7,3.45,0.6738,5,5,unverified,29.506241,-98.466246
-s_087655f00231,Tophill Road (2),residential,170.4,0.1571,3,1.76,0.1645,1,1,unverified,29.500386,-98.459083
-s_5b1e2efba481,North New Braunfels Avenue (12),collector,93.3,0.2169,2,2.14,0.2145,1,1,unverified,29.500097,-98.459085
-s_19d3880a48a6,North New Braunfels Avenue (14),collector,98.6,0.2537,3,3.04,0.2291,0,0,unverified,29.500855,-98.459082
-s_8bc4c17ec69f,Tophill Road (3),residential,289.8,0.0695,2,0.69,0.0813,1,1,unverified,29.500385,-98.457322
-s_dc0d72b2b6a4,Bartell Drive (7),residential,97.7,0.0135,0,0.0,0.1398,7,7,unverified,29.500848,-98.457319
-s_9168385b448a,Bartell Drive (6),residential,92.1,0.0744,1,1.09,0.0983,2,2,unverified,29.49998,-98.457319
-s_5d374b7b5151,Tophill Road (4),residential,290.0,0.2166,7,2.41,0.2206,3,3,unverified,29.5004,-98.454328
-s_8f09cb0c1b9e,Greenwich Boulevard (9),residential,97.5,0.2569,3,3.08,0.2358,1,0,unverified,29.500853,-98.454334
-s_fdc7763038b8,Greenwich Boulevard (8),residential,92.7,0.2802,3,3.24,0.2746,1,0,unverified,29.499989,-98.454324
-s_c545b4f87234,Tophill Road (1),residential,299.3,0.11,4,1.34,0.1472,1,1,unverified,29.50036,-98.450484
-s_e7e1c5b171ea,Kenilworth Boulevard (9),residential,96.4,0.0268,0,0.0,0.1614,8,7,unverified,29.500848,-98.451335
-s_9077fecfeadd,Kenilworth Boulevard (8),residential,91.2,0.2483,2,2.19,0.2585,1,1,unverified,29.500003,-98.451328
-s_38492302bba6,Chevy Chase Drive (7),residential,96.9,0.0829,1,1.03,0.0596,2,2,unverified,29.500605,-98.448256
-s_12f2fe57c5e1,Chevy Chase Drive (6),residential,98.2,0.06,1,1.02,0.0503,2,2,unverified,29.49989,-98.448254
-s_6560ce653e0a,Gallery Court (1),residential,12.0,0.3276,0,0.0,0.6079,3,3,unverified,29.504635,-98.459073
-s_fa9cb95d0273,North New Braunfels Avenue (18),collector,69.3,0.5891,4,5.77,0.6048,1,0,unverified,29.504356,-98.459078
-s_67f281a1df8d,North New Braunfels Avenue (19),collector,58.9,0.3678,2,3.4,0.6859,4,3,unverified,29.504886,-98.459072
-s_7523f0b15cde,Gallery Court (2),residential,358.3,0.3781,15,4.19,0.3726,1,0,unverified,29.504746,-98.45746
-s_d23c9daa7ab1,Broadway (5),arterial,105.7,0.7656,9,8.51,0.7488,0,0,unverified,29.499993,-98.466569
-s_6f8c21102323,Broadway (2),arterial,238.9,0.6984,18,7.53,0.7114,1,0,unverified,29.498363,-98.466577
-s_a07ca9a0b4a6,East Nottingham (3),residential,193.1,0.5275,11,5.7,0.5,0,0,unverified,29.499495,-98.464853
-s_915a3930e996,East Nottingham (2),residential,253.4,0.5102,14,5.52,0.5364,0,0,unverified,29.499471,-98.464485
-s_94934c9a83b0,Nacogdoches Road (5),arterial,139.6,0.5192,8,5.73,0.8498,1,1,unverified,29.500258,-98.463838
-s_ab905a3837d8,Nacogdoches Road (2),arterial,80.5,0.4588,4,4.97,0.7636,5,5,unverified,29.499397,-98.464646
-s_841ff4a12813,East Nottingham (4),residential,272.7,0.0611,2,0.73,0.241,4,3,unverified,29.499472,-98.460576
-s_2e5b2c25ff8e,Middleton Drive (3),residential,103.8,0.3343,4,3.85,0.3938,3,2,unverified,29.499112,-98.461959
-s_de2f964151a6,North New Braunfels Avenue (13),collector,8.0,0.2267,0,0.0,0.1856,0,0,unverified,29.499477,-98.459142
-s_a4b92ff1e732,North New Braunfels Avenue (11),collector,86.7,0.0713,1,1.15,0.177,5,5,unverified,29.499144,-98.459146
-s_389d18ea04f8,East Nottingham (5),residential,176.6,0.1162,2,1.13,0.1112,3,3,unverified,29.499549,-98.459141
-s_9f54cbc7fc56,East Nottingham (6),residential,290.1,0.0989,3,1.03,0.1468,2,2,unverified,29.499557,-98.457316
-s_9ee2570ec00b,Bartell Drive (4),residential,94.6,0.0792,1,1.06,0.0892,1,1,unverified,29.499158,-98.457311
-s_a8dd2385fba7,East Nottingham (7),residential,290.0,0.3025,10,3.45,0.2798,0,0,unverified,29.499566,-98.454319
-s_58eb9d01c513,Greenwich Boulevard (6),residential,94.4,0.2575,3,3.18,0.2478,1,1,unverified,29.499161,-98.454314
-s_5141ea4ec3ff,East Nottingham (1),residential,299.3,0.1032,3,1.0,0.0829,0,0,unverified,29.499376,-98.449369
-s_92bf437edc4a,Kenilworth Boulevard (6),residential,95.5,0.0772,1,1.05,0.1954,4,3,unverified,29.499219,-98.451319
-s_2dada4a2a07b,Chevy Chase Drive (5),residential,97.7,0.0406,0,0.0,0.0799,3,3,unverified,29.498869,-98.448255
-s_72ea6b14aa9e,Middleton Drive (1),residential,75.5,0.3609,3,3.97,0.4209,1,1,unverified,29.496851,-98.460324
-s_82a8751c0f1d,Brightwood Place (4),residential,69.8,0.1238,1,1.43,0.2132,4,4,unverified,29.49657,-98.459397
-s_aaa113940bc0,Brightwood Place (7),residential,76.7,0.4497,4,5.22,0.4378,0,0,unverified,29.496667,-98.460502
-s_f5d614ad2532,Calumet Place (1),residential,210.8,0.5349,12,5.69,0.5126,1,0,unverified,29.497604,-98.461335
-s_08693549b3ac,Calumet Place (2),residential,164.7,0.5339,10,6.07,0.5436,0,0,unverified,29.497604,-98.461335
-s_6c32ecca29d5,Middleton Drive (4),residential,117.4,0.2611,3,2.56,0.4639,3,3,unverified,29.498006,-98.461638
-s_a73ebd66eeb3,Middleton Drive (2),residential,98.5,0.5187,6,6.09,0.4994,1,0,unverified,29.49732,-98.461048
-s_073846bd90f9,Robinhood Place (4),residential,261.1,0.2972,9,3.45,0.3813,2,2,unverified,29.498543,-98.461849
-s_ab07c51d8703,Robinhood Place (2),residential,181.9,0.3839,8,4.4,0.3816,3,2,unverified,29.498543,-98.461849
-s_152659bf48ed,Cave Lane (3),residential,108.6,0.0589,1,0.92,0.0571,0,0,unverified,29.508794,-98.446827
-s_3473f5bfc644,Brightwood Place (5),residential,96.1,0.4039,4,4.16,0.4606,3,3,unverified,29.496659,-98.465305
-s_97b9885f7905,Poniente Lane,residential,135.5,0.4728,7,5.17,0.453,0,0,unverified,29.497138,-98.465303
-s_9bebbd6de34c,Brightwood Place (6),residential,121.7,0.498,7,5.75,0.5153,0,0,unverified,29.496661,-98.466203
-s_f858eb5ebddb,La Sombra Drive (1),residential,140.3,0.3577,6,4.28,0.4083,1,1,unverified,29.497381,-98.464378
-s_5d7fbf0b3ac0,La Sombra Drive (2),residential,109.2,0.4819,6,5.49,0.497,0,0,unverified,29.497926,-98.465534
-s_34ce15c2a609,East Lawndale Drive (1),residential,234.8,0.125,3,1.28,0.1234,3,3,unverified,29.509716,-98.461443
-s_db9ee7cdb694,East Lawndale Drive (2),residential,43.3,0.1794,1,2.31,0.1449,1,1,unverified,29.509716,-98.461443
-s_320ed1a71133,Goodnight Street,residential,352.4,0.1397,5,1.42,0.162,0,0,unverified,29.508877,-98.46145
-s_07f0f86b66d5,East Lawndale Drive (6),residential,136.6,0.4547,7,5.12,0.45,0,0,unverified,29.509727,-98.466143
-s_f82cb3304fa5,East Lawndale Drive (7),residential,46.3,0.4248,2,4.32,0.3807,0,0,unverified,29.50973,-98.464801
-s_6deb18d4c6e8,Garden Square,residential,85.8,0.4387,4,4.66,0.4212,0,0,unverified,29.50973,-98.464801
-s_c6df72d9e047,East Lawndale Drive (4),residential,144.2,0.1556,2,1.39,0.2295,3,3,unverified,29.509728,-98.463685
-s_bfd2bb2bc820,Thornhill Street,residential,128.4,0.1083,2,1.56,0.3455,4,4,unverified,29.508933,-98.464339
-s_19b23e8544a0,East Lawndale Drive (5),residential,47.9,0.1009,1,2.09,0.1812,6,5,unverified,29.509723,-98.462672
-s_99dd98f6d08b,Kings Reach,residential,139.3,0.1464,2,1.44,0.1259,1,1,unverified,29.509142,-98.462728
-s_8536438be257,East Lawndale Drive (3),residential,43.4,0.0944,0,0.0,0.0983,1,1,unverified,29.509723,-98.462302
-s_0c9183d54dfc,Busby Drive,residential,119.9,0.1556,2,1.67,0.1657,2,2,unverified,29.510275,-98.462334
-s_39ad26931453,Court Circle,residential,137.6,0.1031,2,1.45,0.117,4,3,unverified,29.509718,-98.46189
-s_f5b3f553a8aa,North New Braunfels Avenue (25),collector,28.4,0.3617,1,3.52,0.3328,0,0,unverified,29.509709,-98.459017
-s_97de97091b31,North New Braunfels Avenue (26),collector,82.3,0.0625,1,1.22,0.3099,8,8,unverified,29.509976,-98.459015
-s_204e1bfe672e,Larkwood Drive (7),residential,208.9,0.1625,4,1.91,0.1685,0,0,unverified,29.502183,-98.457152
-s_683ecd39163e,Woodbine Street (1),residential,104.1,0.1865,2,1.92,0.1475,0,0,unverified,29.502645,-98.457149
-s_951675cec5b5,Larkwood Drive (6),residential,187.7,0.205,4,2.13,0.1954,0,0,unverified,29.502172,-98.458115
-s_7ed51258b0cf,Woodcrest Drive (4),residential,207.7,0.2197,5,2.41,0.1854,0,0,unverified,29.503119,-98.457147
-s_9375b3098409,Woodcrest Drive (5),residential,187.5,0.1828,4,2.13,0.1765,0,0,unverified,29.503119,-98.457147
-s_296975ef297a,Woodbine Street (2),residential,102.5,0.3273,4,3.9,0.2786,0,0,unverified,29.503578,-98.457136
-s_93679d21fe38,Oakleaf Drive (4),residential,206.4,0.3411,8,3.88,0.3137,1,0,unverified,29.504041,-98.457125
-s_3b994fccb176,Oakleaf Drive (3),residential,189.7,0.2193,5,2.64,0.2996,5,5,unverified,29.504041,-98.457125
-s_c736447dd73c,Woodbine Street (3),residential,73.8,0.2174,2,2.71,0.2625,2,2,unverified,29.504211,-98.456819
-s_e845b203ce58,Claywell Drive (2),residential,366.4,0.0757,3,0.82,0.5342,7,7,unverified,29.495701,-98.466463
-s_ed639130ebab,Broadway (1),arterial,106.5,0.6168,7,6.57,0.7163,2,2,unverified,29.496182,-98.466551
-s_fdd4a2f05c56,Claywell Drive (1),residential,334.0,0.1918,7,2.1,0.1894,0,0,unverified,29.495721,-98.459418
-s_7da98fa36477,Vanderhoeven (2),residential,106.4,0.2585,3,2.82,0.3833,3,3,unverified,29.496185,-98.462758
-s_a844f5ae4a7c,Vanderhoeven (1),residential,104.5,0.2286,3,2.87,0.2239,1,0,unverified,29.495252,-98.462746
-s_febe415b7285,Eisenhauer Road (2),collector,195.4,0.2705,6,3.07,0.2754,1,0,unverified,29.495706,-98.459299
-s_1105665b07e3,North New Braunfels Avenue (4),collector,67.0,0.2659,2,2.99,0.2843,2,1,unverified,29.495914,-98.459285
-s_6ae69c83f6b8,Blanton Drive,residential,249.5,0.3797,10,4.01,0.3292,1,0,unverified,29.505357,-98.456221
-s_a2a3983a43f6,Woodridge Drive (5),residential,168.6,0.1833,3,1.78,0.1745,1,0,unverified,29.505665,-98.454532
-s_51c7dc0d8195,Woodridge Drive (3),residential,58.6,0.0733,0,0.0,0.1867,9,8,unverified,29.505308,-98.454791
-s_e6bf55fb727c,Nacogdoches Road (3),arterial,120.7,0.6809,9,7.46,0.6846,0,0,unverified,29.498271,-98.465688
-s_91a0b2c4fdb8,Nacogdoches Road (1),arterial,104.5,0.3728,4,3.83,0.7485,6,6,unverified,29.497628,-98.466303
-s_d46e407b7ffe,Brightwood Place (9),residential,150.0,0.1719,3,2.0,0.3121,2,2,unverified,29.496658,-98.464243
-s_4f79260e4c78,Hillview Drive (1),residential,260.5,0.2666,8,3.07,0.2367,0,0,unverified,29.509454,-98.459018
-s_8764fb28ee1a,North New Braunfels Avenue (24),collector,88.5,0.3121,3,3.39,0.4429,2,2,unverified,29.509189,-98.459013
-s_470b65f9c368,North New Braunfels Avenue (23),collector,25.4,0.0474,0,0.0,0.4185,6,6,unverified,29.508658,-98.45901
-s_d3cd01cd8b39,North New Braunfels Avenue (22),collector,136.3,0.5633,8,5.87,0.5597,0,0,unverified,29.507861,-98.459013
-s_54d52baabcf9,Camellia Way,residential,198.9,0.6106,13,6.54,0.6454,1,1,unverified,29.508437,-98.457125
-s_38bed0900902,East Sunset Road (2),collector,211.2,0.3721,9,4.26,0.6301,5,5,unverified,29.507204,-98.459135
-s_e3ec0edcae53,North New Braunfels Avenue (21),collector,198.8,0.7551,17,8.55,0.7324,0,0,unverified,29.506504,-98.459028
-s_9459d4d12608,North New Braunfels Avenue (20),collector,28.0,0.6914,2,7.14,0.7689,1,1,unverified,29.505417,-98.45906
-s_40759e41ee4e,Nacogdoches Road (9),arterial,204.1,0.7924,18,8.82,0.8598,2,2,unverified,29.505764,-98.458628
-s_752f6825b672,North New Braunfels Avenue (17),collector,100.1,0.5121,6,5.99,0.4943,0,0,unverified,29.503565,-98.459085
-s_5880a4818678,North New Braunfels Avenue (16),collector,103.6,0.3334,4,3.86,0.4711,1,1,unverified,29.502645,-98.459087
-s_f8eb106c7c55,North New Braunfels Avenue (15),collector,100.9,0.3421,4,3.96,0.3801,2,1,unverified,29.501708,-98.459082
-s_334ca5ba904c,Northridge Drive (3),residential,170.8,0.2866,5,2.93,0.254,0,0,unverified,29.501273,-98.459081
-s_4310bd388215,Robinhood Place (5),residential,178.7,0.034,1,0.56,0.1713,7,7,unverified,29.498697,-98.459151
-s_417d3eb8eae8,North New Braunfels Avenue (10),collector,17.1,0.2082,0,0.0,0.2472,2,2,unverified,29.498697,-98.459151
-s_eda5b4e1698e,North New Braunfels Avenue (9),collector,75.2,0.2352,2,2.66,0.2342,0,0,unverified,29.498317,-98.459152
-s_2792519c747d,Calumet Place (3),residential,179.9,0.2323,5,2.78,0.2245,0,0,unverified,29.497867,-98.459154
-s_6db2cb0fea92,North New Braunfels Avenue (8),collector,29.4,0.2641,1,3.4,0.2412,0,0,unverified,29.497867,-98.459154
-s_48fdb4d2efdc,North New Braunfels Avenue (5),collector,27.4,0.1019,0,0.0,0.2597,5,5,unverified,29.49655,-98.459206
-s_7cded735526d,Brightwood Place (1),residential,192.1,0.241,5,2.6,0.2182,0,0,unverified,29.496244,-98.459087
-s_d54047bafd33,East Oakview Place,residential,331.4,0.1162,4,1.21,0.1175,1,1,unverified,29.494778,-98.45932
-s_d4a1c694b289,Calumet Place (4),residential,289.1,0.3197,10,3.46,0.2883,1,0,unverified,29.497877,-98.457295
-s_a8f6ebd68507,Bartell Drive (5),residential,92.2,0.1301,1,1.08,0.2033,2,2,unverified,29.498308,-98.4573
-s_2d0045d0f83c,Calumet Place (5),residential,234.1,0.2113,5,2.14,0.3056,2,2,unverified,29.497885,-98.454308
-s_580720ee733a,Greenwich Boulevard (7),residential,92.5,0.3317,3,3.24,0.3145,0,0,unverified,29.498308,-98.454313
-s_a09f5f471765,Kenilworth Boulevard (7),residential,93.9,0.1848,2,2.13,0.1654,0,0,unverified,29.498336,-98.451893
-s_0dfdec9acba4,Vanderhoeven (4),residential,123.4,0.2791,4,3.24,0.3761,2,2,unverified,29.49789,-98.463206
-s_b4bc2a6213fd,Vanderhoeven (3),residential,109.5,0.3991,5,4.57,0.4568,2,2,unverified,29.497159,-98.462814
-s_90c59f85240b,Broadway (3),arterial,76.5,0.1578,1,1.31,0.6733,3,3,unverified,29.497009,-98.46657
-s_787784de3583,Hiler Road,residential,292.5,0.5623,18,6.15,0.5925,0,0,unverified,29.500681,-98.465077
-s_5b385e912654,Lorenz Road (2),residential,298.8,0.67,22,7.36,0.6471,0,0,unverified,29.502415,-98.466169
-s_590dfa2ba0f6,East Terra Alta Road (2),residential,205.1,0.247,6,2.93,0.4523,1,1,unverified,29.505414,-98.465663
-s_a88a4863db17,Vinewood Court,residential,114.3,0.0426,1,0.87,0.3692,5,5,unverified,29.505408,-98.464137
-s_b19838a5c3d2,Bethen Court,residential,71.9,0.0455,0,0.0,0.0536,0,0,unverified,29.495738,-98.447335
-s_b10c4d90b0b2,Eisenhauer Road (8),collector,65.0,0.0368,0,0.0,0.2021,7,6,unverified,29.495737,-98.447717
-s_5b2c57399af8,Dundee Avenue (1),residential,70.4,0.0721,1,1.42,0.0872,3,2,unverified,29.508708,-98.44991
-s_e05dd46cccdd,Cave Lane (6),residential,121.2,0.0955,1,0.83,0.0921,0,0,unverified,29.508708,-98.44991
-s_0eaa73032a7b,Cave Lane (1),residential,264.4,0.0646,2,0.76,0.044,0,0,unverified,29.508707,-98.450228
-s_1de43907a2da,Dundee Avenue (2),residential,118.6,0.0225,0,0.0,0.0363,3,3,unverified,29.509257,-98.449548
-s_a8762830dc0a,Kinross Drive,residential,182.8,0.0569,1,0.55,0.1312,5,5,unverified,29.509257,-98.449548
-s_d25ea857d291,Friar Tuck Road,residential,294.5,0.1094,4,1.36,0.108,1,1,unverified,29.510167,-98.451252
-s_ac2435925118,Eisenhauer Road (4),collector,265.6,0.2356,7,2.64,0.2267,0,0,unverified,29.495722,-98.453309
-s_3ba469792096,Greenwich Boulevard (4),residential,55.9,0.2527,2,3.58,0.2369,0,0,unverified,29.495826,-98.454599
-s_b20538e5ef04,Brightwood Place (2),residential,271.6,0.3452,10,3.68,0.3324,0,0,unverified,29.496204,-98.454468
-s_3988153dd1f5,Brightwood Place (3),residential,251.2,0.2577,7,2.79,0.2556,1,1,unverified,29.496201,-98.453333
-s_b9dfdcd193e5,Robinhood Place (6),residential,289.2,0.1431,5,1.73,0.23,2,2,unverified,29.498717,-98.454317
-s_482967985bdc,Robinhood Place (8),residential,234.2,0.3252,8,3.42,0.3125,0,0,unverified,29.498722,-98.453281
-s_7069423dfc5f,Northridge Drive (6),residential,164.7,0.2026,4,2.43,0.1743,0,0,unverified,29.501277,-98.454339
-s_73b990b04516,Northridge Drive (4),residential,288.1,0.0802,3,1.04,0.1512,3,3,unverified,29.501274,-98.45493
-s_b53bb76bcf95,Cave Lane (2),residential,10.4,0.2007,0,0.0,0.1953,0,0,unverified,29.508694,-98.452749
-s_82bcc2054b9d,Woodridge Drive (7),residential,112.7,0.1811,2,1.77,0.1484,0,0,unverified,29.508834,-98.452671
-s_5159931c5bca,Cave Lane (5),residential,391.6,0.2338,10,2.55,0.2891,1,1,unverified,29.508698,-98.454057
-s_796abe044eb7,Woodridge Drive (8),residential,67.6,0.0456,0,0.0,0.1333,6,6,unverified,29.50987,-98.452042
-s_32cd67c81d07,Hillview Drive (2),residential,387.6,0.2703,12,3.1,0.4832,4,4,unverified,29.509659,-98.455163
-s_d10eefd71944,Woodridge Drive (1),residential,102.9,0.0918,1,0.97,0.0967,0,0,unverified,29.502645,-98.454997
-s_86438785ef40,Larkwood Drive (5),residential,228.0,0.0966,2,0.88,0.1001,3,2,unverified,29.502189,-98.45471
-s_c4285799d06f,Woodridge Drive (2),residential,102.6,0.0467,1,0.97,0.0603,0,0,unverified,29.503437,-98.454998
-s_b8ab555ee9f4,Oakleaf,residential,10.4,0.1518,0,0.0,0.1066,0,0,unverified,29.504033,-98.454992
-s_6e1d84c73c34,Oakleaf Drive (5),residential,219.4,0.0546,1,0.46,0.1296,7,6,unverified,29.504033,-98.454884
-s_6fabf04dc619,Woodridge Drive (4),residential,98.5,0.193,2,2.03,0.1691,0,0,unverified,29.504496,-98.454867
-s_8b3027f7c953,Burnside Drive (2),residential,217.9,0.1449,3,1.38,0.1941,1,1,unverified,29.504919,-98.454863
-s_35f59ce69457,Woodridge Drive (6),residential,247.7,0.1149,3,1.21,0.1341,0,0,unverified,29.508052,-98.45301
-s_e0a49e7b4dba,Rockhill Drive (1),collector,313.0,0.2282,8,2.56,0.2412,3,3,unverified,29.506749,-98.452951
-s_1f1771e6f488,Rockhill Drive (2),collector,402.0,0.4281,19,4.73,0.4469,0,0,unverified,29.506747,-98.455377
-s_3e91a2ac7ff2,Robinhood Place (3),residential,144.9,0.4606,7,4.83,0.4613,1,1,unverified,29.498658,-98.464733
-s_ed39fc3aa225,Lorenz Road (1),residential,79.9,0.627,6,7.51,0.6362,0,0,unverified,29.502407,-98.461924
-s_37fa57df9cfc,Nacogdoches Road (10),arterial,213.5,0.3214,8,3.75,0.8129,4,3,unverified,29.50706,-98.457831
-s_bd01516b2b70,Nacogdoches Road (11),arterial,33.8,0.8608,3,8.88,0.852,0,0,unverified,29.50844,-98.456964
-s_410045c04c84,Nacogdoches Road (12),arterial,94.7,0.7162,7,7.39,0.7949,1,1,unverified,29.508951,-98.456642
-s_46d6702bb32d,Nacogdoches Road (13),arterial,43.9,0.3449,2,4.56,0.771,3,3,unverified,29.509453,-98.456326
-s_bfa473052ced,Nacogdoches Road (14),arterial,60.8,0.7744,5,8.22,0.7171,0,0,unverified,29.509925,-98.45603
-s_3fb8afce1b16,Seidel Road (4),residential,131.4,0.1117,2,1.52,0.0636,0,0,unverified,29.499887,-98.44425
-s_a862772a559c,Seidel Road (3),residential,89.7,0.1602,2,2.23,0.1207,1,0,unverified,29.499887,-98.44425
-s_45fc6e29e74d,Kenilworth Boulevard (18),residential,209.4,0.0291,1,0.48,0.0352,2,2,unverified,29.510478,-98.447535
-s_c6fd9eb7c2c3,Rockhill Drive (5),collector,235.6,0.2332,6,2.55,0.2064,0,0,unverified,29.506758,-98.450016
-s_8f1cd7d832d0,Brookhurst Drive,residential,355.1,0.0595,2,0.56,0.0378,0,0,unverified,29.507731,-98.449164
-s_560fe9751d06,Rockhill Drive (4),collector,65.4,0.1873,1,1.53,0.1545,1,0,unverified,29.506769,-98.448123
-s_168f8e464e68,Hatt Lane,residential,153.2,0.1425,2,1.31,0.1284,2,1,unverified,29.506185,-98.4482
-s_7fb5476e81f5,Kenilworth Boulevard (16),residential,108.0,0.0837,1,0.93,0.0661,0,0,unverified,29.50676,-98.447525
-s_3d93ba944dbe,Kenilworth Boulevard (14),residential,106.4,0.0941,1,0.94,0.1276,2,2,unverified,29.506212,-98.447524
-s_a55e76ed92d4,Brightwood Place (8),residential,199.1,0.2954,6,3.01,0.4559,3,2,unverified,29.49667,-98.462762
-s_760ab2348e6b,Bartell Drive (1),residential,53.5,0.1415,1,1.87,0.3041,6,6,unverified,29.496193,-98.457274
-s_42df75f756bd,Kenilworth Boulevard (2),residential,54.9,0.1056,1,1.82,0.0707,0,0,unverified,29.49622,-98.451873
-s_a444473d3e9d,Larkwood Drive (4),residential,206.4,0.0715,2,0.97,0.0569,0,0,unverified,29.502167,-98.451145
-s_e6ed3e88787b,Crandall Place (2),residential,103.3,0.0631,1,0.97,0.1131,1,1,unverified,29.502626,-98.452636
-s_eee8bd5f9d70,Crandall Place (1),residential,98.5,0.1727,2,2.03,0.2002,1,1,unverified,29.501734,-98.452637
-s_f3fe43325465,Larkwood Drive (3),residential,217.3,0.0616,1,0.46,0.0426,0,0,unverified,29.502036,-98.448813
-s_705d3d42bb6f,Kenilworth Boulevard (11),residential,113.5,0.0673,1,0.88,0.1226,5,4,unverified,29.502585,-98.450261
-s_f7a069d4e117,Kenilworth Boulevard (10),residential,104.6,0.0783,1,0.96,0.0912,0,0,unverified,29.501478,-98.450838
-s_17bae20a8401,Chevy Chase Drive (8),residential,110.3,0.0723,1,0.91,0.0815,1,1,unverified,29.501524,-98.448261
-s_6658147333e1,Seidel Road (5),residential,87.2,0.0677,1,1.15,0.1206,2,2,unverified,29.501475,-98.444257
-s_f3380c98e32e,Tondre,residential,89.9,0.3211,3,3.34,0.6581,3,3,unverified,29.502408,-98.462619
-s_4b7aa665b639,Lorenz Road (3),residential,82.4,0.6262,6,7.28,0.6362,0,0,unverified,29.502408,-98.462619
-s_12af34bc38f9,Robinhood Place (7),residential,53.7,0.1777,1,1.86,0.1877,0,0,unverified,29.498741,-98.451521
-s_b99f01ae6d89,Robinhood Place (1),residential,301.3,0.1298,4,1.33,0.1063,1,1,unverified,29.498626,-98.450169
-s_5723d97dfb4f,Chevy Chase Drive (4),residential,295.6,0.0651,2,0.68,0.0303,1,0,unverified,29.496728,-98.448247
-s_2a874e13b8e8,Burnside Drive (3),residential,88.6,0.168,2,2.26,0.1218,0,0,unverified,29.504934,-98.446957
-s_0d22b93b3e5f,Cave Lane (4),residential,107.5,0.0731,1,0.93,0.0514,0,0,unverified,29.508708,-98.448114
-s_ad7358a8b2fd,Kenilworth Boulevard (17),residential,107.7,0.1158,1,0.93,0.0886,3,2,unverified,29.5087,-98.447547
-s_37a57dc404a1,Kenilworth Boulevard (19),residential,108.8,0.1304,2,1.84,0.1112,0,0,unverified,29.509153,-98.447504
-s_b9a018df45a3,Seidel Road (1),residential,89.9,0.0767,1,1.11,0.0655,0,0,unverified,29.49908,-98.44426
-s_46f4c0f1281a,Irvington Drive,residential,283.3,0.1285,4,1.41,0.0863,1,0,unverified,29.494293,-98.449695
-s_ae82c9b2344a,Eisenhauer Road (9),collector,22.6,0.0747,0,0.0,0.1815,4,4,unverified,29.495736,-98.448241
-s_6e70a38d43da,Eisenhauer Road (7),collector,57.2,0.1662,1,1.75,0.1551,0,0,unverified,29.495734,-98.4487
-s_7fa9cc9ed9c7,Northridge Drive (7),residential,268.4,0.0519,2,0.75,0.1019,3,3,unverified,29.501041,-98.448729
-s_4696822f3e27,Eisenhauer Road (6),collector,247.1,0.1635,4,1.62,0.1242,0,0,unverified,29.495731,-98.449886
-s_9e7c1d0b9301,Huntleigh Lane,residential,57.8,0.4312,3,5.19,0.5914,1,1,unverified,29.502784,-98.463466
-s_719bbce329a1,Burnside Drive (1),residential,342.9,0.1094,4,1.17,0.1004,0,0,unverified,29.50493,-98.451306
-s_8b8ff042a03b,Crandall Place (4),residential,99.5,0.1513,2,2.01,0.1129,0,0,unverified,29.504502,-98.452617
-s_a05be09802ff,Kenilworth Boulevard (13),residential,104.8,0.1315,2,1.91,0.1412,1,1,unverified,29.504518,-98.449228
-s_7fccb6f1316c,Burnside Drive (4),residential,116.3,0.0824,1,0.86,0.0539,0,0,unverified,29.504909,-98.448242
-s_36ca2746b9f2,Kenilworth Boulevard (15),residential,106.4,0.1162,1,0.94,0.1106,3,3,unverified,29.505376,-98.447558
-s_50f0e8fbd5cf,Oakleaf Drive (2),residential,300.9,0.1302,4,1.33,0.0945,2,1,unverified,29.50403,-98.451043
-s_c62cf584a864,Crandall Place (3),residential,103.2,0.0412,0,0.0,0.0592,1,1,unverified,29.503584,-98.452626
-s_02efb52d68ef,Kenilworth Boulevard (12),residential,114.4,0.098,1,0.87,0.0733,0,0,unverified,29.503522,-98.449758
-s_75993eb74b34,Northridge Drive (5),residential,125.6,0.2791,4,3.18,0.2978,2,2,unverified,29.501291,-98.452637
-s_f562b78d336b,Northridge Drive (8),residential,32.4,0.1634,1,3.09,0.1603,3,2,unverified,29.501278,-98.4512
-s_ae7cbc4490d1,Sunset Court,residential,84.7,0.0401,0,0.0,0.1915,7,6,unverified,29.507211,-98.461857
-s_0c4533b60963,East Sunset Road (1),collector,52.9,0.268,2,3.78,0.2375,0,0,unverified,29.507211,-98.461857
-s_bfbde98e77ef,East Sunset Road (5),collector,120.6,0.2498,3,2.49,0.2377,1,0,unverified,29.507211,-98.461857
-s_e0ebd04e3dca,Seidel Road (2),residential,138.6,0.1258,2,1.44,0.099,0,0,unverified,29.497026,-98.444228
-s_2e6bab8cc3e0,Woodcrest Drive (3),residential,254.6,0.0176,0,0.0,0.0538,4,4,unverified,29.503105,-98.451544
-s_0d6df94f63d0,Eisenhauer Road (5),collector,46.7,0.1884,1,2.14,0.2213,1,1,unverified,29.495727,-98.451509
-s_9ab9b98f0a04,Lado Bueno,residential,55.5,0.292,2,3.6,0.2512,0,0,unverified,29.506906,-98.463078
-s_7a057f4513ed,East Sunset Road (3),collector,11.7,0.2266,0,0.0,0.3813,3,2,unverified,29.507209,-98.461311
-s_dfc2dc25873e,Unnamed residential (5),residential,28.1,0.2597,1,3.56,0.2475,0,0,unverified,29.507209,-98.461311
-s_a51d67dc64e9,Unnamed residential (10),residential,14.1,0.1847,0,0.0,0.1632,0,0,unverified,29.507638,-98.461248
-s_a7b35af46b37,Unnamed residential (11),residential,64.4,0.0264,0,0.0,0.1882,6,6,unverified,29.507643,-98.461515
-s_5ec0e5560cdb,Unnamed residential (7),residential,23.6,0.2271,1,4.24,0.2253,0,0,unverified,29.507638,-98.461248
-s_f1b339f5a04b,Unnamed residential (6),residential,20.9,0.1584,0,0.0,0.1952,2,2,unverified,29.507556,-98.461295
-s_20093091d9d9,Unnamed residential (3),residential,21.3,0.2606,1,4.69,0.2429,0,0,unverified,29.507606,-98.461216
-s_e73090e28a0f,Unnamed residential (2),residential,27.7,0.1032,0,0.0,0.2127,2,2,unverified,29.507458,-98.461198
-s_a9cd0282aeef,Unnamed residential (8),residential,13.5,0.1237,0,0.0,0.2155,4,4,unverified,29.507765,-98.46101
-s_b7707d4fe2e8,Unnamed residential (9),residential,44.4,0.2135,1,2.25,0.2535,1,1,unverified,29.507766,-98.460846
-s_60b4459d43cc,Unnamed residential (12),residential,23.2,0.039,0,0.0,0.2604,7,7,unverified,29.507765,-98.46101
-s_ea888f472876,Unnamed residential (4),residential,9.8,0.2058,0,0.0,0.1999,1,1,unverified,29.507462,-98.4613
-s_41d6d5982df8,Unnamed residential (1),residential,41.4,0.5071,2,4.83,0.4738,1,0,unverified,29.496807,-98.460591
+segment_id,street_name,street_class,length_m,osm_way_ids,mid_lat,mid_lng
+s_affa549377c5,Unnamed residential (1),residential,41.2,15127316,29.467805,-98.446304
+s_cad19dd16f11,West Hathaway Drive (4),residential,34.1,15154966,29.467805,-98.446304
+s_c851e347959e,West Hathaway Drive (5),residential,69.5,15154966,29.468044,-98.446344
+s_5c5b5fd61730,Wyanoke Drive,residential,67.9,15151167,29.468218,-98.446276
+s_8ab7c7014929,Unnamed residential (8),residential,23.7,15127857,29.491405,-98.47417
+s_a5430ad1dba2,Paddington Way (4),residential,25.4,15163247,29.491405,-98.47417
+s_9c6b6f29006c,Paddington Way (5),residential,39.3,15163247,29.491405,-98.47417
+s_204bedbbada6,Tuxedo Avenue (5),residential,5.2,15181449,29.491192,-98.474171
+s_7847a1c78d37,Tuxedo Avenue (7),residential,143.5,15181449,29.491192,-98.474171
+s_b624f3e5a24c,Paddington Way (3),residential,18.1,15163247,29.491402,-98.474432
+s_9c659a24404e,Unnamed residential (7),residential,24.2,15127858,29.491226,-98.474433
+s_50d7a753b10c,Tuxedo Avenue (3),residential,121.1,15181449,29.491191,-98.474408
+s_620b103561e4,Tuxedo Avenue (6),residential,17.7,15181449,29.491191,-98.474408
+s_2e8762d86f20,La Jara Boulevard (16),residential,122.2,15160918,29.490902,-98.474333
+s_9b7ce9735428,North New Braunfels Avenue (43),residential,54.4,15128122,29.492763,-98.459115
+s_99d3d65cab91,North New Braunfels Avenue (38),residential,102.5,15128122,29.492452,-98.459114
+s_242f9f26cc10,North New Braunfels Avenue (39),residential,20.3,359906100,29.492735,-98.459205
+s_90e380eb0944,North New Braunfels Avenue (44),residential,104.2,15128122,29.493745,-98.45912
+s_c621983e4599,Scotsdale Drive (1),residential,457.2,15175649 15132965,29.493264,-98.455541
+s_78a254ea65fa,Camelback Drive,residential,357.0,15143410,29.49419,-98.459125
+s_b66f2b287f96,North New Braunfels Avenue (47),residential,105.2,15128122,29.494683,-98.459127
+s_c36be613398a,Briarwood Drive (1),residential,357.4,15132741,29.495136,-98.459129
+s_aeb954ef9373,Briarwood Drive (2),residential,19.6,15132741,29.495136,-98.459129
+s_5f0200af67ce,Unnamed residential (6),residential,24.1,15131554,29.491388,-98.477261
+s_33479a916065,Paddington Way (1),residential,73.9,15163247,29.491388,-98.477261
+s_9e0e664887dc,Paddington Way (10),residential,27.0,15163247,29.491387,-98.477369
+s_e688594aa2bf,Tuxedo Avenue (2),residential,243.7,15181449,29.491171,-98.47726
+s_fc43fc13d308,Tuxedo Avenue (4),residential,155.0,15181449,29.491171,-98.47726
+s_a4c07f551bb4,Morningside Drive (2),residential,64.5,15181618 15131931,29.483195,-98.458515
+s_e74a0c1134ce,Auburn Place (2),residential,209.3,15175460,29.483612,-98.457995
+s_076c42bef047,Auburn Place (1),residential,36.6,15175460,29.483182,-98.458433
+s_bebcfe4e1741,North New Braunfels Avenue (45),collector,46.2,149144300,29.495194,-98.459321
+s_04489788dd3a,North New Braunfels Avenue (48),collector,57.0,149144300,29.495268,-98.459317
+s_e6d1ed3844ff,Scotsdale Drive (3),residential,63.0,15132965,29.49515,-98.455436
+s_c31cc597e214,Scotsdale Drive (2),residential,104.3,15132965,29.494707,-98.455437
+s_65a270aa763c,Waxwood Lane (2),residential,358.6,15132823,29.506834,-98.48192
+s_a0731d0a06be,Tanglewood Drive (4),residential,93.7,15148468,29.50727,-98.485508
+s_a53c249fb454,Tanglewood Drive (2),residential,92.3,15148468,29.506412,-98.485507
+s_6a595504a20b,Jones Maltsberger Road (11),arterial,90.1,711635386,29.506425,-98.481794
+s_3a48503e8fc8,Jones Maltsberger Road (12),arterial,95.8,711635386,29.507165,-98.48181
+s_e4b37761482c,Waring Drive (4),residential,91.6,15147674,29.506829,-98.490539
+s_1e4a84678e03,Waring Drive (3),residential,87.5,15147674,29.506829,-98.490539
+s_1e1cc012287d,Waxwood Lane (1),residential,383.9,15132825,29.506824,-98.489452
+s_05f612aec497,Mertz Drive (4),residential,93.2,15146675,29.506833,-98.486572
+s_472bcdfbe89c,Mertz Drive (2),residential,93.4,15146675,29.506833,-98.486572
+s_46d9b1455ad8,Normandy Avenue (1),residential,175.9,15132916,29.483469,-98.466615
+s_fb33cedfd404,Townsend Avenue (6),residential,56.3,591107666,29.483084,-98.466553
+s_e5392eb88f40,Broadway (46),arterial,107.4,772096031,29.483767,-98.466443
+s_1fe81c7e41b6,Broadway (45),arterial,61.2,772096031,29.483151,-98.466257
+s_e433a2b42713,Normandy Avenue (3),residential,168.4,15132916,29.483449,-98.468239
+s_1b34c96000be,Columbine Street (4),residential,108.1,15171658,29.483449,-98.468239
+s_b8816f85b6cb,Columbine Street (2),residential,105.1,15171658,29.482874,-98.468254
+s_90a234cf239c,Normandy Avenue (2),residential,168.1,15132916,29.483454,-98.469979
+s_a3616cca7b99,Arbutus Street (4),residential,107.3,15155402,29.483454,-98.469979
+s_61f75936a53d,Arbutus Street (2),residential,106.0,15155402,29.483454,-98.469979
+s_38cdeff15c5f,Imlay Street (4),residential,107.1,15146875,29.483454,-98.471716
+s_444c065fa4de,Imlay Street (2),residential,106.1,15146875,29.483454,-98.471716
+s_d29a0c48867a,Normandy Avenue (5),residential,166.2,15132916,29.483459,-98.472271
+s_ddd5fdbbb8df,Normandy Avenue (4),residential,197.8,15132916,29.483458,-98.473433
+s_5358de736f92,Greely Street (6),residential,106.0,15135665,29.483458,-98.473433
+s_aa990ebc9925,Greely Street (4),residential,107.0,15135665,29.483458,-98.473433
+s_e45f235d71b0,Alamo Heights Boulevard (3),residential,121.9,15184386,29.484158,-98.475115
+s_d6dc11bb9a4c,Alamo Heights Boulevard (2),residential,127.2,15184386,29.482901,-98.476015
+s_f064ea27f816,Bartlett Place (2),residential,71.6,15132918,29.477912,-98.459285
+s_84b86ff9e759,North New Braunfels Avenue (18),collector,24.9,317461634,29.477912,-98.459285
+s_64cb5bed3cff,North New Braunfels Avenue (20),collector,131.1,317461634,29.477912,-98.459285
+s_b100db56bb53,Bartlett Place (1),residential,171.9,15132918,29.477914,-98.458545
+s_847d71adac41,Wyckham Rise Street,residential,275.8,15182104,29.478092,-98.458278
+s_3fa72a7a1df6,Wiltshire Avenue (4),residential,232.1,15146872,29.478348,-98.45663
+s_4c29654ea671,Wiltshire Avenue (3),residential,131.2,15146872,29.477389,-98.457
+s_d8986b37c6d3,Stratton Green,residential,85.7,15132923,29.503271,-98.47595
+s_68abbdb243e6,Bristol Green (11),residential,170.8,15140658,29.503758,-98.475705
+s_e83080b69552,Bristol Green (8),residential,313.0,243086608 15140658,29.503135,-98.476712
+s_261985335449,Chelsea Way (2),residential,128.6,15149204,29.503069,-98.475332
+s_26dd37ac8b80,Chelsea Way (1),residential,35.0,15149204,29.50289,-98.47572
+s_972cafea30f9,Eisenhauer Road (1),collector,177.4,1223178059,29.495716,-98.455447
+s_01f2ad53add0,Eisenhauer Road (3),collector,80.8,1223178059,29.495718,-98.454973
+s_aa2a9910c747,Circle Street (4),residential,67.0,15132986,29.480234,-98.463188
+s_1856dce3d304,Circle Street (2),residential,80.4,15132986,29.480075,-98.463796
+s_98dab7f3e60d,Fenimore Avenue,residential,141.7,15142088,29.479602,-98.463227
+s_5c3c56eaf894,Eaton Street (3),residential,163.1,15149953,29.480509,-98.462958
+s_9d2fd3ad262c,Circle Street (5),residential,43.4,15132986,29.480698,-98.462903
+s_6e00e19f82de,Circle Street (6),residential,105.4,15132986,29.481269,-98.463136
+s_a6e5c776a459,Routt Street (3),residential,167.2,15173733,29.480924,-98.462666
+s_ec9382766016,Ashcroft Avenue (1),residential,59.7,15151820,29.481473,-98.463667
+s_b527cb6a2d9f,Circle Street (3),residential,193.9,15132986,29.481108,-98.464413
+s_a4733415cb69,Circle Street (1),residential,58.3,15132987,29.480171,-98.464299
+s_cc047d63c7c6,Broadway (41),arterial,30.5,30448214,29.480041,-98.464729
+s_9609288f05d6,Broadway (40),arterial,68.8,30448214,29.479438,-98.464482
+s_6951c8133e48,Lamont Avenue (6),residential,170.1,15133113,29.489254,-98.466609
+s_7f039b45e7c2,Primrose Place (1),residential,240.6,15156562,29.489255,-98.46593
+s_faddbafbb775,Broadway (56),arterial,104.7,772096031 1127410511,29.489641,-98.466497
+s_05dca6735ead,Broadway (55),arterial,108.5,772096031,29.488442,-98.466483
+s_640e9bb74c05,Lamont Avenue (8),residential,57.1,15133113,29.489225,-98.468251
+s_ab2c411baa3e,Columbine Street (9),residential,108.2,15171658,29.489225,-98.468251
+s_3ef84fcfcc88,Lamont Avenue (7),residential,202.9,15133113,29.489239,-98.468841
+s_475605640077,Alamo Heights Boulevard (16),residential,116.2,30466913,29.48951,-98.468732
+s_66b39b0f1f58,Alamo Heights Boulevard (15),residential,132.5,30466913,29.489018,-98.468973
+s_0a9379c65386,Lamont Avenue (4),residential,165.8,15133113,29.489226,-98.470937
+s_232cfb9bbd71,Nacogdoches Road (4),residential,107.3,15152377,29.489226,-98.470937
+s_65b7fd90db89,Nacogdoches Road (3),residential,108.0,15152377,29.489226,-98.470937
+s_a46d8b0e6b1e,Lamont Avenue (3),residential,97.8,15133113,29.489219,-98.47265
+s_c7ddc6f55b66,Woodway Lane (5),residential,110.5,15139662,29.489219,-98.47265
+s_8baa9eb94658,Woodway Lane (4),residential,106.1,15139662,29.489219,-98.47265
+s_17b96f54baa5,Lamont Avenue (2),residential,25.2,15133113,29.489216,-98.47366
+s_04f5fb7a29a9,La Jara Boulevard (13),residential,113.4,15160925,29.489646,-98.47355
+s_ce485417682f,La Jara Boulevard (11),residential,113.5,15160925,29.488947,-98.473737
+s_fb652f546b99,Lamont Avenue (5),residential,167.2,15133113,29.489215,-98.47392
+s_74b47e9d0469,La Jara Boulevard (12),residential,113.3,15160918,29.489113,-98.473935
+s_e7abf6295614,La Jara Boulevard (14),residential,113.7,15160918,29.48942,-98.473801
+s_e1e1c1cc2df4,Lamont Avenue (1),residential,168.1,15133113,29.48922,-98.475647
+s_4ea647750e4f,Loveta Street (3),residential,106.6,15136532,29.48922,-98.475647
+s_5588e49f0357,Loveta Street (1),residential,107.6,15136532,29.48922,-98.475647
+s_fa9f639f8246,Ciruela Street (6),residential,83.6,15165189,29.489212,-98.477384
+s_a4ca276e348b,Ciruela Street (5),residential,107.2,15165189,29.489212,-98.477384
+s_9eb00efa802f,Abiso Avenue (1),residential,132.2,15133236,29.48154,-98.466885
+s_7c1eefcfd61c,Townsend Avenue (4),residential,108.7,15158576,29.48245,-98.466673
+s_fb989ea92d50,Townsend Avenue (2),residential,61.7,15158576,29.48122,-98.466955
+s_91a20cfaed36,Abiso Avenue (5),residential,167.8,15133236,29.481524,-98.468251
+s_b1eaa477069f,Columbine Street (3),residential,109.0,15171658,29.481524,-98.468251
+s_2d90a4afbceb,Columbine Street (1),residential,92.1,15171658,29.481524,-98.468251
+s_dadc7b40ebb2,Abiso Avenue (4),residential,166.4,15133236,29.481531,-98.469984
+s_6908a60ad0af,Arbutus Street (3),residential,107.8,15155402,29.481531,-98.469984
+s_60d1bce58783,Arbutus Street (1),residential,107.5,15155402,29.481531,-98.469984
+s_69aa6d65e58b,Abiso Avenue (3),residential,167.7,15133236,29.481529,-98.471703
+s_d9d56962898a,Imlay Street (3),residential,108.0,15146875,29.481529,-98.471703
+s_1002b1ab9cb6,Imlay Street (1),residential,106.6,15146875,29.481529,-98.471703
+s_29b0cf1a9a76,Abiso Avenue (2),residential,170.3,15133236,29.481529,-98.473436
+s_ceecb6c43329,Greely Street (5),residential,107.5,15135665,29.481529,-98.473436
+s_fdf4cdcb3dcf,Greely Street (3),residential,107.4,15135665,29.481529,-98.473436
+s_84914727accb,Ogden Lane (10),residential,110.1,15145863,29.481526,-98.475195
+s_646c006b2ae8,Ogden Lane (4),residential,206.6,15145863,29.480578,-98.473691
+s_fe9deb8b1efb,Greenwich Boulevard (11),residential,28.4,1223178061,29.49547,-98.454544
+s_c7cd7a73b6a2,Larchmont Drive (2),residential,162.9,15133274,29.495182,-98.454195
+s_6b6bbd472f55,Greenwich Boulevard (10),residential,156.7,165368629,29.49504,-98.454437
+s_8fb3e7623cb8,Larchmont Drive (3),residential,162.2,15133274,29.495103,-98.452639
+s_f93b0c16f73e,Larchmont Drive (1),residential,178.4,15133279,29.49469,-98.453951
+s_123bfff3b017,Larchmont Drive (4),residential,286.7,15133274,29.495184,-98.451363
+s_de0edc0fd4eb,Kenilworth Boulevard (9),residential,60.4,15185327,29.495184,-98.451363
+s_3b960579cc4c,Kenilworth Boulevard (6),residential,111.8,15185327,29.494704,-98.451306
+s_3cca70feabc8,Larchmont Drive (5),residential,302.9,1055297922,29.495195,-98.448401
+s_3d007bdca9a2,Chevy Chase Drive (10),residential,97.3,15161994,29.494763,-98.448376
+s_e221226cf7d2,Chevy Chase Drive (12),residential,71.5,15161995,29.495467,-98.448237
+s_b7e2a777d396,Chevy Chase Drive (13),residential,73.5,1055297923,29.495453,-98.44856
+s_90d3d8f0e248,Greenwich Boulevard (8),residential,50.3,165368629,29.494075,-98.454342
+s_96f17e980b58,Knibbe Avenue,residential,370.1,15133416,29.501475,-98.464775
+s_b09225ff4fa9,Broadway (69),arterial,105.0,1436147011,29.50163,-98.466562
+s_b97293182020,Broadway (67),arterial,114.0,1436147011,29.500767,-98.466566
+s_d351b549b944,Nacogdoches Road (19),arterial,140.1,1127404498 123168635,29.502196,-98.462003
+s_8326dbde73a8,Nacogdoches Road (17),arterial,143.6,123168635,29.501248,-98.462927
+s_4f598449132d,Woodhaven Street,residential,310.1,15136450 15133475,29.504974,-98.462095
+s_650a56d3b116,East Terra Alta Road (4),residential,298.1,15150558,29.505417,-98.459307
+s_a47a3aa16b94,East Terra Alta Road (3),residential,98.2,15150558,29.505413,-98.462427
+s_6a4dc4e81721,Corita Street (1),residential,145.0,15133952,29.503717,-98.469131
+s_3810c312ab02,Corita Street (2),residential,101.5,15133952,29.503717,-98.469131
+s_a7b4a1623e73,Glacier Lane,residential,194.3,15160248 15133557,29.502879,-98.469126
+s_5a78ffc68f95,Longsford (4),residential,217.4,15133567,29.496974,-98.471265
+s_829f2669648d,Longsford (1),residential,12.7,15133563,29.497035,-98.471241
+s_b192e58c2df7,Longsford (2),residential,668.1,15133567,29.496179,-98.470963
+s_7e46d1a4dbb0,Peter Baque Road (1),residential,18.7,1080059371,29.497241,-98.471161
+s_c4ba7bf92c2a,East Basse Road (10),arterial,364.6,15155310,29.498033,-98.473844
+s_8c7b6ab8853f,Peter Baque Road (2),residential,245.9,1080059371,29.498445,-98.470834
+s_a81342c4660a,East Basse Road (5),arterial,287.5,15155310 1465320439,29.49669,-98.469255
+s_a5b596e1591e,Longsford (5),residential,9.9,15133567,29.497692,-98.473353
+s_6558d183753b,East Basse Road (12),arterial,217.0,148634775,29.497118,-98.47135
+s_d25ec3e2af10,East Basse Road (13),arterial,143.8,148634775,29.497931,-98.47423
+s_8aa48871aafd,Longsford (3),residential,7.8,15133567,29.497609,-98.473389
+s_83362f06a543,Halifax Court,residential,149.2,15150473,29.497752,-98.473942
+s_2f6b489664d6,Blakeley Drive,residential,237.9,15133779,29.485658,-98.447211
+s_853b146fdc7c,Exeter Road (7),collector,181.1,149137124,29.486442,-98.447373
+s_9e620cd36b9d,Exeter Road (6),collector,114.7,149137124,29.48512,-98.447322
+s_7ec2712ddec5,Amesbury Road (5),residential,112.5,15137293,29.485657,-98.444753
+s_b62eaf3b3040,Park Hill Drive (2),residential,357.7,15133784,29.46811,-98.485164
+s_5ebec4e24be1,Park Hill Drive (1),residential,109.3,15133786,29.466659,-98.48687
+s_c15c7cfd6412,Park Drive (1),residential,328.2,15181866,29.468922,-98.48638
+s_c8f423d4a6ba,Park Hill Drive (3),residential,202.1,15133784,29.469892,-98.484141
+s_41f43ed4ece9,Thelma Drive (4),residential,115.8,15144596,29.469882,-98.484879
+s_230dd34e4a24,Thelma Drive (1),residential,417.8,15144596,29.468133,-98.483832
+s_e3198ad0de81,Park Hill Drive (4),residential,254.6,15133784,29.470054,-98.480873
+s_21be737427d8,Trevitt Drive (1),residential,97.5,15178006,29.470645,-98.482463
+s_fa9bdd50ed93,East Olmos Drive (4),collector,146.4,15156285,29.470872,-98.480684
+s_873ea206f7a1,East Olmos Drive (1),collector,124.1,15156285,29.470872,-98.48104
+s_4d5e24a7848c,East Hildebrand Avenue (8),arterial,215.4,358469971,29.466503,-98.487036
+s_24039e483c09,Shook Avenue (5),collector,285.6,15175153,29.466907,-98.487043
+s_c4763a61963d,Shook Avenue (3),collector,56.2,15175153,29.466404,-98.487035
+s_2123a6392887,East Hildebrand Avenue (10),arterial,128.4,1036530694,29.466503,-98.487125
+s_ccdcb9b9718c,Downing Drive,residential,317.2,15152064,29.465421,-98.444779
+s_7a14f0f0e6b9,Ridgehaven Place (1),residential,182.3,15133806,29.497024,-98.459169
+s_ac790b5c9d35,North New Braunfels Avenue (51),collector,52.8,148634810,29.496637,-98.459199
+s_e71a62f832d8,North New Braunfels Avenue (52),collector,64.4,148634810,29.497467,-98.45916
+s_a81df9236f55,Ridgehaven Place (2),residential,289.0,15133806,29.497037,-98.457285
+s_d9ff9d2b0c43,Bartell Drive (3),residential,93.4,15174172,29.497473,-98.45729
+s_ed509cac97fe,Bartell Drive (2),residential,93.9,15174172,29.496631,-98.45728
+s_af7c4e24be4c,Ridgehaven Place (3),residential,234.0,15133806,29.497058,-98.453286
+s_f183e67862b1,Greenwich Boulevard (14),residential,92.7,1223178060,29.49748,-98.454304
+s_7588d6ec1547,Greenwich Boulevard (12),residential,96.0,1223178060,29.496637,-98.454342
+s_9fdd70152c8a,Kenilworth Boulevard (11),residential,92.9,15185332,29.49749,-98.451885
+s_263be14d0766,Kenilworth Boulevard (10),residential,93.2,15185332,29.496655,-98.451877
+s_301aa18bf9c8,Everest Street (6),residential,193.0,15133815,29.508273,-98.470884
+s_3283ed4cc7c3,West Sunset Road (3),arterial,357.0,15137179,29.507352,-98.472123
+s_efa8d7e0c0c8,West Sunset Road (2),arterial,71.3,15137179,29.507254,-98.470749
+s_2767e35061ce,Everest Street (7),residential,85.1,15133815,29.508991,-98.470879
+s_fca2f7fe2e6f,East Sandalwood Lane,residential,223.8,15145003,29.508988,-98.472164
+s_10c4f5803646,Everest Street (8),residential,58.2,15133815,29.509756,-98.470876
+s_86add0d6d9ce,West Lawndale Drive (1),residential,302.2,15163740,29.509744,-98.468787
+s_fc7497d94ada,Belfast Drive,residential,179.2,15169008,29.51028,-98.470879
+s_b808baef99b5,Everest Street (1),residential,51.4,15133816,29.502419,-98.470168
+s_de6793a082b8,Lorenz Road (1),residential,378.5,15162641 15144356,29.500638,-98.470758
+s_e4cfe0a14041,Lorenz Road (5),residential,174.0,708838914,29.502419,-98.469668
+s_9c5390542e56,Everest Street (2),residential,93.6,15133816,29.502881,-98.470171
+s_b82fd2eff29f,Everest Street (3),residential,93.8,15133816,29.503884,-98.470181
+s_149da33273d6,Everest Street (4),residential,93.1,15133816,29.504567,-98.470185
+s_1a6469cdfc8f,Merriford Lane,residential,351.3,15157785 15144827,29.504505,-98.46748
+s_6914f56e1174,Everest Street (5),residential,205.2,15133816,29.50655,-98.470169
+s_4cad31ac12bd,West Terra Alta Road (2),residential,381.0,15179671,29.505414,-98.466985
+s_f5982fa4a184,West Terra Alta Road (1),residential,55.0,15179671,29.505403,-98.470308
+s_433f9a750df2,West Sunset Road (1),arterial,379.6,15137179,29.507238,-98.468575
+s_6d62ce7433cb,New Haven Drive,residential,290.9,15133821,29.486736,-98.451984
+s_4a2125b43852,West Meadowlane Drive (3),residential,31.4,15166083,29.486045,-98.453992
+s_20f84a6eac60,West Meadowlane Drive (2),residential,141.7,15166083,29.485618,-98.453775
+s_60de25488daa,East Meadowlane Drive (2),residential,133.5,15142431,29.486731,-98.450816
+s_52c0a3541cb8,East Meadowlane Drive (3),residential,238.6,15154633 15142433,29.487506,-98.45116
+s_a6b3640d76ca,Townsend Avenue (3),residential,49.0,15158576,29.480558,-98.467073
+s_393c468b043e,Harrison Avenue (5),residential,244.0,15133942,29.48034,-98.467929
+s_215e9a5b9f9d,Townsend Avenue (1),residential,118.6,15158576,29.479671,-98.46726
+s_15dddd7fd2d8,Morse,residential,9.4,15153481,29.479497,-98.469219
+s_c9ccd201ad01,Morse Street (2),residential,144.9,15139380,29.480077,-98.469838
+s_e1ee870c7f81,Morse Street (1),residential,108.3,15139381,29.479438,-98.46915
+s_dbd08c4f83db,Harrison Avenue (4),residential,164.3,15133944,29.479319,-98.469269
+s_9e46b5b62365,Harrison Avenue (3),residential,116.5,15133944,29.478514,-98.470462
+s_963d1be3524f,Acacia Street (1),residential,116.5,15181295,29.478514,-98.470462
+s_880ff51fa91f,Acacia Street (2),residential,272.6,15146875 15181295,29.479546,-98.471443
+s_9b2e03d35357,Harrison Avenue (2),residential,114.6,15133944,29.47788,-98.47142
+s_224be215e02c,Allen Street (2),residential,121.3,15141494,29.47788,-98.47142
+s_4b109560cba4,Allen Street (1),residential,116.3,15141494,29.47788,-98.47142
+s_e06840f1e898,Claiborne Way (2),residential,148.8,15158657,29.477252,-98.472359
+s_dc0c8412f865,Claiborne Way (1),residential,81.6,15158657,29.477252,-98.472359
+s_dd0015b50943,Harrison Avenue (1),residential,101.7,15133944,29.477203,-98.472441
+s_ab36f9e0eb01,Crescent Street (3),residential,179.6,15138254,29.476889,-98.473287
+s_78cc2db8886d,Crescent Street (1),residential,120.2,15138254,29.47659,-98.472842
+s_5b99603cec28,North New Braunfels Avenue (22),collector,112.5,317461634,29.482011,-98.459297
+s_394caebe7045,North New Braunfels Avenue (24),collector,109.8,317461634,29.482011,-98.459297
+s_266e03083a1d,Canterbury Hill (8),residential,258.0,15133947,29.481968,-98.458043
+s_2fcd73b99699,Montclair Avenue (3),residential,108.6,1067072175,29.482012,-98.460048
+s_b505cb1ea954,Canterbury Hill (2),residential,174.4,15133947,29.481466,-98.45527
+s_0fc3b6d998bd,Sheraton Drive (4),residential,263.7,15152997,29.482744,-98.455354
+s_3819e5a34d6c,Sheraton Drive (2),residential,126.0,15152997,29.481421,-98.457077
+s_6aed7a91e1f0,Canterbury Hill (1),residential,108.4,15133947,29.481369,-98.454492
+s_db6334fdbaa7,Gatewood Court,residential,279.4,15146071,29.481937,-98.454696
+s_9e49a235ce6d,Wiltshire Avenue (5),residential,131.4,15146872,29.481408,-98.453794
+s_591e78252f57,Canterbury Hill (3),residential,191.7,15133947,29.481474,-98.453212
+s_1d79e6c0dd61,Wiltshire Avenue (9),residential,231.3,15146872,29.482456,-98.452736
+s_915d3aadd7c7,Canterbury Hill (6),residential,255.8,15133947,29.48177,-98.451216
+s_20ccd763d817,Eldon Road (12),collector,121.6,15168311,29.482201,-98.451966
+s_c4a6b6172b07,Eldon Road (10),collector,122.0,15168311,29.481129,-98.451602
+s_03acfaf0f459,Canterbury Hill (7),residential,132.5,15133947,29.481762,-98.449208
+s_ba4bb7f77aeb,Winchester Road (2),residential,109.5,15139605,29.482252,-98.449213
+s_291850431c01,Winchester Road (1),residential,109.6,15139605,29.481278,-98.449205
+s_6940a57176bb,Andover Lane,residential,156.0,15152198,29.481762,-98.447839
+s_24d65c7edea8,Canterbury Hill (5),residential,50.2,15133947,29.481752,-98.447735
+s_8a5ff185a7a9,Exeter Road (3),residential,115.2,15168487,29.481663,-98.447334
+s_2d60fa474894,Canterbury Hill (4),residential,213.0,15133947,29.481629,-98.447175
+s_ce59216fe1bd,Exeter Road (1),residential,114.9,15168487,29.481272,-98.447337
+s_0559de14580a,Amesbury Road (3),residential,124.0,15137293,29.481642,-98.445138
+s_4751f2103f31,Amesbury Road (1),residential,134.2,15137293,29.480943,-98.445373
+s_e2e6d9f85cd5,Ashyia Way,residential,149.9,15157785 15133954,29.503393,-98.467457
+s_b6633552fd38,Broadway (71),arterial,225.6,1436147011,29.504716,-98.466324
+s_ccf52dc64dfd,Broadway (70),arterial,109.4,1436147011,29.502716,-98.466526
+s_5f23abf18687,Shadylane Drive (1),residential,54.9,15134031,29.503037,-98.461198
+s_64896eaa321c,Glendalough Court,residential,196.8,15157985,29.50283,-98.460065
+s_a0c2071b1fc2,Nacogdoches Road (21),arterial,313.7,1034152566,29.504743,-98.459492
+s_cdf1a3510cc6,Nacogdoches Road (20),arterial,90.5,1034152566,29.502589,-98.461622
+s_ddf8d3f1c7d4,Shadylane Drive (2),residential,287.9,15134031,29.504562,-98.463032
+s_b4b7c27c0dfe,East Terra Alta Road (1),residential,95.0,15150558,29.505409,-98.463959
+s_1eeb8c807143,Broadway (5),arterial,115.1,589019531 589019532,29.468778,-98.463577
+s_8b778f966f23,Broadway (3),arterial,72.3,706987771,29.468041,-98.463652
+s_3d23cb9c1c5b,Burr Road (1),collector,285.2,991772989,29.46821,-98.462732
+s_0fbdc166c66b,Broadway (6),arterial,114.6,589019533 589019559,29.468335,-98.463704
+s_a746f99ef4d7,North New Braunfels Avenue (4),collector,70.9,991772988,29.468217,-98.460703
+s_a2a56ea0aeeb,Burr Road (2),collector,1378.3,15134094,29.468205,-98.451096
+s_bcdff9304c3f,North New Braunfels Avenue (5),collector,115.9,317461640,29.468586,-98.460622
+s_e8fc01a7481e,West Hathaway Drive (6),residential,26.0,15154966,29.468516,-98.446517
+s_a59eb8836c35,Burr Road (3),collector,171.7,15134094,29.468633,-98.4451
+s_31cdec674e4d,Dover Road (1),residential,134.0,15141328,29.469191,-98.444906
+s_8f4805b65936,Mary D Avenue (2),residential,45.9,15134129,29.472763,-98.464658
+s_fb186d209dac,Mary D Avenue (1),residential,174.6,15134129,29.472258,-98.463376
+s_5476e4df942d,Chester Street (1),residential,108.7,15142388,29.472848,-98.464593
+s_c8625ba2c738,Encino Avenue (3),residential,45.5,15141005,29.472992,-98.465095
+s_64563b5976e9,Encino Avenue (2),residential,81.9,15141005,29.472845,-98.465091
+s_ac5bda465cb4,Valley View Place,residential,9.9,15134257,29.475774,-98.448635
+s_1eef39e3f012,Valley View Avenue (1),residential,94.0,15141563,29.475774,-98.448635
+s_7e420856ea1c,Lilac Lane (2),residential,125.5,15154513,29.475774,-98.448635
+s_91558a71bf93,Valley View Avenue (2),residential,84.0,15141561,29.475863,-98.448634
+s_2f5b4918016a,Lilac Lane (3),residential,113.7,15154511,29.475863,-98.448634
+s_4dda42696488,Haskin Drive (1),residential,53.8,15134330,29.495741,-98.446377
+s_fb6f64d17b42,Eisenhauer Road (11),collector,191.7,15185466,29.495741,-98.446377
+s_437a92f319a2,Eisenhauer Road (10),collector,92.7,15185466,29.495741,-98.446377
+s_dee7bca238ba,Haskin Drive (2),residential,91.4,15134330,29.496224,-98.446385
+s_95a26f37fdf1,Sir Philip Drive,residential,208.0,15153906,29.496224,-98.446385
+s_b656ee12b9ba,Haskin Drive (3),residential,127.2,15134330,29.497452,-98.446404
+s_de942ef2e4d6,Knight Robin Drive,residential,210.3,15179889,29.497043,-98.44598
+s_42d64d69b8db,Haskin Drive (4),residential,93.2,15134330,29.49819,-98.44641
+s_5b48c55bd481,Bent Bow Drive,residential,210.5,15186383,29.49826,-98.445264
+s_f7fef356384e,Haskin Drive (5),residential,94.9,15134330,29.499028,-98.446391
+s_ba5ef81b4eeb,Little John Drive,residential,206.5,15159930,29.499031,-98.44568
+s_a6e266dd6b6e,Haskin Drive (6),residential,129.5,15134330,29.50057,-98.446399
+s_a42681c08e77,Albin Drive (1),residential,207.5,15152985,29.499879,-98.444821
+s_ba369de6d825,Albin Drive (2),residential,135.1,15152985,29.499881,-98.446572
+s_8807e7d9abb9,Northridge Drive (2),residential,207.5,148634814,29.501046,-98.446401
+s_386179267b2f,Northridge Drive (1),residential,179.6,148634814,29.501046,-98.446401
+s_490bf2629292,Haskin Drive (7),residential,109.1,15134330,29.501541,-98.446405
+s_78c318ee57a9,Haskin Drive (8),residential,71.4,15134330,29.502245,-98.446414
+s_3c79e77108c1,Larkwood Drive (1),residential,211.4,15155963,29.501862,-98.445797
+s_512e79ab16ec,Larkwood Drive (2),residential,179.6,15155963,29.502028,-98.448163
+s_778d35b4f7b6,Haskin Drive (9),residential,38.3,15134330,29.502669,-98.446422
+s_68eb3b22c45a,Woodcrest Drive (1),residential,210.1,15168388,29.502665,-98.445386
+s_a4e46571327e,Haskin Drive (10),residential,108.9,15134330,29.503594,-98.446423
+s_f678a98ddb63,Woodcrest Drive (2),residential,346.8,15168385,29.503021,-98.448776
+s_5466b8fd2382,Oakleaf Drive (1),residential,298.6,15163742,29.503992,-98.446423
+s_79cc958a274b,Haskin Drive (11),residential,103.4,15134330,29.504452,-98.446428
+s_845b12b4f6cb,Haskin Drive (13),residential,55.1,15134330,29.504922,-98.446433
+s_4099097cc9a4,Burnside Drive (5),residential,50.7,148634777,29.504922,-98.446433
+s_efc2eabd8a44,Haskin Drive (14),residential,84.3,359682115,29.505417,-98.44642
+s_4783b6d3e8d0,Urban Crest Drive,residential,98.0,1047309522,29.505417,-98.44642
+s_4adb934fb870,Haskin Drive (12),residential,74.7,15159777,29.505385,-98.446455
+s_11f96ddefa59,Forrest Hill Drive,residential,169.5,15168945,29.505914,-98.446892
+s_a887390ea86b,Haskin Drive (15),residential,141.7,359682115,29.506437,-98.445216
+s_22bbf1c76def,Rockhill Drive (3),collector,262.7,15153611,29.506877,-98.446844
+s_1a74456f0bae,Haskin Drive (16),residential,107.7,359682115,29.507348,-98.444713
+s_7771d9eefef8,Haskin Drive (17),residential,105.3,359682115,29.507851,-98.444712
+s_e63bedf50373,Wyndale Street,residential,275.8,15160996,29.507861,-98.446715
+s_f8e14b05c771,Cave Lane (7),residential,166.2,15159828,29.508798,-98.444719
+s_d1da1ff920b3,Haskin Drive (18),residential,110.5,359682115,29.508798,-98.444719
+s_92cdbb721c0e,Laramie Drive,residential,223.4,15141405,29.509558,-98.446007
+s_1c045bb3c8ec,Haskin Drive (19),residential,113.7,359682115,29.510318,-98.444775
+s_d3568ab3be9c,Oak Glen Drive,residential,277.1,15172398,29.510503,-98.446461
+s_fb07bc27c07e,Franklin Street (1),residential,10.7,15134475,29.48458,-98.454403
+s_6800ffbcb79b,Franklin Street (2),residential,189.4,15134475,29.484888,-98.4544
+s_d6e75cdb99a7,Austin Highway (23),arterial,495.1,1358046048 149137103 1456954588 1358046046 1358046047,29.484274,-98.458366
+s_c4dc6cfc0329,Austin Highway (24),arterial,63.1,149137103,29.484609,-98.454077
+s_556e333b36c7,West Meadowlane Drive (4),residential,85.4,15166083,29.48663,-98.454488
+s_7ad759343dd5,Devine Road (2),collector,118.2,30515204,29.467544,-98.479143
+s_1c710f9b1005,Mount Erin Pass,residential,332.9,15135269,29.466741,-98.478519
+s_58cb89173ecf,Devine Road (3),collector,80.2,30515204,29.467795,-98.479145
+s_fcdc5833022b,Crescent Avenue,residential,14.5,15135319,29.476657,-98.471865
+s_7e56f3b90fc0,Crescent Street (2),residential,82.1,15138256,29.476801,-98.471175
+s_35a05a449d20,East Olmos Drive (5),residential,1095.5,15135380 165224825 165224826 317401828,29.473473,-98.473416
+s_97bfbff57c49,Paseo Encinal Street (1),residential,275.8,15135384,29.476678,-98.485226
+s_031c67df3d7c,East El Prado Drive (7),residential,68.3,15154939,29.476214,-98.486869
+s_34ed56152e80,East El Prado Drive (6),residential,80.4,15154939,29.475875,-98.48664
+s_64c3513631ce,East Hermosa Drive (1),residential,117.2,15166229,29.477541,-98.484648
+s_54aebabb0b8e,Paseo Encinal Street (2),residential,255.1,15135384,29.478639,-98.484235
+s_f5528ee247a6,East Hermosa Drive (2),residential,119.0,15166229,29.477683,-98.485048
+s_fb7fe21da794,Paseo Encinal Street (3),residential,490.1,15135384,29.481723,-98.485514
+s_d1ea923a1a17,East Wildwood Drive (1),residential,115.7,15160472,29.479512,-98.483603
+s_37c34713df0e,East Wildwood Drive (3),residential,137.6,15160472,29.479904,-98.485035
+s_5cf8758796e4,Hillside Drive (4),residential,106.2,15143612,29.482011,-98.487732
+s_34561b18416d,Hillside Drive (2),residential,96.8,15143612,29.482011,-98.487732
+s_30dc5c6bb6f6,Paseo Encinal Street (4),residential,288.0,15135384,29.482281,-98.488121
+s_83a65a12e3cf,West Side Drive,residential,196.6,15139253,29.484003,-98.489643
+s_08ea6a772b67,Chatsworth Way,residential,36.6,15135437,29.491489,-98.473756
+s_1b2b3dcb0089,Paddington Way (9),residential,100.1,15163247,29.491402,-98.473302
+s_9f3222c9dd43,Ogden Lane (5),residential,14.7,15145863,29.480563,-98.47327
+s_0201b7ea0b5f,Ogden Lane (6),residential,152.0,15145863,29.480563,-98.47327
+s_1bce1750602b,Greely Street (1),residential,112.3,15135663,29.479595,-98.473269
+s_5de326656377,Greely Street (2),residential,136.6,15135663,29.47869,-98.473268
+s_76f08e9f4480,Argo Avenue (1),residential,258.1,15147460,29.482496,-98.473449
+s_7df23ff22710,Argo Avenue (3),residential,168.0,15147460,29.482496,-98.473449
+s_e3b0abc58eeb,Greely Street (7),residential,100.9,15135665,29.484411,-98.473444
+s_5d446941412e,Corona Avenue (4),collector,166.4,15136967,29.484411,-98.473444
+s_0b079bc84ca4,Corona Avenue (9),collector,149.2,15136967,29.484426,-98.474752
+s_d5b821d5e521,Alamo Heights Boulevard (8),residential,18.1,30466913,29.485318,-98.47344
+s_c8823310f3f7,Alamo Heights Boulevard (6),residential,179.7,30466913,29.4849,-98.47414
+s_3ebd5898ab83,Lagos Lane,residential,196.9,15135710,29.472237,-98.465904
+s_68513f12bb9a,Encino Avenue (1),residential,100.2,15141005,29.47176,-98.465314
+s_d793a7548d2c,Patterson Avenue (4),residential,197.4,15157825,29.471425,-98.466845
+s_f3bccb530e18,Patterson Avenue (5),residential,55.6,15157825,29.47203,-98.467219
+s_9a232bad23a2,West Brandon Drive (1),residential,64.6,15135724,29.467249,-98.446188
+s_8c8634925497,West Hathaway Drive (3),residential,39.1,15154966,29.467289,-98.446409
+s_356f34c2b1f5,West Brandon Drive (2),residential,51.9,15135725,29.467112,-98.446052
+s_2ecd897bb87a,West Hathaway Drive (2),residential,110.9,15154966,29.466725,-98.446533
+s_3790208c0105,Waring Drive (1),residential,102.4,15147677,29.504327,-98.489038
+s_944ffa3298e2,Oblate Drive (5),collector,206.8,639247414,29.504285,-98.488774
+s_a9b2c3ed2de8,Oblate Drive (4),collector,34.2,639247414,29.504272,-98.486908
+s_4df1e2ea961d,Skipper Drive West (4),residential,100.7,705385682,29.503807,-98.487009
+s_34647b8bffd0,Mertz Drive (1),residential,100.9,15146675,29.504259,-98.486555
+s_0e7b06dc890d,Oblate Drive (3),collector,101.3,639247414,29.504259,-98.486087
+s_0283f640a7ef,Tanglewood Drive (1),residential,100.3,15148468,29.504258,-98.485508
+s_fbba5af47bed,Oblate Drive (2),collector,252.3,639247414,29.504258,-98.485508
+s_a46bd54e9b40,Skipper Drive East (4),residential,100.4,15141044,29.503805,-98.482901
+s_7b0f78f845ca,Oblate Drive (1),collector,113.0,639247414,29.504241,-98.482515
+s_b2f550e4368e,Concord Plaza Drive (1),residential,5.3,1132132300,29.504244,-98.481733
+s_a763cd89b2e6,Jones Maltsberger Road (8),arterial,708.8,148634793 1286885082 1286885083,29.500156,-98.481829
+s_b4123bc5c026,Jones Maltsberger Road (6),arterial,699.6,148634786 1357683786 1410958440 1410958439,29.500127,-98.481663
+s_09ee50b869a2,Jones Maltsberger Road (9),arterial,103.7,711635386,29.504307,-98.48173
+s_acfb8eaa82b7,Ivy Lane (1),residential,167.0,15135809,29.479636,-98.455486
+s_51e3c94a8de2,Wiltshire Avenue (6),residential,124.9,15146872,29.479636,-98.455486
+s_6450ee96a277,Zambrano Road (1),residential,126.1,15143669,29.479657,-98.455975
+s_1b97a077cb23,Ivy Lane (4),residential,243.1,15135809,29.479634,-98.453761
+s_08a00cba06da,Burr Duval Road (4),residential,104.5,15137026,29.47877,-98.453789
+s_3a9e17f06650,Eldon Road (8),collector,106.7,15168311,29.479645,-98.45125
+s_b217c0a178a5,Ivy Lane (2),residential,380.3,15135809,29.479638,-98.448507
+s_76385c41dd38,Eldon Road (11),collector,107.8,15168311,29.480127,-98.451274
+s_815204954f4c,Exeter Road (2),residential,110.8,15168487,29.479634,-98.447321
+s_252fbacd391a,Ivy Lane (3),residential,175.2,15135809,29.479635,-98.447046
+s_d7ab5c475e52,Amesbury Road (2),residential,93.6,15137293,29.47964,-98.445511
+s_383388a8fdb2,Sissinghurst,residential,36.4,15136074,29.491401,-98.474619
+s_209310ff0db8,Paddington Way (8),residential,91.5,15163247,29.491412,-98.47533
+s_b46050b0788a,Loveta Street (2),residential,106.3,15136532,29.487296,-98.475642
+s_fe6df835201a,College Boulevard (5),residential,167.5,15165302,29.487296,-98.475642
+s_ef6d22abb2c3,College Boulevard (7),residential,60.9,15165302,29.487296,-98.475642
+s_27ab7b16b1ad,Evans Avenue (2),residential,169.1,15137612,29.488252,-98.475649
+s_52c0b8629eae,Evans Avenue (5),residential,129.5,15137612,29.488252,-98.475649
+s_a61b01fb7313,Loveta Street (4),residential,110.2,15136532,29.490179,-98.475654
+s_013453576237,Castano Avenue (4),residential,165.8,15174585,29.490179,-98.475654
+s_54f8e05b1e8d,Castano Avenue (2),residential,171.3,15174585,29.490117,-98.476864
+s_39005073421e,Laurel Place,residential,110.5,15136555,29.495795,-98.468188
+s_61de545dae76,Nacogdoches Road (11),residential,13.2,15152377,29.495795,-98.468188
+s_35861a5d2417,Nacogdoches Road (10),residential,122.6,15152377,29.495562,-98.468208
+s_48e5df237add,Poco Street (1),residential,16.0,15136639,29.47366,-98.462677
+s_be407d6bdf3d,Broadway (21),arterial,99.7,1040453777,29.474212,-98.462713
+s_bf9e7b941a6b,Broadway (18),arterial,47.2,1040453777,29.473332,-98.462662
+s_939ce3b48db1,Chester Street (2),residential,135.2,15142388,29.473579,-98.46404
+s_fc53064d17a5,Poco Street (2),residential,116.3,15136639,29.473632,-98.463144
+s_9068eb0cddfe,Corona Avenue (8),collector,173.4,15136967,29.484431,-98.466604
+s_4467ee54912d,Broadway (47),arterial,60.9,772096031,29.484893,-98.466464
+s_1c2bed4b50f8,Corona Avenue (7),collector,168.1,15136967,29.484421,-98.468247
+s_d547c0f6f337,Columbine Street (5),residential,107.4,15171658,29.484421,-98.468247
+s_5ecd9d3dfcaa,Corona Avenue (5),collector,168.5,15136967,29.484419,-98.469984
+s_ca94a58e999a,Arbutus Street (5),residential,107.3,15155402,29.484419,-98.469984
+s_7eb9279971c3,Imlay Street (5),residential,107.3,15146875,29.484417,-98.471725
+s_a237c5199323,Corona Avenue (3),collector,52.4,15136967,29.484429,-98.474986
+s_1d6487cb2f10,Alamo Heights Boulevard (7),residential,42.9,30466880,29.484379,-98.475127
+s_456c646de3b8,Corona Avenue (2),collector,28.7,15136967,29.484412,-98.475526
+s_7641fb9ace3d,La Jara Boulevard (1),residential,26.5,15160926,29.484412,-98.475526
+s_23e0252a0992,La Jara Boulevard (3),residential,110.7,15160925,29.484992,-98.475636
+s_d12dc6d12c0d,Corona Avenue (1),collector,150.8,15136967,29.484411,-98.475823
+s_9f3f912046df,La Jara Boulevard (2),residential,62.9,15160918,29.484277,-98.475733
+s_3ce88b0dae60,La Jara Boulevard (4),residential,107.0,15160918,29.485108,-98.475839
+s_77ed6cc81af4,Ciruela Street (1),residential,108.1,15165189,29.484404,-98.477381
+s_70619b806910,Corona Avenue (6),collector,152.5,15136967,29.484415,-98.478539
+s_51b31cc63ff6,Saint Luke's Lane (3),residential,101.9,134270155,29.484556,-98.478937
+s_915a4dc2b61e,Saint Luke's Lane (2),collector,36.9,134270156,29.484307,-98.479178
+s_a6702a1eeb97,Saint Luke's Lane (1),collector,47.8,15157100,29.484279,-98.479012
+s_af202177c8c9,Burr Duval Road (1),residential,114.6,15137026,29.474932,-98.453558
+s_d1f4d6b8c3af,Garraty Road (4),collector,223.0,15156655,29.474932,-98.453558
+s_9b7359dd0041,Garraty Road (6),collector,213.7,15156655,29.474932,-98.453558
+s_5bb0cdd679ec,Arcadia Place (3),residential,211.6,15180063,29.475963,-98.453558
+s_dfd16002386f,Arcadia Place (5),residential,141.9,15180063,29.475963,-98.453558
+s_31d3934737e8,Burr Duval Road (2),residential,105.0,15137026,29.476845,-98.453555
+s_6c0981135fec,Grandview Place (9),residential,139.9,15140074,29.476907,-98.453563
+s_17340d99b838,Burr Duval Road (3),residential,100.9,15137026,29.477592,-98.45373
+s_3f13db8324bd,Grandview Place (3),residential,228.3,15140074,29.476732,-98.451994
+s_5f608f28ef56,Burr Duval Road (5),residential,100.4,15137026,29.477792,-98.453775
+s_25820309d279,Stillwell Avenue (2),residential,4.7,15138058,29.477792,-98.453775
+s_1d11da17b945,Stillwell Avenue (1),residential,155.0,15138058,29.477154,-98.45466
+s_497b4b824994,Aylesbury Hill Street,residential,246.4,15138812,29.478695,-98.453792
+s_b3b0628f4227,Elizabeth Road (5),residential,102.6,15157324,29.472709,-98.447176
+s_44010e2b9b17,Nadine Road (1),residential,123.2,15137046,29.473232,-98.447175
+s_74d4d7ee5874,Elizabeth Road (4),residential,379.4,15157324,29.472709,-98.446412
+s_4ac69b66c464,Tuttle Road,residential,380.2,15158455,29.473817,-98.447173
+s_829548e961b0,Nadine Road (2),residential,123.1,15137046,29.474394,-98.447166
+s_39cb27b4b0e6,Garraty Road (1),collector,309.8,15156655,29.474924,-98.44716
+s_e0dca4688229,Garraty Road (2),collector,29.4,15156655,29.474924,-98.44716
+s_d940215d4557,Nadine Road (3),residential,104.6,15137048,29.474925,-98.447464
+s_69009713136d,Garraty Road (3),collector,112.4,15156655,29.474928,-98.448197
+s_6a9626091c6d,Lilac Lane (1),residential,436.1,15154511,29.475845,-98.444098
+s_8a0431617910,East Sunset Road (4),collector,302.7,15181773,29.507237,-98.465902
+s_26d551910bb1,Broadway (73),arterial,276.6,1436147011,29.508224,-98.466225
+s_0fce49ee3576,Broadway (72),arterial,202.7,1436147011,29.506241,-98.466246
+s_c2af93a9cc0d,Teak Lane,residential,279.5,15139387 15145003,29.508424,-98.474478
+s_2d716a09890b,West Sunset Road (4),arterial,69.5,709585037 709585038,29.507559,-98.474725
+s_dcd9abc742ea,West Sunset Road (5),arterial,104.4,1174576362 148634820,29.50765,-98.475862
+s_a981becc77eb,Treeline Park (8),collector,812.9,1442841121 243086611 350835463,29.504586,-98.474497
+s_6b379304b32d,West Sunset Road (7),arterial,77.2,706387268,29.50783,-98.478389
+s_7fc5ecf93ad6,West Sunset Road (9),arterial,77.5,1286866224,29.507849,-98.478627
+s_cb63b812c315,US Highway 281 North,arterial,306.3,314947374,29.509219,-98.477672
+s_05f758d841a5,Errol Street (1),residential,71.1,15146315,29.507892,-98.479187
+s_cb0aec497641,West Sunset Road (10),arterial,257.5,1286866224,29.508065,-98.481412
+s_cb8cc0b88ae6,Jones Maltsberger Road (13),arterial,44.8,711635386,29.508098,-98.481837
+s_2df7e6ece47a,Jones Maltsberger Road (14),arterial,47.0,711635386,29.508098,-98.481837
+s_087655f00231,Tophill Road (2),residential,170.4,15137213,29.500386,-98.459083
+s_5b1e2efba481,North New Braunfels Avenue (57),collector,93.3,148634810,29.500097,-98.459085
+s_19d3880a48a6,North New Braunfels Avenue (59),collector,98.6,148634810,29.500855,-98.459082
+s_8bc4c17ec69f,Tophill Road (3),residential,289.8,15137213,29.500385,-98.457322
+s_dc0d72b2b6a4,Bartell Drive (7),residential,97.7,15174172,29.500848,-98.457319
+s_9168385b448a,Bartell Drive (6),residential,92.1,15174172,29.49998,-98.457319
+s_5d374b7b5151,Tophill Road (4),residential,290.0,15137213,29.5004,-98.454328
+s_8f09cb0c1b9e,Greenwich Boulevard (18),residential,97.5,949907101,29.500853,-98.454334
+s_fdc7763038b8,Greenwich Boulevard (17),residential,92.7,949907101,29.499989,-98.454324
+s_c545b4f87234,Tophill Road (1),residential,299.3,15137213,29.50036,-98.450484
+s_e7e1c5b171ea,Kenilworth Boulevard (15),residential,96.4,15185324,29.500848,-98.451335
+s_9077fecfeadd,Kenilworth Boulevard (14),residential,91.2,15185324,29.500003,-98.451328
+s_38492302bba6,Chevy Chase Drive (17),residential,96.9,15161989,29.500605,-98.448256
+s_12f2fe57c5e1,Chevy Chase Drive (16),residential,98.2,15161989,29.49989,-98.448254
+s_3a50a04ca2ad,Shook Avenue (1),collector,66.1,15175153,29.464506,-98.487015
+s_82c32d9cc138,Ridgemont Avenue (3),residential,180.4,15167382,29.480511,-98.447014
+s_c9989c93b7de,Wiltshire Avenue (7),residential,252.1,15146872,29.482701,-98.444738
+s_0786a2fd64fc,Amesbury Road (4),residential,108.5,15137293,29.482767,-98.444727
+s_c0e3ae183e13,Amesbury Road (6),residential,107.7,15137293,29.483676,-98.444731
+s_4e2a50fb9f77,Morningside Drive (8),residential,253.3,15185951,29.483676,-98.444731
+s_3a8055273c58,Rittiman Road (2),collector,254.5,149137156,29.484645,-98.444731
+s_458d726a4b70,Broadway (53),arterial,36.9,772096031,29.48828,-98.466481
+s_0513ebf96ec4,Evans Avenue (3),residential,171.4,15137612,29.488273,-98.466934
+s_5466764d9a57,Evans Avenue (9),residential,133.8,15137612,29.488252,-98.468252
+s_1413c648b351,Columbine Street (7),residential,107.1,15171658,29.488252,-98.468252
+s_8e47448f5907,Evans Avenue (4),residential,125.9,15137612,29.488278,-98.469634
+s_5ec3d1da7cee,Alamo Heights Boulevard (13),residential,110.7,30466913,29.48791,-98.469694
+s_74ddab2005e0,Nacogdoches Road (1),residential,107.2,15152377,29.488255,-98.470934
+s_a1c824807e40,Evans Avenue (8),residential,166.5,15137612,29.488259,-98.471139
+s_758c7f10e9b5,Evans Avenue (7),residential,134.0,15137612,29.488265,-98.472654
+s_fce92f2bff6c,Woodway Lane (3),residential,107.7,15139662,29.488265,-98.472654
+s_eac752b6f79c,Evans Avenue (6),residential,26.4,15137612,29.488259,-98.474038
+s_9a2abb0c3deb,La Jara Boulevard (9),residential,130.2,15160925,29.487742,-98.474532
+s_db8f0e830d2b,La Jara Boulevard (10),residential,127.8,15160918,29.487881,-98.474669
+s_a1ec8104b23a,Ciruela Street (3),residential,106.2,15165189,29.488248,-98.477396
+s_bb7757014f66,Evans Avenue (1),residential,106.8,15137612,29.488255,-98.478014
+s_9f4b90935642,Evans Avenue (10),residential,253.8,15137612 15183119,29.487749,-98.479462
+s_77259561cf34,Penny Lane,residential,187.0,15154659,29.489609,-98.47846
+s_811327e133b6,Grandview Place (8),residential,72.1,15140074,29.476903,-98.455008
+s_3d8b510f4d89,Stillwell Avenue (3),residential,253.5,15138058,29.478162,-98.452569
+s_b5bb283b815d,Coventry Lane,residential,116.9,15138738,29.477675,-98.453109
+s_1ae8d7de148b,Eldon Road (9),collector,57.9,15168311,29.478164,-98.451251
+s_f65be6b5b248,Eldon Road (7),collector,169.8,15168311,29.477307,-98.451247
+s_3b4a7cc14b6a,Elm Court,residential,260.0,15172862,29.478162,-98.448662
+s_690d12415c4c,Estes Avenue (2),residential,40.7,15175909,29.476845,-98.470998
+s_74c7fbd97b74,Estes Avenue (1),residential,68.9,15175912,29.476662,-98.471033
+s_a2c2da664652,North Meadowlane Drive,residential,160.7,15154633,29.487573,-98.452756
+s_4b7f6c0f045b,Bryn Mawr Drive (1),residential,103.0,15138805,29.487685,-98.45275
+s_ad8bf781813e,Field Crest Drive,residential,206.8,15149516,29.487158,-98.45303
+s_2fcdf9512130,Bryn Mawr Drive (2),residential,448.0,15138805,29.489196,-98.452315
+s_550bfe92479f,Wellesley Boulevard (1),residential,419.0,15153151,29.488533,-98.450118
+s_f24295672c6f,Wellesley Boulevard (2),residential,141.3,15153151,29.488627,-98.453493
+s_16b48571631d,Mount Calvary Drive (3),residential,50.8,15139294,29.489623,-98.448693
+s_f1adde40d4e4,Bryn Mawr Drive (3),residential,170.1,15138805,29.489779,-98.448091
+s_903ebe626db9,Mount Calvary Drive (2),residential,101.7,15139294,29.489273,-98.448615
+s_7ed102e702a8,Bryn Mawr Drive (4),residential,196.3,15138805,29.490585,-98.446699
+s_a95dd8825d38,Chevy Park Street (1),residential,54.6,15153365,29.490566,-98.447464
+s_d2cb96d239db,Seidel Road (3),residential,101.3,15165065,29.491058,-98.445013
+s_35bdc8218bca,Seidel Road (1),collector,224.3,466540562,29.490188,-98.445227
+s_6560ce653e0a,Gallery Court (1),residential,12.0,15138973,29.504635,-98.459073
+s_fa9cb95d0273,North New Braunfels Avenue (63),collector,69.3,709581009 1561990389,29.504356,-98.459078
+s_67f281a1df8d,North New Braunfels Avenue (64),collector,58.9,1561990387 1561990389,29.504886,-98.459072
+s_7523f0b15cde,Gallery Court (2),residential,358.3,15138973 15138974,29.504746,-98.45746
+s_fb008d778590,West Fair Oaks Place (1),residential,179.3,15139004,29.492007,-98.466721
+s_f40c894c957a,Broadway (59),arterial,41.5,758072170,29.492294,-98.466522
+s_8088626bc784,Broadway (57),arterial,87.7,758072170 149144243,29.491563,-98.466522
+s_c86503875b53,West Fair Oaks Place (2),residential,191.7,15139004,29.492097,-98.468363
+s_b61693761ce9,Columbine Street (11),residential,94.4,15171656,29.492097,-98.468363
+s_368c2d3b8d7c,Columbine Street (10),residential,99.7,15171656,29.492097,-98.468363
+s_b18326876627,Haverhill Way (1),residential,16.5,15147551,29.492098,-98.470344
+s_59c4f5b98094,Nacogdoches Road (7),residential,107.6,15152377,29.492098,-98.470344
+s_24b2b00c7193,Nacogdoches Road (5),residential,114.4,15152377,29.492098,-98.470344
+s_0d51722e4862,Mayflower,residential,10.5,15139058,29.476198,-98.464783
+s_3c8abcc06584,Mayflower Avenue (3),residential,109.2,15182426,29.476198,-98.464783
+s_66ce86c956f6,Kennedy Avenue (1),residential,190.3,1424078960 15176826 1424078958,29.476104,-98.46362
+s_e8dddcb2f253,Kennedy Avenue (3),residential,150.9,15176829,29.476122,-98.464848
+s_550a2c893c9b,Mayflower Avenue (1),residential,68.0,15182427,29.476122,-98.464848
+s_581e7e28ec64,Holland Avenue,residential,76.4,15139270,29.467177,-98.48836
+s_c5c693cb98c7,Kendall Street,residential,75.7,15175951,29.466676,-98.488365
+s_085a73480802,Mount Calvary Drive (1),residential,178.8,15139294,29.488031,-98.448007
+s_51efef82c881,Mount Calvary Drive (4),residential,77.4,15139292,29.490299,-98.448852
+s_935d1af5c032,Mount Calvary Drive (5),residential,77.9,15139294,29.490446,-98.448603
+s_e081d991a7c1,Chevy Chase Drive (5),residential,17.9,15161994,29.490715,-98.448396
+s_37c5c63e77af,Chevy Chase Drive (4),residential,85.7,15161994,29.490634,-98.448699
+s_35e38fa753d2,Chevy Chase Drive (2),residential,80.1,15161994,29.490544,-98.449258
+s_a384d1cf3183,Exeter Road (8),collector,12.0,149137124,29.48726,-98.447449
+s_06ddcc9bdaf3,Austin Highway (29),arterial,339.6,149137104 1326071561 1067559352,29.487797,-98.446309
+s_8c55fcefc12a,Austin Highway (27),arterial,362.6,1057113398 1057113399,29.48682,-98.44839
+s_ae8b36716361,Ogden Lane (7),residential,166.5,15145863,29.480564,-98.46998
+s_6bf09fa72833,Ogden Lane (8),residential,169.5,15145863,29.480567,-98.469055
+s_ed36bbd9a21b,Cambridge Oval (3),residential,17.2,15157239,29.478744,-98.468365
+s_df1f00e68a4e,Cambridge Oval (5),residential,139.6,15157239,29.479114,-98.468085
+s_f0dadbdf8fda,West Oakview Place,residential,203.5,15139501,29.494774,-98.466628
+s_0434c7bbc0c0,East Oakview Place (1),residential,365.6,15177083,29.494773,-98.466461
+s_824ef17937a9,Broadway (63),arterial,103.1,710874136 1423791873 991772996 710874135,29.495316,-98.466524
+s_635ffeb6a0a1,Broadway (62),arterial,103.5,1423791873,29.494309,-98.466517
+s_090b2b151fa7,Nacogdoches Road (8),residential,124.0,15152377,29.494776,-98.468624
+s_3b612461a4ad,Garraty Road (8),collector,32.2,15156655,29.474935,-98.450268
+s_d26c9f56b61e,Osborn Hill,residential,239.3,15139604,29.474011,-98.450276
+s_898eb63b6a2a,Garraty Road (5),collector,95.4,15156655,29.474933,-98.450736
+s_9aff8098c888,Ridgemont Avenue (4),residential,182.7,15167382,29.480762,-98.447746
+s_c8038b29d001,Ridgemont Avenue (1),residential,215.9,15167382,29.480787,-98.450918
+s_c9e1f7de97c0,Winchester Road (3),residential,106.9,15139605,29.482747,-98.449219
+s_8e07770ed103,Wiltshire Avenue (11),residential,22.3,15146872,29.482747,-98.449219
+s_bcdddae9bd01,Wiltshire Avenue (10),residential,271.3,15146872,29.482743,-98.451891
+s_ec13e9165f46,Winchester Road (4),residential,102.1,15139605,29.483708,-98.449227
+s_98c43deb5864,Morningside Drive (9),residential,182.8,15185951,29.483721,-98.448155
+s_a0739f7fc830,Morningside Drive (6),residential,270.1,15185951,29.483693,-98.451451
+s_5a719f36ad67,Rittiman Road (3),collector,182.3,350835447,29.484631,-98.448406
+s_8e03efb18638,Rittiman Road (1),collector,270.9,350835447,29.484621,-98.450089
+s_de4c9a33d945,College Boulevard (6),residential,46.7,15165302,29.487296,-98.472651
+s_8e562de23896,College Boulevard (3),residential,64.2,15165302,29.48729,-98.47217
+s_ce5c71c8f45a,Woodway Lane (6),residential,109.3,15139662,29.490213,-98.472668
+s_5d0443402930,Castano Avenue (5),residential,101.0,15174585,29.490213,-98.472668
+s_21da8ce17cc3,Castano Avenue (7),residential,167.3,15174585,29.490213,-98.472668
+s_d949b8bd5b34,Tuxedo Avenue (8),residential,171.7,15181449,29.491196,-98.472688
+s_3bc2b2b75dc5,Woodway Lane (1),residential,100.9,15139664,29.485425,-98.473124
+s_4af783834c80,Alamo Heights Boulevard (9),residential,14.7,30466913,29.485425,-98.473124
+s_59ac7e3291a6,Alamo Heights Boulevard (10),residential,114.0,30466913,29.485615,-98.472211
+s_7490ab3881d6,Woodway Lane (2),residential,107.2,15139664,29.486332,-98.473122
+s_97e332a0f409,Cardinal Avenue (1),residential,203.7,15164858,29.486332,-98.473122
+s_51add49e481b,College Boulevard (8),residential,157.2,15165302,29.487296,-98.473133
+s_d23c9daa7ab1,Broadway (68),arterial,105.7,1436147011 652172270,29.499993,-98.466569
+s_6f8c21102323,Broadway (65),arterial,238.9,1396117058 1412139907 1412139906 1369043541 125540155,29.498363,-98.466577
+s_a07ca9a0b4a6,East Nottingham (3),residential,193.1,1423844450 15139733,29.499495,-98.464853
+s_94a93684c4b6,West Nottingham (2),residential,287.3,1423844448 1436147010 1436147013 243086613,29.499476,-98.467602
+s_915a3930e996,East Nottingham (2),residential,253.4,15139733,29.499471,-98.464485
+s_94934c9a83b0,Nacogdoches Road (18),arterial,139.6,123168635,29.500258,-98.463838
+s_ab905a3837d8,Nacogdoches Road (15),arterial,80.5,123168635,29.499397,-98.464646
+s_841ff4a12813,East Nottingham (4),residential,272.7,15139733,29.499472,-98.460576
+s_2e5b2c25ff8e,Middleton Drive (3),residential,103.8,15140291,29.499112,-98.461959
+s_de2f964151a6,North New Braunfels Avenue (58),collector,8.0,148634810,29.499477,-98.459142
+s_a4b92ff1e732,North New Braunfels Avenue (56),collector,86.7,148634810,29.499144,-98.459146
+s_389d18ea04f8,East Nottingham (5),residential,176.6,15139735,29.499549,-98.459141
+s_9f54cbc7fc56,East Nottingham (6),residential,290.1,15139735,29.499557,-98.457316
+s_9ee2570ec00b,Bartell Drive (4),residential,94.6,15174172,29.499158,-98.457311
+s_a8dd2385fba7,East Nottingham (7),residential,290.0,15139735,29.499566,-98.454319
+s_58eb9d01c513,Greenwich Boulevard (15),residential,94.4,1223178060 949907101,29.499161,-98.454314
+s_5141ea4ec3ff,East Nottingham (1),residential,299.3,15139735,29.499376,-98.449369
+s_92bf437edc4a,Kenilworth Boulevard (12),residential,95.5,15185324 949907100,29.499219,-98.451319
+s_2dada4a2a07b,Chevy Chase Drive (15),residential,97.7,15161989,29.498869,-98.448255
+s_86a578e7f96e,Grandview Place (1),residential,93.8,15140074,29.476824,-98.448136
+s_e5f0540b0e24,Grandview Place (2),residential,126.2,15140074,29.476618,-98.448739
+s_79dce642de9d,Grandview Place (4),residential,127.0,15140074,29.476619,-98.449931
+s_10b07feb7706,Azalea Street (1),residential,93.8,15145221,29.476619,-98.449931
+s_3e3e35364abb,Eldon Road (5),collector,189.8,15168311,29.475657,-98.451249
+s_cc7917511440,Grandview Place (10),residential,163.9,15140074,29.476903,-98.455753
+s_ede9ec2465fa,Marion Road (4),residential,106.2,15187221,29.476903,-98.455753
+s_1867da9a1fb7,Wiltshire Avenue (1),residential,163.1,15146872,29.476907,-98.457446
+s_fe490913f2c0,Grandview Place (7),residential,177.8,15140074,29.476903,-98.458995
+s_d9ed39648e30,Grandview Place (5),residential,117.9,15140074,29.476902,-98.459283
+s_6998075f28ac,North New Braunfels Avenue (16),collector,106.1,317461634,29.476902,-98.459283
+s_cf49a16f07d9,North New Braunfels Avenue (19),collector,87.4,317461634,29.476902,-98.459283
+s_715c58910d39,Cleveland Court (5),residential,106.3,1424078965,29.476898,-98.4605
+s_22d43c91fcd8,Grandview Place (6),residential,205.1,15140074,29.476903,-98.462013
+s_6d2ea9395248,Cleveland Court (7),residential,134.4,1424078963,29.478004,-98.460548
+s_66c83e0b1662,Grandview Place (11),residential,13.9,15140074,29.476901,-98.462619
+s_2a87ce199c22,Broadway (28),arterial,13.6,589019522,29.477022,-98.46261
+s_d8628e2ee430,Broadway (26),arterial,102.6,1040453777 589019525,29.476576,-98.46267
+s_72ea6b14aa9e,Middleton Drive (1),residential,75.5,15140291,29.496851,-98.460324
+s_82a8751c0f1d,Brightwood Place (4),residential,69.8,15154071,29.49657,-98.459397
+s_aaa113940bc0,Brightwood Place (7),residential,76.7,15154071,29.496667,-98.460502
+s_f5d614ad2532,Calumet Place (1),residential,210.8,15148596,29.497604,-98.461335
+s_08693549b3ac,Calumet Place (2),residential,164.7,15148596,29.497604,-98.461335
+s_6c32ecca29d5,Middleton Drive (4),residential,117.4,15140291,29.498006,-98.461638
+s_a73ebd66eeb3,Middleton Drive (2),residential,98.5,15140291,29.49732,-98.461048
+s_073846bd90f9,Robinhood Place (4),residential,261.1,15158363,29.498543,-98.461849
+s_ab07c51d8703,Robinhood Place (2),residential,181.9,15158363,29.498543,-98.461849
+s_80ec2fbd5a7b,Bristol Green (1),residential,12.1,15140654,29.500485,-98.473997
+s_e4034386664e,Treeline Park (6),collector,47.9,350835465,29.500526,-98.473809
+s_90655faf7c8f,West Nottingham (8),residential,128.7,1080059372 15163271,29.500206,-98.473554
+s_e563de49d976,Treeline Park (4),collector,13.8,1072948780,29.500423,-98.473893
+s_875473e2e162,Bristol Green (6),residential,57.0,243086605 243086607,29.500741,-98.47451
+s_5316b6966250,Bristol Green (7),residential,63.7,1442755039,29.501097,-98.474644
+s_5ba0f37b2e8b,Bristol Green (4),residential,51.4,15140654 243086606,29.500717,-98.474342
+s_e7f00264a9e2,Bristol Green (9),residential,80.9,1442755039,29.501366,-98.475076
+s_a8e3ca4fffd9,Waldenshire,residential,143.8,15153034,29.50169,-98.474745
+s_660332b5a6e0,Bristol Green (10),residential,280.1,15140656 15160747,29.502319,-98.475181
+s_3ea1031221bd,Bristol Green (5),residential,134.6,15140656,29.501537,-98.473763
+s_bbca4a4b424c,Old Hildebrand Avenue,residential,247.2,15140993,29.466488,-98.481511
+s_ddca0aa5f792,East Hildebrand Avenue (1),arterial,266.7,358469971,29.465893,-98.480651
+s_618744a5f77c,East Hildebrand Avenue (9),arterial,308.9,358469971,29.466503,-98.482236
+s_31a5551a5bd9,Devine Road (1),collector,105.5,30515204,29.466031,-98.479109
+s_b14afad6358a,Patterson Avenue (3),residential,187.8,15157825,29.471316,-98.463945
+s_b8a9a64f4090,Encino Avenue (4),residential,112.1,15141005,29.473331,-98.46516
+s_ddfc3105948a,Westover Road (2),residential,188.3,15155451,29.473212,-98.466133
+s_416a6dedabf8,Encino Avenue (5),residential,102.2,15141005,29.475133,-98.465507
+s_8cf5739b4b2b,Argyle Avenue (1),residential,192.4,15182857,29.474672,-98.466039
+s_14293466bb72,Encino Avenue (6),residential,222.6,15141005,29.47523,-98.465535
+s_f00e15a3ed6e,Mayflower Avenue (2),residential,51.4,15182427,29.47523,-98.465535
+s_de3e7ea517f2,Encino Avenue (7),residential,36.0,15141005,29.476891,-98.466818
+s_82856666ab59,Saint Dennis Street (1),residential,35.5,15149019,29.476891,-98.466818
+s_4d21906a491c,Saint Dennis Street (2),residential,112.6,15149019,29.477167,-98.465981
+s_07bdacccd662,Bronson Avenue (4),residential,78.4,15157449,29.477162,-98.467021
+s_9f32b9807488,Bronson Avenue (3),residential,48.3,15157449,29.477162,-98.467021
+s_0aec237fb6c7,Skipper Drive East (2),residential,100.0,15141044,29.5028,-98.482901
+s_f21278f3b725,Barbara Drive (1),residential,406.5,15146610,29.503363,-98.486541
+s_e132639370d1,Barbara Drive (2),residential,448.1,15146610,29.50339,-98.489264
+s_79044a0bec7e,Skipper Drive West (2),residential,111.3,705385682,29.502924,-98.48719
+s_58ed95d6e7c9,Dover Road (3),residential,121.8,15141326,29.47271,-98.443257
+s_ac33ecb38ae1,Dover Road (2),residential,211.0,15141328,29.470508,-98.44475
+s_e0258bbfdecb,Geneseo Road (5),residential,273.1,317461612,29.469859,-98.446719
+s_92cae2290aeb,Terrell Road (2),residential,435.1,15167408,29.471331,-98.447135
+s_152659bf48ed,Cave Lane (3),residential,108.6,15159828,29.508794,-98.446827
+s_e88048fe42cc,Estes Avenue (3),residential,116.8,15175909,29.477043,-98.4707
+s_0956b65a2472,Garraty Road (9),collector,126.8,15156655,29.474932,-98.449504
+s_a6390a246977,Lafayette Avenue,residential,151.9,15141870,29.482986,-98.462361
+s_b427486a3b7e,Albany Street (2),residential,137.4,709204244,29.482986,-98.462361
+s_49b23fd13cd7,Albany Street (1),residential,89.4,15144378,29.482845,-98.462068
+s_b35afe890763,Redwood Street (4),residential,70.5,15159817,29.483968,-98.463453
+s_79b8beb3b3d3,Redwood Street (2),residential,158.5,15159817,29.483969,-98.462654
+s_a0f36f4b6637,Ellwood Street (2),residential,95.0,15150936,29.479,-98.462571
+s_24fe694447d4,Ellwood Street (1),residential,89.2,15150936,29.478968,-98.463456
+s_bd58a43535e3,Hubbard Avenue (3),residential,132.3,15177353,29.474779,-98.464266
+s_9cb158d81031,Hubbard Avenue (1),residential,133.0,15177353,29.474639,-98.463328
+s_f4016dd03d8c,East Meadowlane Drive (1),residential,12.2,1057167242,29.485826,-98.450748
+s_4fda117c7947,Austin Highway (28),arterial,243.1,1057167243 1057167244,29.485131,-98.452239
+s_7cfec0846b19,Austin Highway (30),arterial,356.4,1057167240 1057167241,29.486673,-98.448946
+s_0a59ac3e548d,Cleveland Court (2),residential,126.7,15142477,29.473304,-98.462329
+s_f6a6907cc13a,Barilla Place (2),residential,23.8,15153064,29.473225,-98.46251
+s_81b941b9e270,Barilla Place (1),residential,304.4,15153064,29.473222,-98.462258
+s_286fe0e380b2,Cleveland Court (1),residential,38.0,589019552,29.473141,-98.462508
+s_3313841f8729,Cleveland Court (3),residential,70.5,15142477,29.474304,-98.461264
+s_593479397271,Marcia Place,residential,219.1,15164427,29.474067,-98.461454
+s_e940e432b920,Grove Place (3),collector,11.6,15148160,29.474932,-98.460616
+s_14818fd9f4c3,Cleveland Court (4),residential,60.8,15142477,29.474906,-98.460637
+s_53793d98a10a,Grove Place (2),collector,211.2,15148160,29.474941,-98.46206
+s_89866984f961,Cleveland Court (6),residential,112.4,15142478,29.475598,-98.460497
+s_339a8cb6c5d2,Grove Place (4),collector,117.9,15148160,29.474937,-98.459408
+s_2a5e6f6642e5,Arcadia Place (6),residential,221.8,1424078961,29.475946,-98.462435
+s_9bcd6c522ca4,Arcadia Place (1),residential,117.9,1424078962,29.475942,-98.460448
+s_85eb4bfd355f,Cleveland Court (8),residential,113.6,15142479,29.478519,-98.460458
+s_c85c2e3a5f8c,Chichester Place (2),residential,182.3,15157924,29.478111,-98.461815
+s_82d9e95ace52,Chichester Place (1),residential,126.7,1424078966,29.478068,-98.460421
+s_b9e6b97cb6f6,Cleveland Court (9),residential,123.5,15142479,29.479084,-98.460241
+s_1415a78ae206,Ellwood Avenue (1),residential,121.7,15149281 1423815446,29.479084,-98.461338
+s_8308ff51313f,Kampmann Avenue (4),residential,51.3,317461626,29.480132,-98.459615
+s_b897e2a6f6d3,Kampmann Avenue (2),residential,119.6,317461626,29.480127,-98.460827
+s_3473f5bfc644,Brightwood Place (5),residential,96.1,1423793729,29.496659,-98.465305
+s_97b9885f7905,Poniente Lane,residential,135.5,15143043,29.497138,-98.465303
+s_9bebbd6de34c,Brightwood Place (6),residential,121.7,1423793729,29.496661,-98.466203
+s_f858eb5ebddb,La Sombra Drive (1),residential,140.3,15147226,29.497381,-98.464378
+s_5d7fbf0b3ac0,La Sombra Drive (2),residential,109.2,1423793730,29.497926,-98.465534
+s_34ce15c2a609,East Lawndale Drive (1),residential,234.8,15143766,29.509716,-98.461443
+s_db9ee7cdb694,East Lawndale Drive (2),residential,43.3,15143766,29.509716,-98.461443
+s_320ed1a71133,Goodnight Street,residential,352.4,15175530 15143335,29.508877,-98.46145
+s_b2053a56a9c5,West El Prado Drive (7),residential,103.8,243864212,29.47642,-98.488396
+s_4cfe829029fc,West El Prado Drive (5),residential,78.3,243864212,29.475907,-98.489026
+s_1330b11991d3,Hillside Drive (1),residential,106.3,15143612,29.477726,-98.489706
+s_d142d43e6fde,East Mandalay Drive (1),residential,199.7,15173978,29.477448,-98.488334
+s_d8cd38fa5160,East Hermosa Drive (4),residential,184.6,15166228,29.478488,-98.488668
+s_4862a7a77a2c,Hillside Drive (3),residential,104.1,15143612,29.480706,-98.489008
+s_5adcedb72051,East Mandalay Drive (4),residential,347.0,15173978,29.480694,-98.487249
+s_322b6685be9d,North New Braunfels Avenue (21),collector,115.9,317461634,29.480134,-98.45929
+s_9ca4fb3bb686,North New Braunfels Avenue (23),collector,96.3,317461634,29.480134,-98.45929
+s_6481799ffd91,Zambrano Road (3),residential,122.3,15143669,29.480134,-98.45824
+s_8644b44e32dd,Zambrano Road (2),residential,126.6,15143669,29.480065,-98.457699
+s_2b18568d3d89,Sheraton Drive (3),residential,106.7,15152997,29.480509,-98.457797
+s_01e966fd89f1,Sheraton Drive (1),residential,180.1,15152997,29.479201,-98.458709
+s_07f0f86b66d5,East Lawndale Drive (6),residential,136.6,15143766,29.509727,-98.466143
+s_3732dfd39190,West Lawndale Drive (2),residential,149.0,15163740,29.50973,-98.466633
+s_33218352779a,Broadway (74),arterial,122.0,1436147011,29.510296,-98.466208
+s_f82cb3304fa5,East Lawndale Drive (7),residential,46.3,15143766,29.50973,-98.464801
+s_6deb18d4c6e8,Garden Square,residential,85.8,15150069,29.50973,-98.464801
+s_c6df72d9e047,East Lawndale Drive (4),residential,144.2,15143766,29.509728,-98.463685
+s_bfd2bb2bc820,Thornhill Street,residential,128.4,15151652,29.508933,-98.464339
+s_19b23e8544a0,East Lawndale Drive (5),residential,47.9,15143766,29.509723,-98.462672
+s_99dd98f6d08b,Kings Reach,residential,139.3,15157688,29.509142,-98.462728
+s_8536438be257,East Lawndale Drive (3),residential,43.4,15143766,29.509723,-98.462302
+s_0c9183d54dfc,Busby Drive,residential,119.9,15158435,29.510275,-98.462334
+s_39ad26931453,Court Circle,residential,137.6,15159995,29.509718,-98.46189
+s_f5b3f553a8aa,North New Braunfels Avenue (70),collector,28.4,15148186,29.509709,-98.459017
+s_97de97091b31,North New Braunfels Avenue (71),collector,82.3,15148186,29.509976,-98.459015
+s_4eab5c917b9a,Brees Boulevard (1),residential,128.1,15143869,29.490441,-98.458669
+s_7dc797d36826,East Castano Avenue (3),collector,333.4,15158543,29.490182,-98.46041
+s_3a83325249cf,North New Braunfels Avenue (33),collector,101.4,149144295,29.489966,-98.459284
+s_19b26bd85265,North New Braunfels Avenue (34),collector,50.8,149144300,29.490432,-98.459306
+s_ff26a52c8189,Brees Boulevard (2),residential,277.2,15143869,29.491385,-98.456439
+s_7b9779d1f137,Breezewood Drive (1),collector,204.5,15149208,29.491598,-98.458207
+s_b58a23042c37,Brees Boulevard (3),residential,103.5,15143869,29.491582,-98.454962
+s_25be0d54f861,Emporia Boulevard (3),residential,67.6,15147828,29.491377,-98.455461
+s_48918a106889,Brees Boulevard (5),residential,360.0,15143869,29.491985,-98.452579
+s_938b9fffd838,Greenwich Boulevard (7),residential,120.5,165368629,29.49205,-98.454356
+s_eaaf82505b7f,Greenwich Boulevard (5),residential,116.8,165368629,29.491108,-98.454406
+s_0227a4cce73c,Brees Boulevard (6),residential,282.9,15143869,29.492501,-98.449508
+s_02354d2da57c,Kenilworth Boulevard (5),residential,106.3,15185327,29.492818,-98.450927
+s_b8245637e6d7,Kenilworth Boulevard (4),residential,103.7,15185327,29.491892,-98.450661
+s_a22c1f24c698,Brees Boulevard (4),residential,302.8,15143869,29.492525,-98.447098
+s_136da27eb5d8,Chevy Chase Drive (9),residential,100.6,15161994,29.493001,-98.447996
+s_686363d91b1b,Chevy Chase Drive (7),residential,108.5,15161994,29.49209,-98.447745
+s_c7f8a7ab07be,Seidel Road (5),residential,99.9,15165065,29.492767,-98.444755
+s_8e257cb55687,Seidel Road (4),residential,94.7,15165065,29.491908,-98.444769
+s_9ca67fbad45b,Pinewood Lane (2),residential,291.4,15157159,29.510266,-98.481979
+s_b510dba7a81d,Pinewood Lane (1),residential,427.3,15157159,29.510225,-98.482283
+s_1d2ba41235f7,Jones Maltsberger Road (16),arterial,96.5,711635386,29.509888,-98.482113
+s_64b9e3d8e189,Sandalwood Lane (2),residential,443.3,15151622,29.509391,-98.482006
+s_144998d11d4c,Jones Maltsberger Road (15),arterial,97.9,711635386,29.50867,-98.481876
+s_9ba2dbe900ab,Springwood Lane (2),residential,458.5,15160398,29.50852,-98.483678
+s_dbee5ef34888,Maplewood Lane (2),residential,356.6,15174601,29.507694,-98.481932
+s_0c965b61f5f1,Shadywood Lane (1),residential,360.2,15178061,29.506023,-98.481897
+s_130fbc830ce1,Jones Maltsberger Road (10),arterial,94.3,711635386,29.505596,-98.481761
+s_4196a348bf31,Teakwood Lane (2),residential,363.0,15159611,29.505175,-98.481879
+s_ee39c7690b90,Jones Maltsberger Road (4),collector,22.8,991772997,29.491521,-98.481807
+s_e7f72b9ee12b,Basse Road (3),arterial,692.1,284675912 30447065 30447061,29.48872,-98.48557
+s_67f821829967,East Basse Road (3),arterial,174.0,762787466,29.492043,-98.480701
+s_879de0a66185,East Melrose Drive,residential,338.5,15163094,29.469086,-98.490559
+s_321600afc1ce,Judson Avenue,residential,94.8,15144028,29.469404,-98.490564
+s_803091970c7e,Thelma Drive (2),residential,337.8,15144596,29.469938,-98.488816
+s_2d590c35dc29,Cross Lane (1),residential,181.6,15144120,29.469719,-98.457208
+s_4856fc649e4f,Geneseo Road (3),residential,344.0,15181905,29.469719,-98.457208
+s_d1711c0bf767,Geneseo Road (1),residential,307.7,15181905,29.469653,-98.458493
+s_377e6aa212db,Terrell Road (7),residential,254.3,15167408,29.471352,-98.457218
+s_4937a4ef7f2f,Cross Lane (2),residential,154.0,15144120,29.472104,-98.457234
+s_efe09b3ba753,Terrell Road (5),residential,269.0,15167408,29.471352,-98.457326
+s_ac4496e7515e,Elizabeth Road (9),residential,211.0,15157324,29.472737,-98.45723
+s_c78b42ccdea3,Cross Lane (3),residential,123.1,15144120,29.473244,-98.45722
+s_4a0ceb8380c8,Elizabeth Road (3),residential,244.0,15157324,29.472577,-98.458696
+s_600f3fd4815a,Charles Road (2),residential,139.8,15146249,29.473844,-98.457209
+s_1f756b9f13a1,Cross Lane (4),residential,121.4,15144120,29.474438,-98.457207
+s_5885163d364f,Charles Road (1),residential,200.0,15146249,29.473839,-98.458071
+s_342208343d4f,Garraty Road (7),collector,139.4,15156655,29.474936,-98.457206
+s_1b231ea6875b,Garraty Road (10),collector,200.6,15156655,29.474938,-98.45796
+s_00fad46f684d,Devonshire Drive (2),residential,324.4,15144237,29.492724,-98.453792
+s_283a5fdbdaec,Greenwich Boulevard (9),residential,104.9,165368629,29.492999,-98.454315
+s_12e142e2ad74,Devonshire Drive (3),residential,284.1,15144237,29.493393,-98.449862
+s_671dbabdb4dd,Kenilworth Boulevard (7),residential,104.1,15185327,29.493729,-98.451164
+s_b759321804ef,Devonshire Drive (1),residential,327.1,15144237,29.493407,-98.44703
+s_68ac3403b6ee,Chevy Chase Drive (11),residential,100.1,15161994,29.493908,-98.448231
+s_5b02b0bc1009,Seidel Road (6),residential,99.0,15165065,29.493659,-98.444754
+s_8e8344175049,Peter Baque Road (3),residential,10.5,1080059371,29.49951,-98.470793
+s_4d2a1db01d22,West Nottingham (5),residential,88.9,15163271,29.499533,-98.471426
+s_0a305431a0c4,West Nottingham (3),residential,122.2,1080059369 1080059370,29.499513,-98.470382
+s_40626e258c99,Townsend Avenue (5),residential,54.7,15158576,29.482984,-98.466566
+s_b717a50eb815,Albany Street (5),residential,42.8,15144375,29.482986,-98.466295
+s_18d63b16e8c2,Albany Street (4),residential,68.0,709204244 15144375,29.482983,-98.465825
+s_73342ac12214,Broadway (44),arterial,120.8,30448214 772096031,29.482455,-98.465868
+s_37fcf0f78a88,Albany Street (3),residential,158.8,709204244,29.482978,-98.465422
+s_a79e3a45e33d,Henderson Street (1),residential,121.1,15166485,29.483465,-98.465077
+s_3747d6e4617b,Ashcroft Avenue (3),residential,117.1,15151820,29.482977,-98.463781
+s_0b0d0120cef7,Ashcroft Avenue (2),residential,109.4,15151820,29.482549,-98.463648
+s_7c1e3d1054e1,Albany Street (7),residential,31.7,15144378,29.482993,-98.461417
+s_33b01c7a402b,Kokomo Street (4),residential,54.6,591107669,29.483122,-98.46138
+s_1d5381a08fde,Kokomo Street (5),residential,83.3,15186858,29.483687,-98.461471
+s_44d2ce02687f,Kokomo Street (3),residential,44.6,15186858,29.483202,-98.461203
+s_018995abc279,Albany Street (6),residential,110.4,15144378,29.483004,-98.46023
+s_43e228881a7a,Kokomo Street (2),residential,110.7,15186858,29.482515,-98.461197
+s_4bf9898e87d4,Albany Avenue (1),residential,17.9,15150660,29.483005,-98.460056
+s_c1e8d9766531,Austin Highway (18),arterial,121.8,1067072173 1067072174,29.482515,-98.46032
+s_3cdbac842fc7,Austin Highway (20),arterial,111.6,1067072172 1067072173,29.48327,-98.459835
+s_851df2e75e61,Thelma Drive (3),residential,140.9,15144596,29.470002,-98.486291
+s_89ed7478e925,Park Drive (2),residential,113.0,15181866,29.470418,-98.485298
+s_cd3906aa5ede,Shook Avenue (6),collector,94.0,15175153,29.469917,-98.487066
+s_9a4784b142ff,Shook Avenue (7),collector,106.5,15175153,29.47039,-98.48707
+s_d90aa5631641,Morton Street (6),residential,69.7,15144670,29.478123,-98.468299
+s_6feac81a5681,Cambridge Oval (4),residential,34.9,15157239,29.478416,-98.468306
+s_83b23079b045,Cambridge Oval (1),residential,157.8,15157239,29.478076,-98.467731
+s_53a63270c393,Morton Street (5),residential,119.2,15144670,29.477695,-98.468348
+s_fd3c83428c09,Jessamine Street,residential,185.7,15149628,29.476417,-98.467391
+s_e8d20c1a5593,Morton Street (4),residential,177.5,15144670,29.475318,-98.469283
+s_9442c93c539d,Patterson Avenue (10),residential,167.5,15157825,29.476565,-98.468501
+s_1f467b87fbd7,Patterson Avenue (11),residential,209.4,15157825,29.476746,-98.469581
+s_12f152267bbd,Morton Street (3),residential,115.0,15144670,29.475164,-98.469313
+s_66a48eb48ebe,Argyle Avenue (3),residential,72.1,15182857,29.475164,-98.469313
+s_a466ef40129b,Argyle Avenue (2),residential,215.0,15182857,29.475164,-98.469313
+s_bf9b71d56a9d,Morton Street (2),residential,115.3,15144670,29.47413,-98.469316
+s_a9229003c74a,Grant Avenue (2),residential,150.1,15167947,29.47413,-98.469316
+s_3f1cb2061fd0,Grant Avenue (1),residential,234.2,15167947,29.47413,-98.469316
+s_ea2f1b54bbb0,Morton Street (1),residential,118.9,15144670,29.473093,-98.469316
+s_3d0ede3fe2d8,Westover Road (1),residential,142.4,15155451,29.473093,-98.469316
+s_ae1c0f5911ef,Westover Road (3),residential,216.0,15155451,29.473081,-98.467259
+s_12b6f49cf4d8,Torcido Drive (2),residential,218.3,15152246,29.472161,-98.470323
+s_67f5637f24a3,Torcido Drive (1),residential,210.4,15152246,29.472302,-98.468658
+s_2bb0044a35d8,Vaux Hall,residential,80.2,15144945,29.493272,-98.469784
+s_f44f1eaf8cb6,Paddington Way (11),residential,143.1,15163247,29.493272,-98.469784
+s_51b680144904,Paddington Way (12),residential,72.2,15163247,29.493735,-98.469491
+s_0c63a98fc878,Haverhill Way (4),residential,72.9,15147551,29.493609,-98.470517
+s_b0e58727b6fc,Haverhill Way (2),residential,214.9,15147551,29.492903,-98.470856
+s_0e895f3dc56f,Broadway (38),arterial,82.7,30448214,29.479074,-98.464207
+s_77eaf83b3f9e,Willim Avenue,residential,163.5,1423815445 15145142,29.4791,-98.465055
+s_62aa89d3f3cb,Willim,residential,16.5,15155216,29.478753,-98.465974
+s_0197415cb3ad,Joliet Avenue (4),residential,189.4,15159553,29.478324,-98.465168
+s_204e1bfe672e,Larkwood Drive (7),residential,208.9,15155963,29.502183,-98.457152
+s_683ecd39163e,Woodbine Street (1),residential,104.1,15145207,29.502645,-98.457149
+s_951675cec5b5,Larkwood Drive (6),residential,187.7,15155963,29.502172,-98.458115
+s_7ed51258b0cf,Woodcrest Drive (4),residential,207.7,15168392,29.503119,-98.457147
+s_9375b3098409,Woodcrest Drive (5),residential,187.5,15168392,29.503119,-98.457147
+s_296975ef297a,Woodbine Street (2),residential,102.5,15145207,29.503578,-98.457136
+s_93679d21fe38,Oakleaf Drive (4),residential,206.4,15163744,29.504041,-98.457125
+s_3b994fccb176,Oakleaf Drive (3),residential,189.7,15163744,29.504041,-98.457125
+s_c736447dd73c,Woodbine Street (3),residential,73.8,15145208,29.504211,-98.456819
+s_a1220fa6f67f,Azalea Street (2),residential,93.5,15145221,29.474934,-98.449935
+s_73b3594d3409,Albertina Lane,residential,79.9,15145469,29.475173,-98.470058
+s_b21f804e8051,Argyle Avenue (4),residential,131.1,15182857,29.475173,-98.470058
+s_1efb3c73a085,Flamingo Street,residential,374.8,15145709,29.510814,-98.465526
+s_e845b203ce58,Claywell Drive (2),residential,366.4,15145776,29.495701,-98.466463
+s_ed639130ebab,Broadway (64),arterial,106.5,991772995 710874134 710874135,29.496182,-98.466551
+s_fdd4a2f05c56,Claywell Drive (1),residential,334.0,15145776,29.495721,-98.459418
+s_7da98fa36477,Vanderhoeven (13),residential,106.4,753791150,29.496185,-98.462758
+s_a844f5ae4a7c,Vanderhoeven (11),residential,104.5,753791150,29.495252,-98.462746
+s_febe415b7285,Eisenhauer Road (2),collector,195.4,1223178059,29.495706,-98.459299
+s_1105665b07e3,North New Braunfels Avenue (49),collector,67.0,148634810 991772994,29.495914,-98.459285
+s_6ae69c83f6b8,Blanton Drive,residential,249.5,15145835,29.505357,-98.456221
+s_a2a3983a43f6,Woodridge Drive (5),residential,168.6,15151630,29.505665,-98.454532
+s_51c7dc0d8195,Woodridge Drive (3),residential,58.6,15151630,29.505308,-98.454791
+s_1eaf741a25b5,Broadway (42),arterial,60.9,30448214,29.480412,-98.464916
+s_ea3c69feaf65,Ogden Lane (1),residential,67.3,591107667,29.480457,-98.465171
+s_69ab215e513f,Ogden Lane (9),residential,126.4,15145863,29.480992,-98.466986
+s_41af98fc0cbe,Ogden Lane (2),residential,179.0,15145863,29.480929,-98.466103
+s_739ad84b6272,Pinewood Lane (3),residential,217.6,15157159,29.510284,-98.478386
+s_6b2a304fcd8c,Morningside Drive (7),residential,155.6,15185951,29.483595,-98.453619
+s_ec96454995f9,Morningside Drive (5),residential,140.1,15185951,29.483595,-98.453619
+s_89584084a828,North New Braunfels Avenue (13),collector,27.2,317461634,29.473832,-98.459275
+s_7797403070d4,North New Braunfels Avenue (12),collector,67.9,317461634,29.473247,-98.459274
+s_200f511dfdd0,Charles Road (3),residential,467.8,15146249,29.473935,-98.453914
+s_c35cc20b0c53,Marion Road (3),residential,122.1,15187221,29.474432,-98.455765
+s_8e96f03b5f84,Marion Road (2),residential,140.2,15187221,29.473181,-98.455299
+s_334b8642f999,Eldon Road (6),residential,75.6,1147768787,29.47425,-98.451255
+s_04c7adcf716c,Eldon Road (4),residential,170.4,1147768787,29.47425,-98.451255
+s_c12ccf2c5bc3,Errol Street (2),residential,99.2,15146315,29.508532,-98.479185
+s_4288252b8085,Sandalwood Lane (3),residential,405.5,15135772 15160399 15151623,29.508552,-98.480716
+s_fbacbf98ab7a,Errol Street (3),residential,95.1,15146315,29.509424,-98.479183
+s_6088a245484c,Mertz Drive (3),residential,92.0,15146675,29.505166,-98.486562
+s_9f42ab04e280,Teakwood Lane (1),residential,287.2,15159612,29.505166,-98.486562
+s_8667ecbe960b,Shadywood Lane (2),residential,383.0,15178059,29.505977,-98.489988
+s_7175b616e489,Maplewood Lane (1),residential,381.9,15174601,29.507671,-98.486576
+s_47a2cbdfec23,Mertz Drive (5),residential,92.5,15146675,29.508107,-98.486582
+s_092c7f9ddd93,Maplewood Lane (3),residential,103.2,15174601,29.507673,-98.486074
+s_f4965414807c,Mertz Drive (6),residential,95.7,15146675,29.508503,-98.486587
+s_530bac3dc696,Springwood Lane (1),residential,382.0,15160398,29.508499,-98.487771
+s_94b7f14ce472,Mertz Drive (7),residential,95.3,15146675,29.509364,-98.486587
+s_e1515c78c2f9,Sandalwood Lane (1),residential,498.2,15151622,29.50936,-98.487507
+s_a08ce8778f15,North New Braunfels Avenue (15),collector,43.7,317461634,29.475335,-98.459279
+s_1337f8c1a6ce,North New Braunfels Avenue (17),collector,68.2,317461634,29.475335,-98.459279
+s_f661085a2210,Wiltshire Avenue (2),residential,87.6,15146872,29.47565,-98.459055
+s_cb39e2d3d6ba,Arcadia Place (2),residential,54.2,15180063,29.475947,-98.45872
+s_772b6f02214e,Arcadia Place (4),residential,288.1,15180063,29.475947,-98.45872
+s_c233fbad5df1,Ridgemont Avenue (2),residential,316.9,15167382,29.480597,-98.453375
+s_3c61a5614182,Ridgemont Avenue (5),residential,281.0,15167382,29.480528,-98.455512
+s_6a765988cdd3,Eldon Road (13),collector,102.2,15168311,29.482708,-98.452016
+s_87eb89bf357d,Wiltshire Avenue (8),residential,159.9,15146872,29.482728,-98.447545
+s_e799a0f8fa80,Exeter Road (4),residential,106.1,15168487,29.482699,-98.447342
+s_a66b473bf969,Imlay Street (6),residential,177.4,15146874,29.485762,-98.472022
+s_b91299564687,Alta Avenue (4),residential,45.1,15164309,29.485417,-98.471773
+s_d7b0a27b5f37,Alamo Heights Boulevard (11),residential,113.2,30466913,29.485919,-98.471553
+s_e849ecd88607,College Boulevard (4),residential,102.2,15165302,29.487291,-98.471988
+s_b46850ef53d2,Argo Avenue (4),residential,166.4,15147460,29.4825,-98.471713
+s_64c9a8dba514,Alta Avenue (6),residential,166.6,15164309,29.485382,-98.471714
+s_e5433bdcd79d,Halcyon Place,residential,330.4,15146917,29.490619,-98.462731
+s_123efe579ce7,Vanderhoeven (2),residential,89.5,15181171,29.491028,-98.462727
+s_3836c34f06c6,Vanderhoeven (1),residential,47.9,15181171,29.490619,-98.462731
+s_29629f8ee0fc,North New Braunfels Avenue (35),collector,88.3,149144300,29.490989,-98.459318
+s_3e55a7517794,North New Braunfels Avenue (1),collector,189.8,149137150,29.464942,-98.460888
+s_e6bf55fb727c,Nacogdoches Road (16),arterial,120.7,123168635,29.498271,-98.465688
+s_91a0b2c4fdb8,Nacogdoches Road (14),arterial,104.5,123168635,29.497628,-98.466303
+s_d46e407b7ffe,Brightwood Place (9),residential,150.0,15154071,29.496658,-98.464243
+s_fc0744133705,Argo Avenue (6),residential,153.6,15147460,29.482499,-98.466738
+s_7c7b9fd297cf,Argo Avenue (5),residential,168.8,15147460,29.482504,-98.46825
+s_5ef91233e087,Argo Avenue (2),residential,126.2,15147460,29.482266,-98.476889
+s_b2b6fe2fd4f9,Alamo Heights Boulevard (1),residential,178.1,15184380,29.482041,-98.477933
+s_359a1a47cf4b,Alamo Heights Boulevard (4),residential,271.6,30466880,29.482991,-98.476253
+s_d4aa2f8aab2e,Haverhill Way (3),residential,374.0,15147552 15147551 15163247,29.494928,-98.469741
+s_c64bbe019c54,Hyde Park (2),residential,113.5,15168264,29.49425,-98.470163
+s_a46ee678be65,Paddington Way (6),residential,167.0,15163247,29.49154,-98.47091
+s_ebd99346a76c,Broadmoor Drive (2),residential,52.8,15147554,29.476675,-98.487787
+s_f1064d172ef5,West El Prado Drive (6),residential,65.8,243864212,29.476546,-98.487555
+s_fd2dd23ea947,Broadmoor Drive (3),residential,61.8,317401827,29.47691,-98.487591
+s_fcde61deb7d7,Broadmoor Drive (1),residential,57.0,15147555,29.476697,-98.48747
+s_098950579f2c,Broadmoor Drive (4),residential,119.6,317401827,29.477466,-98.487586
+s_de23bf3eb8ba,East Mandalay Drive (2),residential,212.4,15173978,29.477399,-98.486497
+s_35edfb6c65ae,Alameda Circle (1),residential,37.1,15155976,29.478605,-98.487394
+s_2cb90199dff6,Alameda Circle (3),residential,40.4,15155976,29.478598,-98.487792
+s_a1c0243b1f11,Waring Drive (2),residential,141.5,15147677,29.505694,-98.490006
+s_823cffe297eb,Waring Drive (5),residential,93.2,15147674,29.50808,-98.490528
+s_7c3b2ad9ba62,Stone Crest Drive,residential,74.0,15147769,29.490156,-98.480195
+s_187234395634,Canyon Drive (1),residential,109.0,15173893,29.490049,-98.480207
+s_eeebe4fa1936,Canyon Drive (2),residential,111.3,15173893,29.490585,-98.480198
+s_7db1fdb6a0b2,Emporia Boulevard (4),residential,338.3,15147828,29.489005,-98.455448
+s_e45808d61402,Cloverleaf Avenue (8),residential,99.4,15156512,29.487935,-98.454935
+s_d33820f570d7,Cloverleaf Avenue (6),residential,38.1,15156512,29.487712,-98.455609
+s_b8651716b472,Emporia Boulevard (1),residential,43.8,1197855518,29.48783,-98.455436
+s_fb5d9ea354ff,Vanderheck Street (1),residential,154.2,15181279,29.490651,-98.456231
+s_d6758536d1ac,East Edgewood Place (2),residential,331.2,15147882,29.493925,-98.462742
+s_3e6f8c2a81dc,Vanderhoeven (10),residential,8.0,753791150,29.493925,-98.462742
+s_01866aa75db9,Vanderhoeven (12),residential,94.3,753791150,29.494311,-98.462743
+s_1ee238f7bf2e,North New Braunfels Avenue (42),collector,93.4,149144300,29.493934,-98.45932
+s_9aa49a5f7a39,North New Braunfels Avenue (46),collector,93.8,149144300,29.494363,-98.45932
+s_b6f99c4d1746,East Edgewood Place (1),residential,365.2,15147883,29.493843,-98.466459
+s_39d17d76406e,West Edgewood Place,residential,265.2,15168474,29.493852,-98.467043
+s_1eba00de95ce,Broadway (60),arterial,102.9,1371397139,29.493322,-98.466517
+s_e3a92e63e476,Vanderhoeven (8),residential,86.1,753791150,29.493396,-98.462743
+s_a3cdf5043c66,Grove Place (1),collector,13.6,15148160,29.47493,-98.462796
+s_0f6838d7852f,Broadway (25),arterial,118.2,1040453777,29.475568,-98.462838
+s_a23b4646bf6b,Broadway (22),arterial,42.0,1040453777,29.47493,-98.462796
+s_67e43f906a29,North New Braunfels Avenue (14),collector,96.2,317461634,29.474942,-98.459278
+s_4f79260e4c78,Hillview Drive (1),residential,260.5,15174561,29.509454,-98.459018
+s_8764fb28ee1a,North New Braunfels Avenue (69),collector,88.5,15148186,29.509189,-98.459013
+s_470b65f9c368,North New Braunfels Avenue (68),collector,25.4,15148186,29.508658,-98.45901
+s_d3cd01cd8b39,North New Braunfels Avenue (67),collector,136.3,15148186,29.507861,-98.459013
+s_54d52baabcf9,Camellia Way,residential,198.9,15175533,29.508437,-98.457125
+s_38bed0900902,East Sunset Road (2),collector,211.2,15181773,29.507204,-98.459135
+s_e3ec0edcae53,North New Braunfels Avenue (66),collector,198.8,148634809,29.506504,-98.459028
+s_9459d4d12608,North New Braunfels Avenue (65),collector,28.0,148634809,29.505417,-98.45906
+s_40759e41ee4e,Nacogdoches Road (22),arterial,204.1,1561990388 639274764,29.505764,-98.458628
+s_752f6825b672,North New Braunfels Avenue (62),collector,100.1,709581009,29.503565,-98.459085
+s_5880a4818678,North New Braunfels Avenue (61),collector,103.6,709581009,29.502645,-98.459087
+s_f8eb106c7c55,North New Braunfels Avenue (60),collector,100.9,709581009,29.501708,-98.459082
+s_334ca5ba904c,Northridge Drive (3),residential,170.8,15164635,29.501273,-98.459081
+s_4310bd388215,Robinhood Place (5),residential,178.7,15158364,29.498697,-98.459151
+s_417d3eb8eae8,North New Braunfels Avenue (55),collector,17.1,148634810,29.498697,-98.459151
+s_eda5b4e1698e,North New Braunfels Avenue (54),collector,75.2,148634810,29.498317,-98.459152
+s_2792519c747d,Calumet Place (3),residential,179.9,15148594,29.497867,-98.459154
+s_6db2cb0fea92,North New Braunfels Avenue (53),collector,29.4,148634810,29.497867,-98.459154
+s_48fdb4d2efdc,North New Braunfels Avenue (50),collector,27.4,148634810,29.49655,-98.459206
+s_7cded735526d,Brightwood Place (1),residential,192.1,15154073,29.496244,-98.459087
+s_d54047bafd33,East Oakview Place (2),residential,331.4,15177083,29.494778,-98.45932
+s_96e3b97a5036,North New Braunfels Avenue (40),collector,40.0,149144300,29.493094,-98.459319
+s_c8e83dc9ab82,East Elmview Place (2),residential,331.6,15153616,29.493087,-98.459613
+s_486b0ad5ebcf,North New Braunfels Avenue (37),collector,45.5,149144300,29.49225,-98.459319
+s_0a98a49bafc2,North New Braunfels Avenue (41),collector,53.9,149144300,29.49225,-98.459319
+s_36ec241bc40d,East Fair Oaks Place (1),residential,328.9,843394856,29.492246,-98.459652
+s_2585cf3a1c7c,Breezewood Drive (2),collector,20.0,15149208,29.491841,-98.459319
+s_cc026c65aa0d,North New Braunfels Avenue (36),collector,45.7,149144300,29.491841,-98.459319
+s_b030d743d94b,Retama Place,residential,329.4,15158443,29.49143,-98.459318
+s_5de3c0645a9b,Primrose Place (2),residential,229.6,15156562,29.489266,-98.460372
+s_0cb8ee9a9bdc,North New Braunfels Avenue (32),collector,145.2,149144295,29.489004,-98.459283
+s_23fc7d75ad16,Rosemary Avenue (2),residential,232.2,15155619,29.487957,-98.459636
+s_8a886d39d861,North New Braunfels Avenue (31),collector,108.5,149144295,29.48757,-98.459282
+s_69ce0693081b,Cloverleaf Avenue (2),residential,228.0,15156512,29.486986,-98.459282
+s_f266d8d67a13,North New Braunfels Avenue (30),collector,108.9,149144295,29.486986,-98.459282
+s_5b472c58e8ac,Cloverleaf Avenue (4),residential,56.9,15156512,29.487034,-98.458974
+s_321c448956a4,Wildrose Avenue (2),residential,227.9,15157337,29.486,-98.460004
+s_f2d734d0f478,North New Braunfels Avenue (29),collector,112.7,1423481910 149144295,29.48554,-98.459281
+s_c8a525946daa,Blue Bonnet Boulevard (5),residential,229.4,15155862,29.484993,-98.459377
+s_33a442a92c22,North New Braunfels Avenue (28),collector,114.0,317461642 1120658532,29.484484,-98.45928
+s_91a75893660a,Redwood Street (3),residential,244.1,15159817,29.483968,-98.459293
+s_bcf98a87d036,North New Braunfels Avenue (27),collector,23.1,317461642,29.483922,-98.459296
+s_5c1f3977a3a4,North New Braunfels Avenue (25),collector,17.0,149137151,29.48376,-98.459304
+s_e533fa766d46,Albany Avenue (2),residential,55.6,15150660,29.482999,-98.459297
+s_1ff2b29d842e,Morningside Drive (3),residential,23.2,15181618,29.482999,-98.459235
+s_19c457bfa690,North New Braunfels Avenue (26),collector,67.7,317462940 149137151,29.483343,-98.459314
+s_77769f373e7d,Ridgemont Avenue (6),residential,174.7,15167382,29.480994,-98.458117
+s_4bf277fc7dc5,Routt Street (1),residential,149.9,1067072178,29.481008,-98.460606
+s_2c54ba1beba3,North New Braunfels Avenue (11),collector,112.0,317461640,29.472908,-98.45931
+s_ebbb8d87d6c7,Elizabeth Road (2),residential,317.0,15157324,29.472259,-98.462215
+s_9dd3e39c669c,North New Braunfels Avenue (10),collector,109.2,317461640,29.471689,-98.45984
+s_9e0f55b34f08,North New Braunfels Avenue (9),collector,6.6,317461640,29.471345,-98.459997
+s_97d7b0a3c636,Terrell Road (1),residential,292.3,15167409,29.471293,-98.461592
+s_b30958c2210c,North New Braunfels Avenue (8),collector,115.7,317461640,29.471199,-98.460038
+s_240b49f6f0a3,North New Braunfels Avenue (7),collector,68.5,317461640,29.470266,-98.460245
+s_fbe6162c7a74,Harrigan Court (2),residential,303.2,15157737,29.470261,-98.462318
+s_02068befb00d,North New Braunfels Avenue (6),collector,47.7,317461640,29.469662,-98.460384
+s_b0caee255248,Katherine Court (2),residential,299.3,15165728,29.469232,-98.463109
+s_d643e020a671,Perry Court,residential,274.5,15169533,29.46757,-98.462793
+s_fc72514a6c49,North New Braunfels Avenue (3),collector,101.4,991772988,29.467316,-98.460862
+s_7ed1d2c404c6,North New Braunfels Avenue (2),collector,98.8,991772988,29.466678,-98.460875
+s_c2f2c8231ded,Davis Court,residential,270.8,15166656,29.466667,-98.46311
+s_c130d600d1cd,East Hildebrand Avenue (7),collector,273.4,144202908,29.46576,-98.46285
+s_f939527512da,Tanglewood Drive (3),residential,93.7,15148468,29.505578,-98.485506
+s_d4a1c694b289,Calumet Place (4),residential,289.1,15148594,29.497877,-98.457295
+s_a8f6ebd68507,Bartell Drive (5),residential,92.2,15174172,29.498308,-98.4573
+s_2d0045d0f83c,Calumet Place (5),residential,234.1,15148594,29.497885,-98.454308
+s_580720ee733a,Greenwich Boulevard (16),residential,92.5,1223178060,29.498308,-98.454313
+s_a09f5f471765,Kenilworth Boulevard (13),residential,93.9,15185332,29.498336,-98.451893
+s_0dfdec9acba4,Vanderhoeven (15),residential,123.4,753791150,29.49789,-98.463206
+s_b4bc2a6213fd,Vanderhoeven (14),residential,109.5,753791150,29.497159,-98.462814
+s_2b06869e2180,Sheffield Park Drive,residential,29.4,15148746,29.491421,-98.475563
+s_3d0e8aa8fd1b,Paddington Way (2),residential,90.6,15163247,29.491408,-98.475841
+s_3cadc256c211,Saint Dennis Street (4),residential,157.1,15149019,29.478462,-98.463565
+s_916fa3f4d88b,Broadway (39),arterial,42.9,30448214,29.478721,-98.463654
+s_fbce8b23fd66,Broadway (36),arterial,69.1,30448214,29.478301,-98.463078
+s_835bbb51c7f2,Joliet Avenue (1),residential,80.9,15159553,29.477607,-98.464599
+s_e774741acf45,Saint Dennis Street (3),residential,117.0,15149019,29.477548,-98.464685
+s_b54f2f1b3f25,Kennedy Avenue (4),residential,136.7,15176829,29.477797,-98.466267
+s_21ac43f0173d,Bronson Avenue (2),residential,47.2,15157449,29.476741,-98.467142
+s_0ac310ecc125,Broadway (1),arterial,110.1,653855150,29.465261,-98.464015
+s_1d08201eca2f,East Hildebrand Avenue (6),arterial,564.2,709554401 130574376 1381933928 1381933929 1381933930 358469973 1106542038 130574296 426540348 426540349,29.465766,-98.466752
+s_3e3e269078b8,Broadway (2),arterial,102.7,153164180 1356645092,29.465897,-98.46368
+s_25494d8fe565,Broadway (4),arterial,98.9,1359019169 706987771,29.467146,-98.463661
+s_29c347759ba3,Katherine Court (1),residential,11.4,589019558,29.46923,-98.46357
+s_38e977a282b9,Broadway (7),arterial,116.4,589019529 589019530,29.469876,-98.463489
+s_a342cb564a40,Harrigan Court (3),residential,12.6,591107670,29.47026,-98.463507
+s_fc95e263a5cd,Broadway (9),arterial,120.4,589019528 1059499668,29.471142,-98.463082
+s_0fdb020327bd,Harrigan Court (1),residential,18.0,591107671,29.470259,-98.463377
+s_97c9c3b9640d,Patterson Avenue (1),residential,13.0,15157825,29.471299,-98.463035
+s_44807f713576,Broadway (12),arterial,104.8,1059597579 589019526 589019527,29.471956,-98.462893
+s_f46b2408b600,Elizabeth Road (1),residential,16.8,591107674,29.472226,-98.462842
+s_92dc162a9db3,Broadway (16),arterial,85.3,365019933,29.472614,-98.462778
+s_0d77846373f3,Broadway (17),arterial,28.4,365019933,29.473154,-98.46267
+s_b8528cdc03a6,Hubbard Avenue (2),residential,15.2,15177353,29.474554,-98.462757
+s_8d5d7d02e34f,Kennedy Avenue (2),residential,13.3,15176826,29.475989,-98.462782
+s_919224febed0,Joliet Avenue (2),residential,12.9,15159553,29.477022,-98.46261
+s_4570de205270,Broadway (30),arterial,97.6,589019522 589019524,29.477589,-98.462626
+s_303ab5664396,Austin Highway (3),arterial,13.8,589019547,29.477956,-98.462915
+s_843298b8f382,Broadway (35),arterial,18.6,589019548,29.478088,-98.462838
+s_f0a6def7d1b3,Broadway (33),arterial,16.9,365079354,29.478024,-98.462797
+s_ef4a48e10208,Austin Highway (5),arterial,41.8,15163354,29.478066,-98.462741
+s_ae656be9c5ff,Broadway (37),arterial,19.8,589019521,29.478007,-98.46294
+s_72dc1633e5d7,Montclair Avenue (1),residential,191.3,15155352,29.481987,-98.465499
+s_6e976db4bfbc,Broadway (43),arterial,162.6,30448214,29.481254,-98.465304
+s_cd591d4bea54,Broadway (48),arterial,45.8,772096031,29.48498,-98.466466
+s_5bda801a1ce0,Blue Bonnet Boulevard (2),residential,134.4,15155862,29.48498,-98.46635
+s_cc840187b92a,Alta Avenue (7),residential,170.7,15164309,29.485394,-98.466823
+s_62e18471560e,Broadway (49),arterial,68.6,772096031,29.485528,-98.466487
+s_6d3918d78a17,Broadway (50),arterial,38.0,772096031,29.486008,-98.466493
+s_a3ac52e13ba8,Wildrose Avenue (1),residential,241.0,15157337,29.486008,-98.466404
+s_006f31a082ab,Inslee Avenue (1),residential,170.4,15159482,29.486349,-98.466586
+s_c8287c8a4def,Broadway (51),arterial,69.7,772096031,29.486915,-98.466486
+s_875b745fddd1,Broadway (52),arterial,37.7,772096031,29.486977,-98.466488
+s_a9ccd2ad51f3,Cloverleaf Avenue (1),residential,240.1,15156512,29.486977,-98.466404
+s_a0480188f270,College Boulevard (2),residential,170.3,15165302,29.487316,-98.466649
+s_1b64d6039968,Broadway (54),arterial,70.3,772096031,29.487457,-98.466485
+s_9c3d5415a452,Rosemary Avenue (1),residential,239.2,15155619,29.487948,-98.466401
+s_1fa492354afe,East Castano Avenue (1),collector,358.3,15158543,29.490198,-98.466296
+s_6c1833c729c1,Castano Avenue (8),residential,179.9,15174585,29.490198,-98.466663
+s_c52cd8a9bf6a,Broadway (58),arterial,113.5,149144243,29.490298,-98.466503
+s_07249a1ad984,Tuxedo Avenue (10),residential,122.3,15181449,29.491219,-98.466658
+s_726bd3d401e8,Broadway (61),arterial,59.8,1371397139,29.49238,-98.466523
+s_175e7d06a631,East Fair Oaks Place (3),residential,20.1,1064235995,29.49238,-98.466452
+s_d5490fb5701a,East Elmview Place (1),residential,365.1,15153615,29.492918,-98.466459
+s_cb8d64a36c9a,West Elmview Place (1),residential,179.6,15165556,29.492895,-98.467474
+s_90c59f85240b,Broadway (66),arterial,76.5,1127404492,29.497009,-98.46657
+s_56425939940f,East Basse Road (11),arterial,186.9,1423793227 1465320438,29.496914,-98.467345
+s_8199506daafe,East Basse Road (6),arterial,107.6,1423793228,29.497099,-98.466808
+s_787784de3583,Hiler Road,residential,292.5,15151782,29.500681,-98.465077
+s_5b385e912654,Lorenz Road (3),residential,298.8,708838914,29.502415,-98.466169
+s_4aa617732e1c,Lorenz Road (6),residential,175.3,708838914,29.502417,-98.467142
+s_590dfa2ba0f6,East Terra Alta Road (2),residential,205.1,15150558,29.505414,-98.465663
+s_54629c25ec09,Ellwood Avenue (2),residential,16.4,15149281,29.479085,-98.461668
+s_628f0313411a,Austin Highway (7),arterial,119.6,15163354,29.478655,-98.46204
+s_e1c3a02170cb,Ellwood Avenue (3),residential,42.9,1067072183,29.479092,-98.461797
+s_4000f27f1407,Austin Highway (9),arterial,106.8,1067072181 1067072182,29.479382,-98.461497
+s_6047c25276a4,West Meadowlane Drive (5),residential,90.3,15166083,29.487415,-98.454491
+s_8f78f96be19d,Bronson Avenue (1),residential,75.8,15157449,29.475834,-98.467379
+s_d9aafdeafb75,Eaton Street (2),residential,12.4,15149953,29.47998,-98.461337
+s_51b36386b2e9,Kampmann Avenue (1),residential,103.8,15166431,29.479601,-98.461772
+s_d7eee16babba,Eaton Street (1),residential,15.1,15149953,29.479972,-98.461256
+s_21d014f46bf6,Austin Highway (11),arterial,18.0,1067072181,29.479972,-98.461256
+s_47f9e41f498c,East Hildebrand Avenue (4),arterial,198.1,358469973,29.465573,-98.469937
+s_68a05cd6f87d,Brackenridge Road,collector,709.0,15150208 130574339 806431918 806431919 15127695,29.463563,-98.469026
+s_a88a4863db17,Vinewood Court,residential,114.3,15164370,29.505408,-98.464137
+s_99922416a9f4,Parklane Drive (2),residential,254.7,15150607,29.475491,-98.487872
+s_87ed851866dd,West El Prado Drive (4),residential,104.3,243864212,29.475201,-98.489265
+s_c182729d5732,Parklane Drive (1),residential,108.3,15150607,29.475382,-98.486581
+s_a7ecc6252732,East El Prado Drive (4),residential,94.8,15154939,29.475382,-98.486581
+s_b19838a5c3d2,Bethen Court,residential,71.9,15150853,29.495738,-98.447335
+s_b10c4d90b0b2,Eisenhauer Road (8),collector,65.0,15185466,29.495737,-98.447717
+s_5b2c57399af8,Dundee Avenue (1),residential,70.4,15150975,29.508708,-98.44991
+s_e05dd46cccdd,Cave Lane (6),residential,121.2,15159828,29.508708,-98.44991
+s_0eaa73032a7b,Cave Lane (1),residential,264.4,15159828,29.508707,-98.450228
+s_1de43907a2da,Dundee Avenue (2),residential,118.6,15150975,29.509257,-98.449548
+s_a8762830dc0a,Kinross Drive,residential,182.8,15155002,29.509257,-98.449548
+s_d25ea857d291,Friar Tuck Road,residential,294.5,15157816,29.510167,-98.451252
+s_2a1bc56d482a,Paddington Way (7),residential,91.1,15163247,29.491427,-98.47273
+s_787fd482ba80,Blenheim,residential,35.1,15151085,29.49164,-98.472727
+s_2dcfec198617,Blue Bonnet Boulevard (4),residential,100.8,15155862,29.484981,-98.464009
+s_357fbfc5d50c,Blue Bonnet Boulevard (1),residential,51.7,15155862,29.484981,-98.464009
+s_7ef6880eb565,Wintergreen Drive (1),residential,112.1,15151419,29.485525,-98.464006
+s_ebf2bf11cd83,Wildrose Avenue (3),residential,229.1,15157337,29.485989,-98.464003
+s_0b62f9fdf1e4,Wintergreen Drive (2),residential,110.5,15151419,29.486504,-98.464006
+s_c6f7146dab73,Cloverleaf Avenue (3),residential,229.4,15156512,29.486983,-98.464008
+s_08737917305b,Wintergreen Drive (3),residential,107.1,15151419,29.487474,-98.464037
+s_b0a56bb31c8f,Rosemary Avenue (3),residential,225.7,15155619,29.487945,-98.464014
+s_6cb6d24821a6,Wintergreen Drive (4),residential,145.4,15151419,29.488444,-98.464012
+s_a2cd0a523ae3,Primrose Place (3),residential,227.7,15156562,29.489253,-98.464008
+s_55f455e677a2,Ironwood Road,residential,191.8,15151532,29.468605,-98.477774
+s_2dc768843fa7,Devine Road (5),collector,76.9,358469970,29.469223,-98.479103
+s_71315a516763,Devine Road (4),collector,46.5,358469970,29.468367,-98.479102
+s_6f4da9c5f9a6,West Meadowlane Drive (6),residential,38.0,15166083,29.487933,-98.454424
+s_f135c3a0ca74,Greenwich Boulevard (1),residential,60.6,15151537,29.488071,-98.454422
+s_a0f1e0978590,Greenwich Boulevard (2),residential,69.2,15151537,29.488692,-98.45424
+s_8559d21dcfdd,Greenwich Boulevard (3),residential,140.6,165368629,29.489167,-98.454318
+s_8c894432aa73,Greenwich Boulevard (4),residential,84.7,15151538,29.489289,-98.454186
+s_da81b97996d7,Chevy Chase Drive (1),residential,371.8,15161994,29.489822,-98.453126
+s_16a8cd00283b,Greenwich Boulevard (6),residential,90.9,165368629,29.490146,-98.454382
+s_c74354aaa0c2,Harmon Drive (1),residential,387.0,15155025,29.490837,-98.453376
+s_1e9eedc6abfd,Irvington Drive (2),residential,303.9,15160126,29.493799,-98.453308
+s_ac2435925118,Eisenhauer Road (4),collector,265.6,15185466,29.495722,-98.453309
+s_3ba469792096,Greenwich Boulevard (13),residential,55.9,1223178060,29.495826,-98.454599
+s_b20538e5ef04,Brightwood Place (2),residential,271.6,15154073,29.496204,-98.454468
+s_3988153dd1f5,Brightwood Place (3),residential,251.2,15154073,29.496201,-98.453333
+s_b9dfdcd193e5,Robinhood Place (6),residential,289.2,15158364,29.498717,-98.454317
+s_482967985bdc,Robinhood Place (8),residential,234.2,15158364,29.498722,-98.453281
+s_7069423dfc5f,Northridge Drive (6),residential,164.7,15164635,29.501277,-98.454339
+s_73b990b04516,Northridge Drive (4),residential,288.1,15164635,29.501274,-98.45493
+s_b53bb76bcf95,Cave Lane (2),residential,10.4,15159828,29.508694,-98.452749
+s_82bcc2054b9d,Woodridge Drive (7),residential,112.7,15151626,29.508834,-98.452671
+s_5159931c5bca,Cave Lane (5),residential,391.6,15159828,29.508698,-98.454057
+s_796abe044eb7,Woodridge Drive (8),residential,67.6,15151626,29.50987,-98.452042
+s_32cd67c81d07,Hillview Drive (2),residential,387.6,15174565,29.509659,-98.455163
+s_d10eefd71944,Woodridge Drive (1),residential,102.9,15151628,29.502645,-98.454997
+s_86438785ef40,Larkwood Drive (5),residential,228.0,15155963,29.502189,-98.45471
+s_c4285799d06f,Woodridge Drive (2),residential,102.6,15151628,29.503437,-98.454998
+s_b8ab555ee9f4,Oakleaf,residential,10.4,15157296,29.504033,-98.454992
+s_6e1d84c73c34,Oakleaf Drive (5),residential,219.4,15163742,29.504033,-98.454884
+s_6fabf04dc619,Woodridge Drive (4),residential,98.5,15151630,29.504496,-98.454867
+s_8b3027f7c953,Burnside Drive (2),residential,217.9,15162992,29.504919,-98.454863
+s_35f59ce69457,Woodridge Drive (6),residential,247.7,15151630,29.508052,-98.45301
+s_e0a49e7b4dba,Rockhill Drive (1),collector,313.0,15153611,29.506749,-98.452951
+s_1f1771e6f488,Rockhill Drive (2),collector,402.0,15153611,29.506747,-98.455377
+s_e0c187f94d29,Montclair Avenue (5),residential,238.9,15155352,29.48201,-98.463664
+s_e4029757402c,Redwood Street (1),residential,87.7,15159817,29.483971,-98.464181
+s_c8164cb7990d,Ashcroft Avenue (4),residential,117.2,15151820,29.484475,-98.464362
+s_59e53f8eafe6,Blue Bonnet Boulevard (3),residential,51.7,15155862,29.484977,-98.464543
+s_e6dc9639fc03,West Hathaway Drive (1),residential,114.6,15154966,29.466172,-98.446484
+s_a73762b4b77c,Patterson Avenue (6),residential,90.8,15157825,29.472626,-98.467276
+s_2e15cacbba6f,Torcido Drive (3),residential,123.9,15152246,29.473785,-98.470641
+s_74a63e63424a,Torcido Drive (4),residential,136.0,15152246,29.474902,-98.471358
+s_599b75195014,Patterson Avenue (12),residential,136.3,15157825,29.475899,-98.471091
+s_f0b09be672ea,Argyle Avenue (5),residential,90.2,15182857,29.475218,-98.472038
+s_568b0d9679d1,Nacogdoches Road (2),residential,132.7,15152377,29.486098,-98.470929
+s_aa4288daaf09,Alamo Heights Boulevard (12),residential,77.8,30466913,29.486227,-98.470359
+s_09f3df386d1c,College Boulevard (10),residential,107.0,15165302,29.487291,-98.470932
+s_b20cadacdde3,Nacogdoches Road (6),residential,111.9,15152377,29.490191,-98.470939
+s_0ffc10e7417d,Castano Avenue (9),residential,249.5,15174585,29.490191,-98.470939
+s_40fcb23c1f86,Tuxedo Avenue (9),residential,247.8,15181449,29.491197,-98.470914
+s_0351bd2f8523,Nacogdoches Road (9),residential,109.6,15152377,29.492944,-98.469805
+s_579190f1922c,West Elmview Place (2),residential,138.7,15165556,29.492944,-98.469805
+s_8c45044b65a2,Hyde Park (1),residential,18.8,15168262,29.493804,-98.469251
+s_9ad0793e0667,Nacogdoches Road (12),residential,70.5,15152377,29.496078,-98.46821
+s_17d20fc79065,Nacogdoches Place,residential,132.3,15152378,29.496208,-98.46767
+s_c22b0c817576,Nacogdoches Road (13),residential,10.9,15152377,29.496639,-98.4683
+s_3e91a2ac7ff2,Robinhood Place (3),residential,144.9,15158363,29.498658,-98.464733
+s_ed39fc3aa225,Lorenz Road (2),residential,79.9,708838914,29.502407,-98.461924
+s_37fa57df9cfc,Nacogdoches Road (23),arterial,213.5,639274764,29.50706,-98.457831
+s_bd01516b2b70,Nacogdoches Road (24),arterial,33.8,639274764,29.50844,-98.456964
+s_410045c04c84,Nacogdoches Road (25),arterial,94.7,639274764,29.508951,-98.456642
+s_46d6702bb32d,Nacogdoches Road (26),arterial,43.9,639274764,29.509453,-98.456326
+s_bfa473052ced,Nacogdoches Road (27),arterial,60.8,639274764,29.509925,-98.45603
+s_3fb8afce1b16,Seidel Road (10),residential,131.4,15165062,29.499887,-98.44425
+s_a862772a559c,Seidel Road (9),residential,89.7,15165067,29.499887,-98.44425
+s_08da393294b3,Sheraton Drive (5),residential,83.5,15152997,29.484117,-98.455052
+s_68bde63c16db,Morningside Drive (1),residential,332.1,15185951,29.48307,-98.456603
+s_45fc6e29e74d,Kenilworth Boulevard (24),residential,209.4,148634804,29.510478,-98.447535
+s_2a4e3068f3be,Chevy Park Street (2),residential,75.5,15153365,29.490991,-98.447734
+s_fc0489c83576,Chevy Chase Drive (8),residential,32.5,15161994,29.491491,-98.447752
+s_88357e52e3ef,Chevy Chase Drive (6),residential,72.0,15161994,29.491101,-98.447931
+s_86388bafc9d2,Chevy Park Street (3),residential,65.8,15153366,29.490789,-98.447875
+s_c6fd9eb7c2c3,Rockhill Drive (5),collector,235.6,15153611,29.506758,-98.450016
+s_8f1cd7d832d0,Brookhurst Drive,residential,355.1,15161752,29.507731,-98.449164
+s_560fe9751d06,Rockhill Drive (4),collector,65.4,15153611,29.506769,-98.448123
+s_168f8e464e68,Hatt Lane,residential,153.2,15154526 15168943,29.506185,-98.4482
+s_7fb5476e81f5,Kenilworth Boulevard (22),residential,108.0,15185337,29.50676,-98.447525
+s_3d93ba944dbe,Kenilworth Boulevard (20),residential,106.4,15185337,29.506212,-98.447524
+s_4104743abe4c,Vanderhoeven (9),residential,13.7,753791150,29.492956,-98.462749
+s_b7ab89e1d0e6,Vanderhoeven (7),residential,63.6,753791151,29.492724,-98.46278
+s_35d9c2eaa7fb,Vanderhoeven (4),residential,76.8,843394855,29.492385,-98.462721
+s_a55e76ed92d4,Brightwood Place (8),residential,199.1,15154071,29.49667,-98.462762
+s_760ab2348e6b,Bartell Drive (1),residential,53.5,15174172,29.496193,-98.457274
+s_42df75f756bd,Kenilworth Boulevard (8),residential,54.9,15185332,29.49622,-98.451873
+s_7fda0e1ca7cc,Belvidere Drive (1),residential,258.3,15154532,29.472703,-98.489744
+s_aaa3f26626c6,West El Prado Drive (2),residential,108.7,243864212,29.473107,-98.489528
+s_d1a4c8ff68d2,West El Prado Drive (1),residential,67.4,243864212,29.472473,-98.489939
+s_2547e179b6c4,Belvidere Drive (2),residential,104.2,15154532,29.472683,-98.487076
+s_0594463f7527,East El Prado Drive (1),residential,99.5,15154939,29.472683,-98.487076
+s_17f74a11a93f,East El Prado Drive (3),residential,104.2,15154939,29.473111,-98.487031
+s_f267c93d52ab,East Fair Oaks Place (2),residential,6.7,15154534,29.492266,-98.462715
+s_4a6ec8b2641a,Vanderhoeven (3),residential,93.7,15181171,29.491837,-98.462719
+s_a38fa927f039,Scottshill,residential,88.6,15154650,29.510123,-98.467746
+s_f89a0947ed89,Castano Avenue (1),residential,52.2,15174585,29.489793,-98.478474
+s_a9041e467031,Castano Avenue (3),residential,107.0,15174585,29.489793,-98.478474
+s_610e325327a4,East El Prado Drive (2),residential,101.5,15154939,29.470875,-98.487074
+s_3e7a65ed8170,East Olmos Drive (8),collector,117.5,15156285,29.470875,-98.487074
+s_d9a064711f07,East Olmos Drive (7),collector,286.4,1423537489 15156285,29.470875,-98.488327
+s_f6644e5f99bd,Primera Drive (1),residential,87.4,15163030,29.471788,-98.487068
+s_ff5331c11802,Primera Drive (2),residential,320.9,15163030,29.471823,-98.489678
+s_6d2fc7e1c994,East El Prado Drive (5),residential,105.2,15154939,29.473612,-98.486941
+s_bf78950d8d96,Luther Drive (1),residential,121.4,15182942,29.473612,-98.486941
+s_e5b94061b74b,Luther Drive (2),residential,236.4,15182942,29.473612,-98.486941
+s_d4791203716f,Stanford Drive (1),residential,108.8,15155463,29.474543,-98.486751
+s_3278fbcd6769,Stanford Drive (2),residential,247.9,15155463,29.474543,-98.486751
+s_35ba6f710238,Harmon Drive (3),residential,272.4,15155025,29.491574,-98.448805
+s_cf0fc377430a,Kenilworth Boulevard (1),residential,77.1,15185327,29.490954,-98.450476
+s_d32098999438,Harmon Drive (2),residential,280.3,15155025,29.491601,-98.447264
+s_c3ef75e17d99,Cambridge Oval (2),residential,75.6,608501295,29.478551,-98.466356
+s_d959a36cf281,Cambridge Oval (6),residential,179.6,608501295,29.479399,-98.466254
+s_f68906826206,Indian Blanket Lane,residential,154.0,15155256,29.471329,-98.448241
+s_6916a2d27148,Terrell Road (3),residential,292.8,15167408,29.471337,-98.450011
+s_593bcc4f3282,Elizabeth Road (6),residential,292.5,15157324,29.472714,-98.448236
+s_ba5c4856600a,East Basse Road (15),arterial,13.3,1072948781,29.498207,-98.474894
+s_158cc40c5b4d,Treeline Park (2),collector,251.2,1072948780,29.49984,-98.47428
+s_b81b7eb9d74c,Treeline Park (1),collector,18.1,15167157,29.498194,-98.474758
+s_2b337ed9d704,Forestshire (3),residential,13.3,15171519,29.492325,-98.480271
+s_62cd7e50243a,East Basse Road (8),arterial,550.4,36833700,29.494433,-98.479557
+s_53938a77a9e4,Montclair Avenue (2),residential,58.9,15155352,29.482012,-98.460815
+s_e242d89c5a0b,Montclair Avenue (4),residential,16.4,1067072175,29.482012,-98.460588
+s_344278f8ed87,Austin Highway (15),arterial,118.6,1067072176 1067072177,29.481407,-98.460877
+s_ed4802fa73a7,Arbutus Street (6),residential,106.5,15155402,29.485384,-98.469993
+s_2958b5d37447,Alta Avenue (8),residential,169.0,15164309,29.485384,-98.469993
+s_02fc4a4249f0,Inslee Avenue (3),residential,20.7,15159482,29.486342,-98.469991
+s_9efe9b2cd6f7,Inslee Avenue (2),residential,168.0,15159482,29.486342,-98.469991
+s_ad8475a768d1,Patterson Avenue (7),residential,118.9,15157825,29.473419,-98.466922
+s_1ceeb7c6f865,West El Prado Drive (3),residential,103.4,243864212,29.474067,-98.489332
+s_fd8a08806b26,Buttercup Drive (4),residential,145.2,15157572,29.488458,-98.461685
+s_4cfd2237c7bc,Buttercup Drive (3),residential,108.5,15157572,29.487475,-98.461678
+s_a35894b60dad,Henderson Street (2),residential,112.9,15166485,29.484476,-98.465082
+s_b29d01dabfdc,Blue Bonnet Boulevard (6),residential,127.5,15155862,29.484986,-98.462968
+s_4b34c707ff15,Kokomo Street (6),residential,158.8,15186858,29.484482,-98.462396
+s_6f7a3a97d3f0,Buttercup Drive (1),residential,112.0,15157572,29.485525,-98.461643
+s_a444473d3e9d,Larkwood Drive (4),residential,206.4,15155963,29.502167,-98.451145
+s_e6ed3e88787b,Crandall Place (2),residential,103.3,15167361,29.502626,-98.452636
+s_eee8bd5f9d70,Crandall Place (1),residential,98.5,15167361,29.501734,-98.452637
+s_f3fe43325465,Larkwood Drive (3),residential,217.3,15155963,29.502036,-98.448813
+s_705d3d42bb6f,Kenilworth Boulevard (17),residential,113.5,15185322,29.502585,-98.450261
+s_f7a069d4e117,Kenilworth Boulevard (16),residential,104.6,15185322,29.501478,-98.450838
+s_17bae20a8401,Chevy Chase Drive (18),residential,110.3,15161989,29.501524,-98.448261
+s_6658147333e1,Seidel Road (11),residential,87.2,15165062,29.501475,-98.444257
+s_ba7a09dcf304,East Rosewood Avenue (1),residential,165.8,15155973,29.465086,-98.488737
+s_ceca7750989e,Gillespie Street,residential,99.9,15180863,29.465163,-98.488737
+s_d7acdfa122e0,Shook Avenue (2),collector,11.8,15175153,29.4651,-98.487024
+s_5c6d8fdad497,Shook Avenue (4),collector,88.0,15175153,29.465206,-98.487019
+s_488e73ef2fec,East Rosewood Avenue (2),residential,233.1,15155974,29.465207,-98.485631
+s_a9c2ae6f4e0e,Alameda Circle (4),residential,38.3,15155976,29.478882,-98.487913
+s_fbebe44a62d2,East Wildwood Drive (2),residential,127.2,15160469,29.479442,-98.488248
+s_b45c809fd63a,Alameda Circle (5),residential,36.4,15155976,29.4791,-98.487634
+s_ef90c89f2ad9,East Wildwood Drive (4),residential,181.6,15160472,29.479662,-98.486594
+s_bde0c84513fb,Alameda Circle (2),residential,42.9,15155976,29.478909,-98.487294
+s_971d24690c5f,East Hermosa Drive (3),residential,170.8,15166229,29.478379,-98.486317
+s_6950d94644ff,East Olmos Drive (6),collector,49.8,15156285,29.470874,-98.485115
+s_e1ce000e5fab,East Olmos Drive (9),collector,72.2,15156285,29.470874,-98.485115
+s_7e04f50510de,East Olmos Drive (3),collector,207.1,15156285,29.470874,-98.4846
+s_1f621ec1fad5,Park Drive (3),residential,341.2,15181870,29.471896,-98.48376
+s_8e67b0e36a23,East Olmos Drive (2),collector,47.9,15156285,29.470873,-98.482461
+s_733dae805179,Trevitt Drive (2),residential,111.5,15178004,29.470872,-98.481966
+s_1232d18e6327,Devine Road (6),collector,168.3,30515204,29.470873,-98.479172
+s_f83a2a3185b1,Devine Road (8),collector,218.2,30515204,29.471251,-98.479169
+s_8c9c7652fe75,Hillingdon,residential,64.0,15156501,29.49187,-98.471753
+s_745d8ff05c5c,Buttercup Drive (2),residential,109.7,15157572,29.486501,-98.461637
+s_164abedf002f,Cloverleaf Avenue (5),residential,122.8,15156512,29.487277,-98.45842
+s_47a7f8b10f4f,Vanderheck Street (2),residential,428.9,15181279,29.489162,-98.458242
+s_4d897cdc22aa,Cloverleaf Avenue (7),residential,208.4,15156512,29.487158,-98.456554
+s_ae1de08fdd61,Pinecrest Boulevard,residential,342.5,15160804,29.488216,-98.457016
+s_e98f79060ba2,Marion Road (5),residential,112.8,15187221,29.474934,-98.455766
+s_f3380c98e32e,Tondre,residential,89.9,15156817,29.502408,-98.462619
+s_4b7aa665b639,Lorenz Road (4),residential,82.4,708838914,29.502408,-98.462619
+s_83c572e7f35d,Alta Avenue (2),residential,152.9,15164307,29.48535,-98.478531
+s_018504cd5c9b,Cardinal Avenue (3),residential,258.6,15164858 134270155,29.486162,-98.478938
+s_9971036c8f92,Seidel Road (2),collector,10.6,466540562,29.488713,-98.444363
+s_d99d4cb01355,East Lullwood Avenue,residential,165.0,15157234,29.465984,-98.488736
+s_9894fe64a848,Estes Avenue (4),residential,167.1,15175909,29.478589,-98.468366
+s_b637ec27a8f3,Bronson Avenue (5),residential,57.2,15157449,29.478355,-98.466733
+s_fec0384dd7a1,Elizabeth Road (8),residential,249.5,15157324,29.472967,-98.453764
+s_919cd2e0a4ea,Marion Road (1),residential,169.3,15187221,29.472247,-98.454632
+s_e0e87e333b31,Elizabeth Road (7),residential,130.6,15157324,29.472606,-98.451987
+s_1104fcbf3cad,Oak Lane,residential,156.4,15178445,29.472538,-98.45266
+s_9b415dd40b09,Eldon Road (3),residential,152.9,1147768787,29.471995,-98.451262
+s_6fd05068d950,Patterson Avenue (8),residential,68.4,15157825,29.475448,-98.467267
+s_db16158e0831,Patterson Avenue (9),residential,117.3,15157825,29.474742,-98.466939
+s_12af34bc38f9,Robinhood Place (7),residential,53.7,15158364,29.498741,-98.451521
+s_b99f01ae6d89,Robinhood Place (1),residential,301.3,15158364,29.498626,-98.450169
+s_5723d97dfb4f,Chevy Chase Drive (14),residential,295.6,15161989,29.496728,-98.448247
+s_ff616c8d6b02,East Castano Avenue (2),collector,6.9,15158543,29.490188,-98.462729
+s_311acae8ae6a,Dijon Court,residential,79.3,15159428,29.50298,-98.468348
+s_e17edd9cb2da,Columbine Street (8),residential,105.4,15171658,29.486341,-98.468255
+s_05388e89beae,Columbine Street (6),residential,106.1,15171658,29.486341,-98.468255
+s_a81f55be4a73,Alamo Heights Boulevard (14),residential,114.6,30466913,29.48674,-98.469939
+s_864f7ccd9a88,Joliet Avenue (3),residential,134.8,15159553,29.477014,-98.46354
+s_2a874e13b8e8,Burnside Drive (3),residential,88.6,148634777,29.504934,-98.446957
+s_0d22b93b3e5f,Cave Lane (4),residential,107.5,15159828,29.508708,-98.448114
+s_ad7358a8b2fd,Kenilworth Boulevard (23),residential,107.7,15185337,29.5087,-98.447547
+s_37a57dc404a1,Kenilworth Boulevard (25),residential,108.8,15185337,29.509153,-98.447504
+s_b9a018df45a3,Seidel Road (7),residential,89.9,15165067,29.49908,-98.44426
+s_46f4c0f1281a,Irvington Drive (3),residential,283.3,15160126,29.494293,-98.449695
+s_4024f14b18bf,Irvington Drive (1),residential,346.9,15160126,29.494276,-98.447017
+s_6d7e8d84ec14,Oxford Hall,residential,19.1,15160272,29.491399,-98.476498
+s_c947a0cb8f78,East Mandalay Drive (3),residential,228.1,15173978,29.478916,-98.485304
+s_9db131c269b9,Alamo Heights Boulevard (5),residential,37.1,30466880,29.484092,-98.475456
+s_9a4f94972e16,Alta Avenue (3),residential,153.6,15164307,29.485365,-98.475778
+s_193dab3a49db,Alta Avenue (1),residential,24.3,15164307,29.485365,-98.475778
+s_7aa045d38239,La Jara Boulevard (6),residential,114.0,15160918,29.485889,-98.475488
+s_41723fc60641,Cardinal Avenue (4),residential,186.7,15164858,29.486327,-98.475441
+s_c74c13ed6381,Cardinal Avenue (2),residential,20.7,15164858,29.486327,-98.475441
+s_0be837b4b655,La Jara Boulevard (8),residential,122.2,15160918,29.486894,-98.475392
+s_05dc766c08b1,College Boulevard (9),residential,24.8,15165302,29.487298,-98.475013
+s_fd66fbd9d9fc,Castano Avenue (6),residential,22.3,15174585,29.490188,-98.473941
+s_30a46618c4a0,Alta Avenue (5),residential,218.7,15164307,29.485367,-98.475527
+s_48a52a81b418,La Jara Boulevard (5),residential,111.2,15160925,29.485844,-98.475335
+s_e2330b180c02,La Jara Boulevard (7),residential,121.3,15160925,29.486853,-98.475128
+s_34860f02c929,La Jara Boulevard (15),residential,123.1,15160925,29.490779,-98.473981
+s_ae82c9b2344a,Eisenhauer Road (9),collector,22.6,15185466,29.495736,-98.448241
+s_6e70a38d43da,Eisenhauer Road (7),collector,57.2,15185466,29.495734,-98.4487
+s_7fa9cc9ed9c7,Northridge Drive (7),residential,268.4,148634814,29.501041,-98.448729
+s_cead9fde84bc,Chevy Chase Drive (3),residential,60.3,15161994,29.49043,-98.450702
+s_dc3037c753cf,Kenilworth Boulevard (2),residential,44.3,15185327,29.490529,-98.450557
+s_455152ab4d46,Kenilworth Boulevard (3),residential,48.3,15185330,29.49053,-98.450263
+s_4696822f3e27,Eisenhauer Road (6),collector,247.1,15185466,29.495731,-98.449886
+s_d322fb6dea0f,Tuleta Drive,arterial,16.9,153164233,29.464141,-98.479088
+s_7206e36a0954,Stadium Drive (2),arterial,158.2,153164189,29.465243,-98.479187
+s_9e7c1d0b9301,Huntleigh Lane,residential,57.8,15175747,29.502784,-98.463466
+s_719bbce329a1,Burnside Drive (1),residential,342.9,15162992,29.50493,-98.451306
+s_8b8ff042a03b,Crandall Place (4),residential,99.5,15167361,29.504502,-98.452617
+s_a05be09802ff,Kenilworth Boulevard (19),residential,104.8,15185322,29.504518,-98.449228
+s_7fccb6f1316c,Burnside Drive (4),residential,116.3,148634776,29.504909,-98.448242
+s_36ca2746b9f2,Kenilworth Boulevard (21),residential,106.4,15185337,29.505376,-98.447558
+s_8d545ed5ec15,Paddington Way (13),residential,6.9,15163247,29.493904,-98.469412
+s_71129395fbfa,Unnamed unclassified (2),collector,10.6,1011859066,29.499823,-98.472762
+s_09ebbb074fcf,West Nottingham (6),residential,106.2,15163271,29.499707,-98.472424
+s_c688d3da22d2,Kampmann Avenue (3),residential,15.0,317461626,29.480129,-98.46121
+s_4d0979ca2e08,Austin Highway (12),arterial,15.1,1067072180,29.480129,-98.46121
+s_465b85da561b,Kokomo Street (1),residential,83.2,317461630,29.480833,-98.461191
+s_7dfcfbea7f21,Austin Highway (13),arterial,85.1,1067072179 1067072180,29.480384,-98.461152
+s_5a613b4c77f4,Routt Street (2),residential,15.0,1067072178,29.48101,-98.460995
+s_6ed4aa4f5217,Routt Street (4),residential,19.1,15173733,29.48101,-98.461095
+s_9a188ec4ba7a,West Meadowlane Drive (1),residential,10.5,15166083,29.484658,-98.453757
+s_19fe3a7dcb55,Austin Highway (26),arterial,77.0,149137103,29.484718,-98.453489
+s_ea201825a7ba,Rittiman Road (4),collector,11.5,1057113401,29.484853,-98.452994
+s_50f0e8fbd5cf,Oakleaf Drive (2),residential,300.9,15163742,29.50403,-98.451043
+s_c62cf584a864,Crandall Place (3),residential,103.2,15167361,29.503584,-98.452626
+s_02efb52d68ef,Kenilworth Boulevard (18),residential,114.4,15185322,29.503522,-98.449758
+s_befc982f262d,Ciruela Street (2),residential,106.3,15165189,29.485376,-98.477365
+s_75993eb74b34,Northridge Drive (5),residential,125.6,15164635,29.501291,-98.452637
+s_f562b78d336b,Northridge Drive (8),residential,32.4,15164635,29.501278,-98.4512
+s_ae7cbc4490d1,Sunset Court,residential,84.7,15164724,29.507211,-98.461857
+s_0c4533b60963,East Sunset Road (1),collector,52.9,15181773,29.507211,-98.461857
+s_bfbde98e77ef,East Sunset Road (5),collector,120.6,15181773,29.507211,-98.461857
+s_9a9c4280b325,Ciruela Street (4),residential,106.9,15165189,29.486332,-98.47737
+s_e0ebd04e3dca,Seidel Road (8),residential,138.6,15165067,29.497026,-98.444228
+s_1f0401b23780,College Boulevard (1),residential,273.9,15165302,29.487408,-98.478577
+s_7a57c9061b65,College Boulevard (11),residential,153.1,15165302,29.487304,-98.469748
+s_44c626932e7c,Columbine Street (12),residential,51.2,15171656,29.492946,-98.468372
+s_913d378d9434,Eldon Road (14),collector,109.3,15168311,29.48461,-98.452043
+s_599d4a4e9b98,Rittiman Road (5),collector,96.9,15165726 350835447,29.484635,-98.452874
+s_2f00bf4de849,Exeter Road (5),residential,109.5,15168487,29.484638,-98.44736
+s_2e6bab8cc3e0,Woodcrest Drive (3),residential,254.6,15168385,29.503105,-98.451544
+s_7b2698bcd90d,Terrell Road (6),residential,183.4,15167408,29.471347,-98.453983
+s_d6cf64e2246b,Terrell Road (4),residential,138.4,15167408,29.471345,-98.452696
+s_ad85477502a5,Eldon Road (1),residential,162.9,1147768787,29.470685,-98.451264
+s_8dae366a3b9e,Eldon Road (2),residential,20.9,1147768787,29.46969,-98.451264
+s_6789320d6e9a,Geneseo Road (2),residential,343.3,317461616,29.469688,-98.448106
+s_5bbe48cf2351,Geneseo Road (4),residential,231.5,317461616,29.469699,-98.453363
+s_6884b7669e1b,Geneseo Road (7),residential,237.7,15181908,29.469847,-98.453435
+s_568396676e07,Geneseo Road (6),residential,342.9,15181908,29.469882,-98.44808
+s_fb85f2a01a54,Mavis Street,residential,38.3,15172652,29.510275,-98.472731
+s_b09b3fd4c73b,Tuxedo Avenue (1),residential,41.0,15181449,29.491159,-98.479778
+s_472621485032,Forestshire (1),residential,67.3,762787465,29.491596,-98.479796
+s_bd45103f97fb,Tuxedo Avenue (11),residential,55.2,15181449,29.4912,-98.468354
+s_15436aae0a72,Tuxedo Avenue (12),residential,90.3,15181449,29.491166,-98.480948
+s_99c271b029e9,Devine Road (7),collector,121.7,30515204,29.468265,-98.479149
+s_00f3d6a86609,Dick Friedrich Drive,residential,650.2,15183512,29.478487,-98.481887
+s_ba90834a35d3,Devine Road (10),collector,343.3,317461608 317461610 954158607,29.479798,-98.47914
+s_dd3cbdf82e25,Devine Road (9),collector,661.8,30515204 954158606 954158607,29.474061,-98.479157
+s_014f4c4b6558,Jones Maltsberger Road (1),collector,239.5,30449585,29.483069,-98.479138
+s_5d94426b9062,Alamo Heights Boulevard (17),residential,125.8,30466913,29.490196,-98.468361
+s_9d341ab0dcd9,Morningside Drive (4),residential,74.7,15185951,29.483,-98.458637
+s_0de507c94f01,East Hildebrand Avenue (2),arterial,314.1,153164196,29.465523,-98.478049
+s_aea5a042084f,East Hildebrand Avenue (3),arterial,417.5,1051544911 1051544912 358469972 358469975 358469976,29.465451,-98.473586
+s_b2cbbe9b27e5,East Hildebrand Avenue (5),arterial,416.6,30445960 30445961 1055875093 1055875094 1055875095 358469974,29.465582,-98.473563
+s_0d6df94f63d0,Eisenhauer Road (5),collector,46.7,15185466,29.495727,-98.451509
+s_361d1b00e165,Concord Plaza Drive (2),residential,234.5,15187136,29.504304,-98.481038
+s_3af3c60324b2,Stadium Drive (1),arterial,158.5,30515203,29.465175,-98.479003
+s_33ee3b7620be,Park Drive (4),residential,293.7,15181870,29.472053,-98.481263
+s_067959476138,East Contour Drive (1),residential,107.9,15162756,29.471377,-98.486156
+s_df841eaeb52d,East Basse Road (1),arterial,192.9,284675913,29.491876,-98.480639
+s_bf6c1399689d,Jones Maltsberger Road (3),collector,882.4,292949224 292949225 292949227 30449585 317461620 317461623,29.487621,-98.481549
+s_ecc22630996a,Basse Road (1),arterial,683.1,123168649 123168652 123168639,29.489785,-98.484121
+s_6565578d6673,Forestshire (2),residential,63.2,762787465 762787463,29.492031,-98.479979
+s_7bd575b7b50e,East Basse Road (2),arterial,551.0,1391293152 762787464 1391293148 1391293149 1391293150 1391293151,29.494232,-98.479455
+s_83828801ed83,East Basse Road (4),arterial,85.7,1423793228,29.496642,-98.467771
+s_f7286f658920,Skipper Drive West (3),residential,90.8,15141301,29.501812,-98.48722
+s_ac148732554b,Skipper Drive West (1),residential,104.9,15141301,29.50115,-98.487513
+s_f8e6766b30d5,Sharon Drive,residential,407.6,15162499,29.501573,-98.484628
+s_65b16172ab17,Jones Maltsberger Road (5),arterial,12.0,148634788,29.496882,-98.478521
+s_187100788e1e,Jones Maltsberger Road (7),arterial,288.9,1411123657 1411123658 1411123659 292949226 148634800,29.497264,-98.479666
+s_982de50482e9,East Basse Road (16),arterial,392.3,148634774,29.49804,-98.47641
+s_29911bb9b1bb,Skipper Drive South,residential,564.7,15141247,29.499725,-98.486327
+s_0be14c47a79b,Linda Drive,residential,425.8,15154941,29.500694,-98.484657
+s_b4732e2c4d19,Skipper Drive East (3),residential,99.4,15141044,29.502034,-98.483013
+s_7c9afa767769,Skipper Drive East (1),residential,116.3,15141044,29.500885,-98.483179
+s_bad0cdad0e1e,Shannon Lee Street,residential,411.1,705385681,29.50247,-98.486313
+s_395432a08848,East Basse Road (9),arterial,294.0,1423793228 148634775,29.496516,-98.468903
+s_42e11767d1a2,East Basse Road (7),arterial,378.5,148634773,29.497747,-98.476926
+s_4e268bfda7f5,East Basse Road (14),arterial,13.5,1072948779,29.498033,-98.474785
+s_3df67e6ca951,Treeline Park (3),collector,18.2,243086610,29.498046,-98.474923
+s_c802e4875a13,Treeline Park (5),collector,257.6,350835461 1078770519,29.49971,-98.474452
+s_615648a6d262,West Nottingham (1),residential,123.4,243086612,29.499413,-98.469666
+s_76bd88c5ce6a,West Nottingham (4),residential,92.2,243086612,29.499439,-98.471436
+s_7c43366c475a,West Nottingham (7),residential,109.1,243086612,29.499505,-98.471951
+s_e4dabe41cde3,West Nottingham (9),residential,129.1,243086612,29.499988,-98.473395
+s_35615e619e1d,West Nottingham (10),residential,11.9,243086612,29.500324,-98.473979
+s_1c9698af2131,Treeline Park (7),collector,13.2,1078770518,29.500389,-98.474077
+s_8ea3e8633020,Bristol Green (3),residential,31.1,243086605,29.500441,-98.474157
+s_e8f1f892c7e6,Bristol Green (2),residential,30.5,15140654,29.500537,-98.474085
+s_c8e0522bdbc1,Treeline Park (9),collector,48.3,243086609 1062148878,29.500581,-98.473916
+s_f27f5327ab65,Unnamed unclassified (3),collector,12.0,243086615,29.500556,-98.474335
+s_276ca5165872,Quarry Heights (3),residential,171.2,292949285,29.492003,-98.479152
+s_6a44201cac30,Quarry Heights (4),residential,49.1,1392734166,29.49208,-98.477874
+s_d35cfa13765a,Quarry Heights (1),residential,52.6,1392734166,29.492208,-98.477888
+s_9189a5f68daa,Quarry Heights (7),residential,39.1,1392734163,29.492246,-98.476551
+s_158a7c86f083,Austin Highway (2),arterial,47.7,317462933,29.478176,-98.46237
+s_a0aded29ab80,Austin Highway (1),arterial,13.4,589019549,29.477883,-98.46273
+s_66eaeb766978,Chichester Place (3),residential,14.7,15157924,29.478176,-98.46237
+s_61ae3cd8d9b7,Austin Highway (4),arterial,132.2,317462933,29.478697,-98.461798
+s_3dfd738f2b72,Austin Highway (6),arterial,105.5,317462933,29.479523,-98.461257
+s_44ae2e14e411,Austin Highway (8),arterial,18.6,317462933,29.480125,-98.461055
+s_f18f2b60b4d1,Austin Highway (10),arterial,100.5,317462933,29.480641,-98.460934
+s_d53c92c4bd4e,Austin Highway (14),arterial,119.0,317462933,29.481648,-98.460616
+s_29229af5075b,Austin Highway (16),arterial,122.2,317462933,29.482492,-98.460165
+s_0260afe840df,Austin Highway (17),arterial,86.7,317462933,29.483404,-98.459554
+s_e2d73a6c751b,Austin Highway (19),arterial,499.5,1060939338 1060939339 1060939340 991772991,29.484411,-98.457418
+s_4edcb210e692,Austin Highway (21),arterial,63.1,1060939340,29.484527,-98.454003
+s_2103470f14fa,Austin Highway (22),arterial,80.7,1057113402 1060939341,29.484651,-98.453371
+s_cb6585ee7dc7,Austin Highway (25),arterial,238.8,1057113400 317462932,29.485237,-98.451758
+s_ded297138cd8,Austin Highway (31),arterial,341.3,653875919 1071541519 1073785239,29.487579,-98.447035
+s_9ab9b98f0a04,Lado Bueno,residential,55.5,353006685,29.506906,-98.463078
+s_16207ade08ec,Emporia Boulevard (2),residential,110.8,1197855517,29.486546,-98.455453
+s_e8edc3556135,Broadway (11),arterial,96.5,940028109 589019534 589019535,29.470368,-98.463471
+s_2275e77376e5,Unnamed residential (2),residential,32.6,591107673,29.471176,-98.463306
+s_5b8e45865911,Broadway (13),arterial,23.7,589019535,29.471228,-98.463193
+s_589a6521c433,Patterson Avenue (2),residential,29.1,15157825,29.471303,-98.463308
+s_8248b50c74f6,Unnamed residential (3),residential,53.4,589019536,29.471407,-98.463289
+s_f2660dceceb5,Broadway (14),arterial,37.7,589019537 589019538,29.471404,-98.463148
+s_973523da9a81,Broadway (15),arterial,61.2,589019538,29.471861,-98.46307
+s_77f1e2a7b3c0,Broadway (32),arterial,88.9,1051212598,29.477314,-98.462731
+s_36c8700d0f39,Broadway (34),arterial,16.9,589019546,29.477817,-98.462846
+s_bb488477b995,Broadway (29),arterial,96.8,589019545 1051212598,29.476204,-98.462871
+s_c77212adf865,Broadway (31),arterial,13.5,1051212598,29.47691,-98.462762
+s_d1153ab6865c,Broadway (24),arterial,38.6,1060538543,29.474577,-98.462912
+s_865a8a01407c,Broadway (27),arterial,125.7,589019544 589019543,29.475438,-98.462974
+s_efe2281ae91b,Barilla Place (3),residential,16.7,1040453776,29.473236,-98.462662
+s_45202997d9b7,Broadway (8),arterial,106.6,589019559,29.469738,-98.463646
+s_e6a799d65fd1,Broadway (10),arterial,9.9,589019559,29.470175,-98.463536
+s_86d3323f9fd9,Broadway (19),arterial,120.3,589019538 589019539 589019540 1083522589,29.472739,-98.462902
+s_3fbdf111a8dd,Broadway (20),arterial,44.4,589019541,29.473327,-98.462835
+s_caddd0ee1ac8,Broadway (23),arterial,103.3,589019542 1060538543,29.474138,-98.462883
+s_26ef431740b8,Ogden Lane (3),residential,26.6,591107668,29.480628,-98.465015
+s_f831426592de,Concord Plaza Drive (3),residential,223.4,641184501,29.504521,-98.481048
+s_0aebccc1c28c,Unnamed unclassified (1),collector,11.1,1011859064,29.499478,-98.471744
+s_c31964779a91,Simple Way (2),residential,112.4,674017094,29.509566,-98.472953
+s_d117cc101d0a,Simple Way (1),residential,28.6,674017094,29.50912,-98.473182
+s_927cfbb86654,West Sunset Road (6),arterial,121.2,1174576360,29.507765,-98.47701
+s_6fd255a21c1a,West Sunset Road (8),arterial,120.9,1174576361,29.50769,-98.477051
+s_7a057f4513ed,East Sunset Road (3),collector,11.7,15181773,29.507209,-98.461311
+s_dfc2dc25873e,Unnamed residential (13),residential,28.1,787329027,29.507209,-98.461311
+s_a51d67dc64e9,Unnamed residential (18),residential,14.1,709581003,29.507638,-98.461248
+s_a7b35af46b37,Unnamed residential (19),residential,64.4,787329025,29.507643,-98.461515
+s_5ec0e5560cdb,Unnamed residential (15),residential,23.6,787329025,29.507638,-98.461248
+s_f1b339f5a04b,Unnamed residential (14),residential,20.9,709581001,29.507556,-98.461295
+s_20093091d9d9,Unnamed residential (11),residential,21.3,787329028,29.507606,-98.461216
+s_e73090e28a0f,Unnamed residential (10),residential,27.7,787329026,29.507458,-98.461198
+s_a9cd0282aeef,Unnamed residential (16),residential,13.5,709581002,29.507765,-98.46101
+s_b7707d4fe2e8,Unnamed residential (17),residential,44.4,787329025,29.507766,-98.460846
+s_60b4459d43cc,Unnamed residential (20),residential,23.2,787329025,29.507765,-98.46101
+s_ea888f472876,Unnamed residential (12),residential,9.8,709581004,29.507462,-98.4613
+s_90cde793a4b6,Vanderhoeven (6),residential,12.1,843394858,29.492339,-98.462785
+s_7150092fb3a5,East Fair Oaks Place (4),residential,341.5,15154533,29.492382,-98.464253
+s_f4c14099321f,Vanderhoeven (5),residential,232.2,843394857,29.490836,-98.462798
+s_57e48a24d218,Unnamed residential (5),residential,23.6,765329045,29.48762,-98.455548
+s_41d6d5982df8,Unnamed residential (9),residential,41.4,823317201,29.496807,-98.460591
+s_913d61332dc6,Basse Road (2),arterial,404.8,123168642,29.488067,-98.489255
+s_ff479a48f425,East Contour Drive (10),residential,220.4,15162752,29.48338,-98.488141
+s_c1c376326601,East Contour Drive (8),residential,942.2,15162752,29.481844,-98.482812
+s_43c5f7fefbb3,East Contour Drive (2),residential,103.5,15162756,29.471789,-98.486164
+s_a62b611a2ac0,East Contour Drive (3),residential,106.5,15162756,29.472842,-98.485961
+s_fc1dbafc5c46,East Contour Drive (4),residential,104.8,15162756,29.474028,-98.485589
+s_470fc9297ae3,East Contour Drive (5),residential,49.6,15162756,29.474807,-98.485633
+s_2e91ebf2306f,East Contour Drive (6),residential,277.6,15162756,29.475451,-98.484501
+s_ffa331c36440,East Contour Drive (9),residential,324.5,15162752,29.478495,-98.48265
+s_892df0f6a6a6,East Contour Drive (7),residential,71.2,15162756,29.476802,-98.4834
+s_8f80883df596,Jones Maltsberger Road (2),collector,31.5,30449585,29.484175,-98.479207
+s_879c9ac0149d,Viesca Street (1),residential,439.7,15185394,29.480602,-98.475281
+s_b825d71b3e05,Viesca Street (2),residential,42.7,15185394,29.482116,-98.476109
+s_ed4a0d50ac7d,Quarry Heights (5),residential,28.6,1392734164,29.492208,-98.476909
+s_a3bb69ee15ad,Quarry Heights (6),residential,41.2,1392734164,29.492406,-98.476945
+s_84955f0f6a79,Quarry Heights (2),residential,62.6,1392734165,29.492123,-98.477319
+s_a70c2fda6c3e,Unnamed residential (4),residential,53.6,1420545607,29.474578,-98.461107

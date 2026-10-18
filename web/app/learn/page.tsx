@@ -107,7 +107,7 @@ const LEVELS: Level[] = [
     body: [
       "Every day we vote with our dollars for a society of convenience and single-use goods. That is not an accusation, it is leverage: the mechanism runs in reverse. Unless local businesses know we want sustainable products, they cannot change their model — and most will not gamble a thin margin on a preference nobody has stated out loud.",
       "Ask for it where it is heard: at the counter, in the review, at the neighbourhood association, in the email to the council member. Reduce the single-use packaging in your own life so the ask is credible. A request from one customer is noise; the same request from forty is a roadmap.",
-      "This is where the map earns its keep. “There is litter around here” is an opinion. “This corridor averages 31 pieces per 100 metres, 64% single-use plastic, concentrated within 150 metres of three retail frontages” is a Litter Impact Assessment, and it is very hard to argue with. Scientists produce it; Advocates deliver it.",
+      "This is where the map earns its keep. “There is litter around here” is an opinion. A Litter Impact Assessment reads, for example, “this corridor averages 31 pieces per 100 metres, 64% single-use plastic, concentrated within 150 metres of three retail frontages” — figures illustrative, and very hard to argue with once they are yours. Scientists produce it; Advocates deliver it.",
     ],
   },
   {

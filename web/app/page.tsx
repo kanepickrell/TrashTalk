@@ -1,4 +1,4 @@
-import stats from "@/public/stats.json";
+import stats from "@/lib/stats";
 
 const MODES = [
   {
@@ -203,11 +203,25 @@ export default function Home() {
           <figure className="hero-map" style={{ margin: 0 }}>
             <img
               src="/hero-density.svg"
-              alt={`Litter density across ${stats.segments} street segments in ${stats.neighborhood}, with arterials and commercial frontages glowing brightest`}
+              alt={
+                stats.hasObservations
+                  ? `Litter density across ${stats.segments} street segments in ${stats.neighborhood}, with arterials and commercial frontages glowing brightest`
+                  : `The survey network: ${stats.segments} street segments in ${stats.neighborhood}, drawn by street class`
+              }
             />
             <figcaption className="map-caption">
-              Live litter density across {stats.segments} surveyed segments.
-              Brighter means more on the ground right now.
+              {stats.hasObservations ? (
+                <>
+                  Live litter density across {stats.segments} surveyed
+                  segments. Brighter means more on the ground right now.
+                </>
+              ) : (
+                <>
+                  The survey network: {stats.segments} blocks that can be
+                  walked and logged. Nothing has been surveyed yet, so nothing
+                  here is coloured by litter.
+                </>
+              )}
             </figcaption>
           </figure>
 
@@ -218,17 +232,27 @@ export default function Home() {
             </div>
             <div className="stat">
               <b className="tnum">{stats.networkKm} km</b>
-              <span>of network surveyed</span>
+              <span>{stats.hasObservations ? "of network surveyed" : "of network mapped"}</span>
             </div>
             <div className="stat">
-              <b className="tnum">{stats.pieces.toLocaleString()}</b>
-              <span>pieces currently on the ground</span>
+              <b className="tnum">
+                {stats.hasObservations ? stats.pieces.toLocaleString() : "—"}
+              </b>
+              <span>
+                {stats.hasObservations
+                  ? "pieces currently on the ground"
+                  : "pieces logged so far"}
+              </span>
             </div>
             <div className="stat">
               <b className="tnum" style={{ color: "var(--serious)" }}>
-                {stats.singleUsePct}%
+                {stats.hasObservations ? `${stats.singleUsePct}%` : "—"}
               </b>
-              <span>of it single-use plastic</span>
+              <span>
+                {stats.hasObservations
+                  ? "of it single-use plastic"
+                  : "single-use share, once counted"}
+              </span>
             </div>
           </div>
         </div>
@@ -338,7 +362,9 @@ export default function Home() {
             <div>
               <p className="eyebrow">Territory</p>
               <h2 style={{ marginBlock: "10px 16px" }}>
-                {stats.heldSegments} blocks are currently held
+                {stats.hasObservations
+                  ? `${stats.heldSegments} blocks are currently held`
+                  : "Every block is still unclaimed"}
               </h2>
               <p className="body">
                 Every adopted segment is painted in its crew&rsquo;s colour.
@@ -578,7 +604,10 @@ export default function Home() {
               ))}
               <p className="small" style={{ marginTop: 16 }}>
                 Shares by piece count, weighted by each segment&rsquo;s estimated
-                load. {stats.singleUsePct}% of all pieces are single-use plastic.
+                load.{" "}
+                {stats.hasObservations
+                  ? `${stats.singleUsePct}% of all pieces are single-use plastic.`
+                  : "The split will be published once blocks have been surveyed."}
               </p>
             </div>
           </div>
