@@ -41,10 +41,15 @@ DAYS = 14
 #
 # "Terrell Heights" has no boundary relation in OSM -- Nominatim returns no
 # result for it, and "Terrell Hills" is a different, incorporated city to the
-# south-east. So the pilot area is pinned to an explicit bounding box, which
-# also keeps every run byte-identical rather than drifting with OSM's
+# south-east. So the area is pinned to an explicit bounding box, which also
+# keeps every run byte-identical rather than drifting with OSM's
 # administrative edits.
-NEIGHBORHOOD = "Terrell Heights"
+#
+# Named for both since the box was widened: Alamo Heights in the south, the
+# original Terrell Heights pilot in the north. Calling 1545 segments and
+# 224 km "Terrell Heights" undersold it by a factor of five and told anybody
+# reading the map header the wrong thing about where the data came from.
+NEIGHBORHOOD = "Alamo Heights & Terrell Heights"
 CITY, STATE, CITY_ID = "San Antonio", "TX", "san-antonio-tx"
 
 # (west, south, east, north)
