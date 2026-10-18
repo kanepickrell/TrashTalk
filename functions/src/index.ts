@@ -302,6 +302,21 @@ async function processSubmission(
         ownerScore: outcome.segment.ownerScore,
         strength: outcome.segment.strength,
         lastScoredAt: outcome.segment.lastScoredAt,
+        // Who holds it, in words, and since when. The map needs a name to
+        // put on a block and a date to say how long it has been held, and
+        // neither can be derived from an id the client has no way to look
+        // up -- segment_state is readable, the users collection is not.
+        ownerName:
+          outcome.segment.ownerId === null
+            ? null
+            : outcome.segment.ownerId === submission.userId
+              ? ((user.displayName as string) ?? 'Collector')
+              : (state.ownerName as string | undefined) ?? null,
+        ...(outcome.claimed || outcome.flipped
+          ? { ownerSince: now }
+          : outcome.segment.ownerId === null
+            ? { ownerSince: null }
+            : {}),
       },
       { merge: true },
     );

@@ -128,9 +128,19 @@ class FirestoreRepository(
                         cleanupCount = (d.getLong("cleanupCount") ?: base.cleanupCount.toLong()).toInt(),
                         piecesRemoved = (d.getLong("piecesRemoved") ?: 0L).toInt(),
                         lastSurveyedAt = d.getLong("lastSurveyedAt") ?: 0L,
-                        guardianUserId = d.getString("guardianUserId"),
-                        guardianName = d.getString("guardianName"),
-                        guardianSince = d.getLong("guardianSince") ?: 0L,
+                        // owner*, not guardian*. The server owns the
+                        // contest and names these fields after it; the app
+                        // called the same idea a guardian long before that
+                        // and the UI still does. Reading guardianUserId here
+                        // meant the listener found nothing on every segment,
+                        // so live mode drew the whole neighbourhood as
+                        // unclaimed no matter how much ground had been taken
+                        // -- territory only ever appeared in demo mode,
+                        // which sets these fields itself.
+                        guardianUserId = d.getString("ownerId"),
+                        guardianName = d.getString("ownerName"),
+                        guardianTeamId = d.getString("ownerTeamId"),
+                        guardianSince = d.getLong("ownerSince") ?: 0L,
                     )
                 },
             )
