@@ -119,18 +119,26 @@ object EvidenceStore {
 
         // Two passes: measure, then decode subsampled. Decoding a 12 MP image
         // at full size only to shrink it is how a cheap phone runs out of heap.
+        //
+        // The stream is opened on its own line, and that is the entire point.
+        // Written as `openInputStream(uri)?.use { decodeStream(...) } ?: return
+        // null`, the elvis tests what the lambda returned rather than whether
+        // the stream opened -- and a measure pass returns null on purpose,
+        // because `inJustDecodeBounds` fills outWidth/outHeight and decodes
+        // nothing. So that spelling bailed out every single time, for every
+        // image, and no evidence photo ever uploaded.
         val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
-        try {
-            context.contentResolver.openInputStream(uri)?.use {
-                BitmapFactory.decodeStream(it, null, bounds)
-            } ?: run {
-                Log.w(TAG, "compress: openInputStream returned null for bounds pass")
-                return null
-            }
+        val measuring = try {
+            context.contentResolver.openInputStream(uri)
         } catch (e: Exception) {
-            Log.w(TAG, "compress: measuring $uri threw", e)
+            Log.w(TAG, "compress: opening $uri to measure threw", e)
             return null
         }
+        if (measuring == null) {
+            Log.w(TAG, "compress: openInputStream returned null for bounds pass")
+            return null
+        }
+        measuring.use { BitmapFactory.decodeStream(it, null, bounds) }
 
         val longEdge = maxOf(bounds.outWidth, bounds.outHeight)
         if (longEdge <= 0) {
@@ -142,15 +150,19 @@ object EvidenceStore {
             inSampleSize = generateSequence(1) { it * 2 }
                 .first { longEdge / it <= MAX_EDGE * 2 }
         }
-        val decoded = try {
-            context.contentResolver.openInputStream(uri)?.use {
-                BitmapFactory.decodeStream(it, null, options)
-            } ?: run {
-                Log.w(TAG, "compress: decode pass produced no bitmap (sample ${options.inSampleSize})")
-                return null
-            }
+        val decoding = try {
+            context.contentResolver.openInputStream(uri)
         } catch (e: Exception) {
-            Log.w(TAG, "compress: decoding $uri threw", e)
+            Log.w(TAG, "compress: opening $uri to decode threw", e)
+            return null
+        }
+        if (decoding == null) {
+            Log.w(TAG, "compress: openInputStream returned null for decode pass")
+            return null
+        }
+        val decoded = decoding.use { BitmapFactory.decodeStream(it, null, options) }
+        if (decoded == null) {
+            Log.w(TAG, "compress: decode produced no bitmap (sample ${options.inSampleSize})")
             return null
         }
 

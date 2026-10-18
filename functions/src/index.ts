@@ -109,7 +109,22 @@ export const scoreSubmission = onDocumentCreated(
       const result = await db.runTransaction(async (tx) =>
         processSubmission(tx, submissionId, submission),
       );
-      logger.info('scored', { submissionId, points: result.pointsAwarded });
+      // Trust and claims are logged, not just points, because "did the
+      // evidence count" is the question you actually have after a walk and
+      // the points alone cannot answer it. Reading it back out of Firestore
+      // to find out is a poor substitute for the function saying so.
+      const scored = result as {
+        pointsAwarded: number;
+        trustLevel?: string;
+        awards?: { claimed: boolean }[];
+      };
+      logger.info('scored', {
+        submissionId,
+        points: scored.pointsAwarded,
+        trustLevel: scored.trustLevel,
+        claimed: scored.awards?.filter((a) => a.claimed).length ?? 0,
+        segments: scored.awards?.length ?? 0,
+      });
     } catch (err) {
       // A failure here must still produce a result document, or the client
       // waits forever on an answer that is never coming.
