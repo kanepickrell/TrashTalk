@@ -43,3 +43,10 @@ tools/valhalla/cache/
 
 # Kotlin compiler session files, not source
 .kotlin/
+
+# Firebase emulator logs. Written on every `firebase emulators:start` and on
+# failed deploys, so they churn constantly and were being committed as though
+# they were source.
+functions/*-debug.log
+firebase-debug.log
+firestore-debug.log
